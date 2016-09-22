@@ -1,0 +1,126 @@
+<%= title "General Information" %>
+
+<%= render partial: 'breadcrumbs', locals: {active_step: :general} %>
+
+<%= render partial: "controls" %>
+<div id="pageContent">
+<div id="incidentStep" class="generalInfoStep">
+
+<%= render partial: "errors", locals: {record: @general_info} %>
+
+<h1 class="incident-step-header">General Incident Information</h1>
+
+<%= form_for [@incident, @general_info], url: incident_general_info_path, method: "patch" do |f| %>
+  <% if @current_user.contracting_oris.size > 0 %>
+    <div class="incident-form-row form-group">
+      <div class="form-col">
+        <%= f.label :contracting_for_ori, 'Which agency are you filling out this report on behalf of?' %>
+        <%= f.select :contracting_for_ori, @current_user.allowed_oris.map {|o| [display_ori(o), o]} %>
+        <div class="question-explanation">
+          Our records indicate that your department provides policing services for <%= pluralize(@current_user.contracting_oris.size, ' contract city') %>.
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="incident-form-row">
+    <div class="form-col">
+      <%= f.label :incident_date_str, "Date - MM/DD/YYYY, e.g. 12/31/2016", class: 'required' %>
+      <%= f.text_field :incident_date_str, value: (@general_info.incident_date_str if @general_info.incident_date_str != nil), class: "form-control short-field" %>
+    </div>
+  </div>
+  <div class="incident-form-row">
+    <div class="form-col">
+      <%= f.label :incident_time_str, "Time - e.g. 1830", class: 'required' %>
+      <%= f.text_field :incident_time_str, value: (@general_info.incident_time_str if @general_info.incident_time_str != nil), class: "form-control short-field" %>
+    </div>
+  </div>
+  <div class="incident-form-row">
+    <div class="form-col">
+      <%= f.label :address, "Incident Address", class: 'required' %>
+      <p class="question-explanation">
+        If there were multiple locations, use the initial location.
+      </p>
+      <%= f.text_field :address, class: "form-control", autocomplete: "false" %>
+    </div>
+  </div>
+  <div class="incident-form-row">
+    <div class="form-col inline">
+      <%= f.label :city, "City", class: 'required' %>
+      <%= f.text_field :city, class: "form-control" %>
+    </div>
+    <div class="form-col inline">
+      <%= f.label :state, "State (2-letter code)", class: 'required' %>
+      <%= f.text_field :state, class: "form-control short-field", value: @general_info.state || "CA", maxlength: 2 %>
+    </div>
+    <div class="form-col inline">
+      <%= f.label :zip_code, "Zip Code", class: 'required' %>
+      <%= f.text_field :zip_code, class: "form-control short-field", maxlength: 5 %>
+    </div>
+  </div>
+  <div class="incident-form-row">
+    <div class="form-col inline">
+      <%= f.label :county, "County", class: 'required' %>
+      <%= f.text_field :county, class: "form-control" %>
+    </div>
+  </div>
+  <div class="incident-form-row">
+    <%= f.check_box :multiple_locations %>
+    <%= f.label :multiple_locations, "Check here if there were multiple incident locations" %>
+  </div>
+  <div class="incident-form-row">
+    <%= f.check_box :on_k12_campus %>
+    <%= f.label :on_k12_campus, "Check here if incident occurred on a K-12 campus" %>
+  </div>
+  <div class="incident-form-row form-group">
+    <%= yes_no_question f, :arrest_made, "Was an arrest made?", class: 'required' %>
+  </div>
+  <div class="incident-form-row form-group">
+    <%= yes_no_question f, :crime_report_filed, "Did the incident result in a crime report?", class: 'required' %>
+  </div>
+  <div class="incident-form-row form-group">
+    <div class="form-col">
+      <%= f.label :contact_reason, "Initial Contact Reason", class: 'required' %>
+      <% GeneralInfo::CONTACT_REASONS.each do |reason| %>
+        <label>
+          <%= f.radio_button :contact_reason, reason %>
+          <span><%= reason %></span>
+        </label>
+        <% if reason == GeneralInfo::CONTACT_REASON_IN_CUSTODY %>
+          <div class="form-col additional-question" id="custody_event_option">
+            <%= f.label :in_custody_reason, "Choose one:", class: "inline-label required" %>
+            <%= radio_button_grid f, :in_custody_reason, GeneralInfo::IN_CUSTODY_REASONS, 185 %>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+  <div class="incident-form-row">
+    <div class="form-col">
+      <%= f.label :num_involved_civilians, "Number of civilians involved", class: 'required' %>
+      <p class="question-explanation">
+        The total number of civilians who had force used on them and/or who assaulted an officer
+      </p>
+      <%= f.text_field :num_involved_civilians, class: "form-control",
+                       type: :number, min: 1 %>
+    </div>
+  </div>
+  <div class="incident-form-row">
+    <div class="form-col">
+      <%= f.label :num_involved_officers, "Number of officers involved", class: 'required' %>
+      <p class="question-explanation">
+        Among officers present on the scene, the number who used force on a civilian and/or were assaulted by a civilian.
+      </p>
+      <%= f.text_field :num_involved_officers, class: "form-control",
+                       type: :number, min: 1 %>
+    </div>
+  </div>
+
+  <div class="incident-form-row">
+    <%= render partial: "form_save_buttons" %>
+  </div>
+
+<% end %>
+<%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_MAPS_API_KEY']}&libraries=places" %>
+
+</div>

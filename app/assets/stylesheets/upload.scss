@@ -1,0 +1,50 @@
+#bulk-upload {
+  .block {
+    overflow: scroll;
+    width: 80%;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    margin-bottom: 1em;
+
+    pre {
+      border: none;
+    }
+
+    h3 {
+      padding-left: 10px;
+    }
+  }
+
+  #schema {
+    display: none;
+  }
+
+  #upload-control {
+    margin: 20px 0;
+
+    .btn-file {
+      position: relative;
+      overflow: hidden;
+
+      input[type=file] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 100px;
+        text-align: right;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        outline: none;
+        background: white;
+        cursor: inherit;
+        display: block;
+      }
+    }
+  }
+
+  #showHideSchema {
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,22 @@
+<div id="doj_incidents_search_form">
+  <%= form_tag({controller: "doj", action: "incidents"}, method: "get") do %>
+    <input class="form-control" autocomplete="off" type="text" name="ori"
+           id="doj_incidents_ori_box" placeholder="Start typing an ORI, agency name, etc here">
+    <%= submit_tag "GO", class: 'btn-bayes' %>
+  <% end %>
+</div>
+<div id="doj_incidents_content">
+  <% if @ori %>
+    <% if @bad_ori %>
+      <div class='alert alert-danger'><%= @ori %> is not a valid ORI</div>
+    <% else %>
+      <h1><%= @dept %> (<%= @ori %>)</h1>
+      <% if @agency_last_submission_year < Time.last_year %>
+        <div class="alert alert-info">This agency has not yet submitted for <%= Time.last_year %></div>
+      <% else %>
+        <div class="alert alert-info">This agency submitted <%= pluralize(@incidents.length, 'incident') %> for <%= Time.last_year %></div>
+        <%= render partial: 'incidents_table', locals: {incidents: @incidents} %>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>

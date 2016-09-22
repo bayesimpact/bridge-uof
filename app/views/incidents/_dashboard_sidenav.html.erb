@@ -1,0 +1,5 @@
+<div id="dashboardSideNav">
+  <% @status_texts.each do |status, text| %>
+    <%= render partial: "dashboard_sidenav_item", locals: {text: text, status: status ? status.to_sym : nil} %>
+  <% end %>
+</div>

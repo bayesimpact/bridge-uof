@@ -1,0 +1,180 @@
+[
+  {
+    "ori": "CA0190000",
+    "screener": {
+      "partial": "f",
+      "multiple_agencies": "f",
+      "shots_fired": "t",
+      "officer_used_force": null,
+      "civilian_seriously_injured": null,
+      "civilian_used_force": null,
+      "officer_seriously_injured": null
+    },
+    "general_info": {
+      "partial": "f",
+      "contracting_for_ori": null,
+      "incident_date_str": "04\/01\/2016",
+      "incident_time_str": "1830",
+      "address": "1355 Market St",
+      "city": "San Francisco",
+      "county": "San Francisco County",
+      "state": "CA",
+      "zip_code": "94103",
+      "multiple_locations": "f",
+      "on_k12_campus": "f",
+      "arrest_made": "t",
+      "crime_report_filed": "f",
+      "contact_reason": "Welfare Check",
+      "in_custody_reason": null,
+      "num_involved_civilians": 1,
+      "num_involved_officers": 1
+    },
+    "involved_civilians": [
+      {
+        "partial": "f",
+        "gender": "Female",
+        "race": [
+          "White"
+        ],
+        "asian_race": null,
+        "injured": "f",
+        "injury_level": null,
+        "injury_type": null,
+        "medical_aid": null,
+        "injury_from_preexisting_condition": null,
+        "received_force_location": null,
+        "order_of_force_specified": "f",
+        "order_of_force_str": null,
+        "mental_status": ["Signs of alcohol impairment"],
+        "assaulted_officer": "f",
+        "highest_charge": null,
+        "perceived_armed": "f",
+        "perceived_armed_weapon": null,
+        "firearm_type": null,
+        "resisted": "f",
+        "resistance_type": null,
+        "received_force": "f",
+        "received_force_type": null,
+        "custody_status": "Deceased",
+        "age": "10-17",
+        "confirmed_armed": "f",
+        "confirmed_armed_weapon": null
+      }
+    ],
+    "involved_officers": [
+      {
+        "partial": "f",
+        "gender": "Female",
+        "race": [
+          "White"
+        ],
+        "asian_race": null,
+        "injured": "f",
+        "injury_level": null,
+        "injury_type": null,
+        "medical_aid": null,
+        "injury_from_preexisting_condition": null,
+        "received_force_location": null,
+        "order_of_force_specified": null,
+        "order_of_force_str": null,
+        "age": "18-20",
+        "officer_used_force": "f",
+        "officer_used_force_reason": null,
+        "received_force": "f",
+        "received_force_type": null,
+        "on_duty": "t",
+        "dress": "Patrol Uniform",
+        "sworn_type": "Sworn officer"
+      }
+    ]
+  },
+  {
+    "ori": "CA0190000",
+    "screener": {
+      "partial": "f",
+      "multiple_agencies": "f",
+      "shots_fired": "t",
+      "officer_used_force": null,
+      "civilian_seriously_injured": null,
+      "civilian_used_force": null,
+      "officer_seriously_injured": null
+    },
+    "general_info": {
+      "partial": "f",
+      "contracting_for_ori": null,
+      "incident_date_str": "02\/01\/2016",
+      "incident_time_str": "1830",
+      "address": "1355 Market St",
+      "city": "San Francisco",
+      "county": "San Francisco County",
+      "state": "CA",
+      "zip_code": "94103",
+      "multiple_locations": "f",
+      "on_k12_campus": "f",
+      "arrest_made": "t",
+      "crime_report_filed": "f",
+      "contact_reason": "Welfare Check",
+      "in_custody_reason": null,
+      "num_involved_civilians": 1,
+      "num_involved_officers": 1
+    },
+    "involved_civilians": [
+      {
+        "partial": "f",
+        "gender": "Female",
+        "race": [
+          "White"
+        ],
+        "asian_race": null,
+        "injured": "f",
+        "injury_level": null,
+        "injury_type": null,
+        "medical_aid": null,
+        "injury_from_preexisting_condition": null,
+        "received_force_location": null,
+        "order_of_force_specified": "f",
+        "order_of_force_str": null,
+        "mental_status": ["None"],
+        "assaulted_officer": "f",
+        "highest_charge": null,
+        "perceived_armed": "f",
+        "perceived_armed_weapon": null,
+        "firearm_type": null,
+        "resisted": "f",
+        "resistance_type": null,
+        "received_force": "f",
+        "received_force_type": null,
+        "custody_status": "Deceased",
+        "age": "10-17",
+        "confirmed_armed": "f",
+        "confirmed_armed_weapon": null
+      }
+    ],
+    "involved_officers": [
+      {
+        "partial": "f",
+        "gender": "Female",
+        "race": [
+          "White"
+        ],
+        "asian_race": null,
+        "injured": "f",
+        "injury_level": null,
+        "injury_type": null,
+        "medical_aid": null,
+        "injury_from_preexisting_condition": null,
+        "received_force_location": null,
+        "order_of_force_specified": null,
+        "order_of_force_str": null,
+        "age": "18-20",
+        "officer_used_force": "f",
+        "officer_used_force_reason": null,
+        "received_force": "f",
+        "received_force_type": null,
+        "on_duty": "t",
+        "dress": "Patrol Uniform",
+        "sworn_type": "Sworn officer"
+      }
+    ]
+  }
+]

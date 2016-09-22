@@ -1,0 +1,61 @@
+#window-submit-button {
+  font-size: 18px;
+  margin-top: 30px;
+}
+
+.window-open, .submit-yes {
+  background-color: $bootstrap-success-color;
+  color: lighten($bootstrap-success-color, 60%);
+  border-radius: 3px;
+  display: inline-block;
+  padding: 7px;
+}
+
+.window-closed, .submit-no {
+  background-color: $color-secondary-dark-18f;
+  color: lighten($color-secondary-dark-18f, 60%);
+  border-radius: 3px;
+  display: inline-block;
+  padding: 7px;
+}
+
+.submit-yes, .submit-no {
+  padding: 3px 7px;
+}
+
+#agency-submissions-table {
+  margin-top: 30px;
+  .ori-col {
+    width: 15%;
+  }
+  .dept-col {
+    width: 50%;
+  }
+  .submitted-col {
+    width: 10%;
+  }
+  .button-col {
+    width: 25%;
+  }
+}
+
+#doj_incidents_ori_box {
+  display: inline-block;
+  width: 70%;
+  height: 42px;
+  vertical-align: middle;
+  font-size: 18px;
+}
+
+#doj_incidents_search_form {
+  margin-bottom: 30px;
+}
+
+#doj_incidents_content {
+  h1 {
+    margin-bottom: 30px;
+  }
+  .alert {
+    display: inline-block;
+  }
+}

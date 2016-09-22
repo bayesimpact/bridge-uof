@@ -1,0 +1,3 @@
+<li class="status-link-<%= status.to_s %> <%= 'active' if @status == status.to_s %> ">
+  <% if @incident_counts_by_type[status] %> (<%= @incident_counts_by_type[status]%>)&nbsp;<% end %><%= link_to text, dashboard_path(status: status) %>
+</li>

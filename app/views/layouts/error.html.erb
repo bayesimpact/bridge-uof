@@ -1,0 +1,23 @@
+<%= title "Oops!" %>
+
+<% content_for :body do %>
+  <%= render partial: "controls" %>
+  <div id="pageContent">
+    <div id="exception">
+      <h1>Oops!</h1>
+      <div class="content">
+        <p><%= yield %></p>
+        <p>If you have a moment, please <%= link_to "let us know", feedback_path %> what you were doing before you got this message, so we can track down the issue more easily.</p>
+        <p><%= link_to "Return to your dashboard", dashboard_path %></p>
+      </div>
+
+      <% if Rails.env.development? || ENV["SHOW_EXCEPTIONS_ANYWAY"] == "true" %>
+        <hr>
+        <p>Original exception (only displayed in <strong>development</strong> and <strong>test</strong> environment):</p>
+        <pre><code><%= @exception.inspect %></code></pre>
+        <pre><code><%= @exception.backtrace.join("\n") %></code></pre>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+<%= render template: "layouts/application" %>

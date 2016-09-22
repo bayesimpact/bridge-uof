@@ -1,0 +1,18 @@
+URSUS feedback from <%= @user.full_name %>
+Source:
+
+  <%= @feedback.source %>
+
+Content:
+
+  <%= @feedback.content %>
+
+User info:
+
+	Name: <%= @user.full_name %>
+	ORI: <%= @user.ori %>
+	Department: <%= @user.department %>
+	Role: <%= @user.role %>
+	Email: <%= @user.email %>
+
+Sent at <%= @feedback.created_at %>

@@ -1,0 +1,26 @@
+.visualization {
+  position: relative;
+}
+
+// We add a persistent watermark to charts in the demo app, so all screenshots
+// will clearly show that the data is not live.
+.demo-watermark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0.5;
+  background-image: url(asset-path('demo-watermark.png'));
+  background-repeat: repeat;
+  z-index: 99;
+  pointer-events: none;
+}
+
+#pivotInstructions {
+  font-size: 16px;
+}
+
+#notes {
+  margin-top: 1em;
+}

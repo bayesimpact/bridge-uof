@@ -1,0 +1,14 @@
+# To assess code quality metrics with rubocop (not computed normally), run:
+# rubocop -c .rubocop.metrics.yml --only Metrics app config lib vendor
+
+Metrics/AbcSize:
+  Max: 9999  # ABC, CyclomaticComplexity, and PerceivedComplexity are very similar metrics, so disable all but the last.
+
+Metrics/CyclomaticComplexity:
+  Max: 9999  # ABC, CyclomaticComplexity, and PerceivedComplexity are very similar metrics, so disable all but the last.
+
+Metrics/LineLength:
+  Max: 120
+
+Metrics/MethodLength:
+  Max: 15

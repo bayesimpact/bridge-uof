@@ -1,0 +1,24 @@
+<div id="breadcrumbs">
+  <% active_step_number = Incident::STEPS.index(active_step) %>
+  <% can_edit = @incident && @incident.authorized_to_edit?(@current_user) %>
+  <% Incident::STEPS.each_with_index do |s, i|%>
+    <% if i == active_step_number
+        step_link_class = "active"
+      elsif can_edit && i <= @incident.next_step_number && i > 0
+        # Screener link (i=0) should never be enabled.
+        step_link_class = "enabled"
+      else
+        step_link_class = "disabled"
+      end %>
+    <% if request.path.include? 'screener' %>
+      <%= link_to s.to_s.capitalize, '', class: step_link_class %>
+    <% else %>
+      <% step_url = incident_base_url(request.path) + '/' + Incident::STEP_URLS[i].to_s %>
+      <%= link_to s.to_s.capitalize, step_url, class: step_link_class %>
+    <% end %>
+  <% end %>
+  <% if @incident && @incident.incident_id.present? %>
+    <span id="breadcrumbs-ursus-id"><%= render partial: 'incident_id', locals: {value: @incident.incident_id} %></span>
+  <% end %>
+</div>
+

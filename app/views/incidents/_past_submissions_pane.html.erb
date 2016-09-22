@@ -1,0 +1,21 @@
+<div id="past-submissions-pane">
+  <% if @past_incidents_by_year.empty? %>
+    <div class="alert alert-info">
+      <% if @current_user.admin? %>
+        Your agency has not yet made
+        <% if Rails.configuration.x.branding.ursus? %>an URSUS submission<% else %>a submission<% end %>
+        to the state.
+      <% else %>
+        None of your incidents have been submitted to the state yet.
+      <% end %>
+    </div>
+  <% else %>
+    <h1>Past State Submissions</h1>
+    <% @past_incidents_by_year.keys.sort.reverse.each do |year| %>
+      <h1 class="header-bar"><%= year %><span class="header-bar-incident-count"> <%= "(#{pluralize(@past_incidents_by_year[year].length, 'incident')})" %></span></h1>
+      <% if @past_incidents_by_year[year].length > 0 %>
+        <%= render partial: 'incidents_table', locals: {incidents: @past_incidents_by_year[year]} %>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>

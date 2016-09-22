@@ -1,0 +1,114 @@
+version: "2"
+services:
+  # Development database. In production we'll use the Amazon-hosted DynamoDB
+  db:
+    image: tray/dynamodb-local
+    command: [-inMemory, -port, "8000", "-sharedDb"]
+    environment:
+      _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
+    ports:
+      - "8000:8000"
+    restart: always
+  # Web app (Rails)
+  web:
+    build:
+      context: .
+      args:
+        - GIT_SHA1
+    image: "${DOCKER_REGISTRY_PATH}ursus"
+    ports:
+      - "3000:80"
+    volumes:
+      - ./app:/ursus/app
+    links:
+      - db
+      - mailcatcher
+    env_file: local.env
+    restart: always
+    tty: true
+  # Database for running tests (to keep it separate from the web app's db)
+  testdb:
+    image: tray/dynamodb-local
+    command: [-inMemory, -port, "8001", "-sharedDb"]
+    environment:
+      _JAVA_OPTIONS: "-Xms64m -Xmx128m"
+    ports:
+      - "8001:8001"
+  ## Test suites
+  # Main test suite, using Siteminder, the DOJ authentication scheme.
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    links:
+      - testdb
+    environment:
+      - LOGIN_MECHANISM=SITEMINDER
+      - RAILS_ENV=test
+    env_file: local.env
+    command: --exclude-pattern spec/**/*devise**_spec.rb
+    volumes:
+      - ./app:/ursus/app:ro
+      - ./spec:/ursus/spec:ro
+    tty: true
+  # Devise has a different db configuration, and it's annoying to
+  # completely delete and restart the testdb, so we just make a
+  # separate one for the devise tests.
+  testdb-devise:
+    image: tray/dynamodb-local
+    command: [-inMemory, -port, "8002", "-sharedDb"]
+    environment:
+      _JAVA_OPTIONS: "-Xms64m -Xmx128m"
+    ports:
+      - "8002:8002"
+  # Tests logging in with Devise for authentication. Does not run the full
+  # test suite.
+  test-devise-only:
+    build:
+      context: .
+      dockerfile: Dockerfile.test-devise
+    links:
+      - testdb-devise
+    environment:
+      - LOGIN_MECHANISM=DEVISE
+      - RAILS_ENV=test
+    env_file: local.env
+    command: -P spec/**/*devise**_spec.rb
+    volumes:
+      - ./app:/ursus/app:ro
+      - ./spec:/ursus/spec:ro
+    tty: true
+  # Run the full test suite, using Devise as the login mechanism. Does not run
+  # the siteminder-specific tests.
+  test-devise-all:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    links:
+      - testdb-devise
+    environment:
+      - LOGIN_MECHANISM=DEVISE
+      - RAILS_ENV=test
+    env_file: local.env
+    command: -P spec/**/*siteminder**_spec.rb
+    volumes:
+      - ./app:/ursus/app:ro
+      - ./spec:/ursus/spec:ro
+    tty: true
+  # Local SMTP server to intercept email
+  mailcatcher:
+    build:
+      context: .
+      dockerfile: Dockerfile.mailcatcher
+    ports:
+      - "1025:1025"
+      - "1080:1080"
+  # Run data cleaning/preparation scripts
+  data:
+    build:
+      context: .
+      dockerfile: Dockerfile.data
+    volumes:
+      - ./data:/code/data:rw
+      - ./app/models/constants:/code/app/models/constants:rw
+      - ./app/assets/javascripts:/code/app/assets/javascripts:rw

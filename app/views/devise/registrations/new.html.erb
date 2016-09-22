@@ -1,0 +1,23 @@
+<h2>Sign up</h2>
+
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+  <%= devise_error_messages! %>
+
+  <%= render partial: "user_account_fields", locals: {f: f} %>
+
+  <div class="field">
+    <% "Password" %>
+    <%= f.password_field :password, autocomplete: "off",
+      placeholder:  @pwd_placeholder %>
+  </div>
+
+  <div class="field">
+    <%= f.password_field :password_confirmation, autocomplete: "off", placeholder: "Confirm password"  %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Sign up" %>
+  </div>
+<% end %>
+
+<%= link_to "Have an account? Log in", new_user_session_path %>

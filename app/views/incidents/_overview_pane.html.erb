@@ -1,0 +1,58 @@
+<div id="overviewPane">
+  <h1>Welcome, <%= @current_user.full_name %></h1>
+  <h3 class="overview-agency-header">Agency: <%= @current_user.department %> <% unless Rails.configuration.x.login.use_demo? %>(ORI: <%= @current_user.ori %>) <% end %></h3>
+
+  <% if @current_user.admin? %>
+    <!-- Admin overview -->
+    <p class="admin-info">You are an <strong>administrator</strong> for your agency. You are responsible for reviewing incidents submitted by other users.</p>
+
+    <% if @incident_counts_by_type[:draft] > 0 %>
+      <p>You have <%= link_to pluralize(@incident_counts_by_type[:draft], 'incident'), dashboard_path(status: 'draft') %> that you are still filling out.</p>
+    <% end %>
+
+    <% if @incident_counts_by_type[:in_review] > 0 %>
+      <p>You currently have <%= link_to pluralize(@incident_counts_by_type[:in_review], 'incident'), dashboard_path(status: 'in_review') %> to review.</p>
+    <% end %>
+
+    <% if @employee_draft_counts.any? %>
+      <p>Employees in your ORI also have <%= pluralize(@employee_draft_counts.values.sum, 'incident') %> that are not yet ready for you to review.</p>
+      <ul>
+        <% @employee_draft_counts.each do |name, count| %>
+        <li><%= name %> is still filling out <%= pluralize(count, 'draft') %>.</li>
+        <% end %>
+      </ul>
+    <% end %>
+
+    <% if Rails.configuration.x.login.use_demo? %>
+    <!-- Demo overview - note that demo users are *always* admins. -->
+      <ul id="demoInstructions">
+        <li>Use the new incident button at the top to walk through filing an incident.</li>
+        <li>
+          For this demo, you can also
+          <%= button_to "GENERATE #{Incident::MAX_FAKE_INCIDENTS_PER_BATCH} FAKE INCIDENTS",
+                        create_fake_incidents_path,
+                        class: "btn-bayes-danger",
+                        id: "generateFakeIncidentsButton" %>
+          .
+        </li>
+      </ul>
+    <% end %>
+  <% else %>
+    <!-- Non-admin overview -->
+    <% if @incidents.empty? %>
+      <p>You haven't filled out any incidents yet. Click the red NEW INCIDENT button at the top to create one.</p>
+    <% else %>
+      <% if @incident_counts_by_type[:draft] > 0 %>
+        <p>You have <%= link_to pluralize(@incident_counts_by_type[:draft], 'incident'), dashboard_path(status: 'draft') %></a> that you are still filling out.</p>
+      <% end %>
+
+      <% if @incident_counts_by_type[:in_review] > 0 %>
+        <p><%= link_to pluralize(@incident_counts_by_type[:in_review], 'incident'), dashboard_path(status: 'in_review') %></a> that you have filled out <%= (@incident_counts_by_type[:in_review] == 1) ? 'is' : 'are' %> currently being reviewed.</p>
+      <% end %>
+
+      <% if @incident_counts_by_type[:approved] > 0 %>
+        <p>You have filled out <%= link_to pluralize(@incident_counts_by_type[:approved], 'incident'), dashboard_path(status: 'approved') %></a> that have been approved.</p>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>

@@ -1,0 +1,44 @@
+<%= title "Submit Feedback" %>
+
+<div id="incidentStep">
+
+<%= render partial: "errors", locals: {record: @feedback} %>
+
+<h1 class="incident-form-header">Submit your feedback or question</h1>
+
+<%= form_for @feedback, url: feedback_path, method: "post", html: {id: "feedbackForm"} do |f| %>
+  <div class="incident-form-row">
+    <div class="form-col">
+      <%= f.label :source, "Which part gave you difficulty?" %>
+      <div class="question-explanation">
+        Please copy the question header, or skip this if you have a general question.
+      </div>
+      <%= f.text_area :source, class: "form-control" %>
+    </div>
+  </div>
+  <div class="incident-form-row">
+    <div class="form-col">
+      <%= f.label :content, "Please explain the issue. " %>
+      <div class="question-explanation">
+        Were some options unclear? Is your incident more complex than can be captured here? Anything else?
+      </div>
+      <%= f.text_area :content, class: "form-control big-text-input" %>
+    </div>
+  </div>
+  <div class="incident-form-row">
+    <p>
+      Your question will be sent to
+      <% if Rails.configuration.x.branding.ursus? %>
+        DOJ staff.
+      <% elsif Rails.configuration.x.branding.whitelabel? %>
+        Bayes Impact.
+      <% else %>
+        the application's owners.
+      <% end %>
+      The team will read carefully and get back to you.
+    </p>
+    <%= render partial: "form_save_buttons", locals: {text: 'Submit Feedback', no_partial_save: true} %>
+  </div>
+<% end %>
+
+</div>

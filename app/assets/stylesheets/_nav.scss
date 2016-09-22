@@ -1,0 +1,189 @@
+// Had to do some ugly fixing of bootstrap stylings. Arguably not worth
+// it to use the bootstrap nav, but it gives easy responsivity.
+
+#navTag {  // Specificity overrides all of bootstrap's classes
+  background-color: $dark-background-color;
+  border: none;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 0;
+  margin: 0;
+  height: $nav-height;
+
+  div, img, a {
+    padding: 0;
+    margin: 0;
+  }
+
+  .fa {
+    margin-right: 10px;
+  }
+
+  #navbarBrand {
+    height: $nav-height;
+    padding: 12px;
+    img {
+      height: 100%;
+      width: auto;
+    }
+    &.brand-whitelabel {
+      padding: 2px;
+    }
+  }
+
+  #navbarBrand:hover {
+    background-color: $nav-div-line-color;
+  }
+
+  #navbar-demo-text, #navbar-demo-text-smallview {
+    color: white;
+    padding: 0 10px;
+    height: $nav-height;
+    line-height: $nav-height;
+    font-size: 16px;
+    background-color: transparent;
+    cursor: default;
+    text-transform: uppercase;
+  }
+
+  #navbar-demo-text-smallview {
+    display: none;
+  }
+
+  #navbar {
+    ul {
+      padding: 0;
+      margin: 0;
+      border: 0;
+    }
+
+    li {
+      border-left: 1px solid $nav-div-line-color;
+      height: $nav-height;
+      text-align: center;
+      min-width: 132px;
+    }
+
+    a {
+      color: white;
+      height: $nav-height;
+      line-height: $nav-height;
+      padding: 0 10px;
+      font-size: 12px;
+      font-weight: bold;
+      background-color: transparent;
+      cursor: pointer;
+
+      &:hover {
+        border-bottom: 4px solid white;
+        background-color: darken($dark-background-color, 10%);
+      }
+    }
+
+    .dropdown-menu {
+      ul {
+        border: none;
+        width: 100%;
+      }
+
+      li {
+        float: left;
+        width: 100%;
+        border: none;
+        border-top: 1px solid $nav-div-line-color;
+        height: 42px;
+        font-weight: normal;
+        background-color: $dark-background-color;
+        z-index: 10;
+        position: relative;
+
+        a {
+          min-width: 168px;
+          color: white;
+          height: 42px;
+          line-height: 42px;
+          background-color: transparent;
+
+          &:hover {
+            border: none;
+            background-color: darken($dark-background-color, 10%);
+          }
+        }
+      }
+    }
+
+    #new-incident-btns {
+      min-width: 168px;
+
+      a {
+        background-color: $color-secondary-dark-18f;
+        &:hover {
+          background-color: lighten($color-secondary-dark-18f, 10%);
+        }
+
+        &.dropdown-item, &[aria-expanded=true] {
+          background-color: #871C20;
+          &:hover {
+            background-color: lighten(#871C20, 10%);
+          }
+        }
+      }
+
+      #new-incident {
+        min-width: 132px;
+        padding-right: 35px;
+      }
+
+      .dropdown-toggle {
+        position: absolute;
+        top: 0;
+        right: 0;
+        border-left: 1px solid #871C20;
+        border-radius: 0;
+      }
+    }
+
+    #userNavDropdown {
+      min-width: 168px;
+    }
+
+    #doj-superuser {
+      background-color: $color-secondary-dark-18f;
+      pointer-events: none;
+    }
+  }
+}
+
+#demoWarning {
+  padding: 7px 10px;
+  padding-right: 55px;
+  background-color: lighten($color-secondary-dark-18f, 35%);
+  font-weight: bold;
+
+  a {
+    position: absolute;
+    right: 10px;
+    top: 7px;
+  }
+}
+
+// Navbar menu is collapsed on narrow screen. This property
+// is for during and after the expansion of collapsed menu.
+.collapsing .nav,
+.in .nav {
+  background-color: $dark-background-color;
+}
+
+// For the weird range where the screen is narrow, but we
+// haven't collapsed into full mobile mode, we need to
+// shrink the demo header text since it's rather wide.
+@media screen and (max-width: 850px)  and (min-width:768px) {
+  #navTag {
+    #navbar-demo-text {
+      display: none;
+    }
+    #navbar-demo-text-smallview {
+      display: inline-block;
+    }
+  }
+}

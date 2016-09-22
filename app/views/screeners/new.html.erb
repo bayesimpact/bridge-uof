@@ -1,0 +1,121 @@
+<%= title "Screening Questions" %>
+
+<%= render partial: 'breadcrumbs', locals: {active_step: :screener} %>
+
+<%= render partial: "controls" %>
+<div id="pageContent">
+<div id="incidentStep">
+
+<%= render partial: "errors", locals: {record: @screener} %>
+
+<h1 class="incident-form-header">Do I need to file this incident? This page helps you answer that question.</h1>
+
+
+
+<% if Rails.configuration.x.branding.ursus? %>
+  <p>
+    <a data-toggle="collapse" data-target="#screener-statute-details" id="link-show-legislation">
+        Click here to show details on the new legislation behind URSUS.
+    </a>
+  </p>
+
+  <div class="collapse alert alert-info" id="screener-statute-details">
+    <p>
+        Pursuant to Chapter 462, Statutes of 2015
+        (Assembly Bill 71) all use of force incidents as defined by Government Code
+        section 12525.2, must be reported annually to the DOJ.
+    </p>
+    <p>
+      Government Code section 12525.2 specifically defines a Use of Force incident as:
+      <ol>
+        <li>An incident that involves the shooting of a civilian by a peace officer.</li>
+        <li>An incident that involves the shooting of a peace officer by a civilian.</li>
+        <li>An incident in which the use of force by a peace officer against a civilian results in serious bodily injury<sup>1</sup> or death.</li>
+        <li>An incident in which use of force by a civilian against a peace officer results in serious bodily injury<sup>1</sup> or death.</li>
+      </ol>
+    </p>
+    <p>
+      <sup>1</sup>Government Code section 12525.2(d) further defines serious bodily injury as “<%= Constants::SBI_DEFINITION %>.”
+    </p>
+    <p>
+      California has multiple definitions of Use of Force (i.e., Agency defined, Board of State
+      Community Corrections, Lexipol, etc…), the following screening questions have been
+      developed to ensure your Agency ONLY reports Use of Force incidents as required by
+      Chapter 462, Statutes of 2015 (Assembly Bill 71)
+    </p>
+    <p>
+      <a data-toggle="collapse" data-target="#screener-statute-details" id="link-show-legislation">
+        [Close]
+      </a>
+    </p>
+  </div>
+<% else %>
+  <div class="alert alert-info">
+    For this demo, these questions correspond to California use of force reporting requirements, per <a href="https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=201520160AB71" target="_blank">Assembly Bill 71</a>.
+  </div>
+<% end %>
+
+<%= form_for [@screener], url: screener_path, html: {id: "screenerForm"} do |f| %>
+  <%= f.hidden_field :id %>
+
+  <div class="incident-form-row form-group" id="screener-shots-fired">
+    <%= yes_no_question f, :multiple_agencies, "Were multiple agencies involved in the incident?", class: 'required' %>
+  </div>
+
+  <div class="incident-form-row form-group alert alert-warning" id="multiple-agencies-info-text">
+    Only file this report with regard to officers from your agency. The other agencies involved will file separate reports, if necessary, for their own officers.
+  </div>
+
+  <div class="incident-form-row form-group" id="screener-shots-fired">
+    <%= yes_no_question f, :shots_fired, "Were any firearms discharged?", class: 'required' %>
+    <div class="question-explanation">
+      ANY discharge of a firearm during an interaction between a civilian and an officer, regardless of whether any person was injured.
+    </div>
+  </div>
+
+  <div class="incident-form-row form-group alert alert-warning" id="shots-fired-info-text">
+    All incidents that involve a discharge of a firearm <strong>must</strong> be filed, regardless of whether any person was injured. There is no need to fill out the rest of this page.
+  </div>
+
+  <div class="incident-form-row form-group" id="officer-used-force">
+    <%= yes_no_question f, :officer_used_force, "Did any officers use force on a civilian?", class: 'required' %>
+  </div>
+  <div class="incident-form-row form-group additional-question" id="civilian_injured">
+    <%= yes_no_question f, :civilian_seriously_injured,
+        "Did this cause serious injury or death to a civilian?",
+        class: 'required',
+        help_title: "'Serious Bodily Injury' Definition",
+        help_content: Constants::SBI_DEFINITION.capitalize + '.' %>
+  </div>
+
+  <div class="incident-form-row form-group" id="civilian-used-force">
+    <%= yes_no_question f, :civilian_used_force, "Did any civilians assault an officer?", class: 'required' %>
+  </div>
+  <div class="incident-form-row form-group additional-question" id="officer_injured">
+    <%= yes_no_question f, :officer_seriously_injured,
+        "Did this cause serious injury or death to an officer?",
+        class: 'required',
+        help_title: "'Serious Bodily Injury' Definition",
+        help_content: Constants::SBI_DEFINITION.capitalize + '.' %>
+  </div>
+
+  <% unless Rails.configuration.x.login.use_demo? %>
+    <div class="incident-form-row form-group">
+      <div class="agency-table-group">
+        <h3>Your agency details</h3>
+        <table>
+          <tr><th>Department:</th><td><%= @current_user.department %></td></tr>
+          <tr><th>ORI:</th><td><%= @current_user.ori %></td></tr>
+          <tr id="filling-out-for" class="hidden"><th>Filling out for:</th><td id="filling-out-for-ori"></td></tr>
+        </table>
+        <% if @current_user.admin? %><div class="important-help-text you-are-admin">You are an administrator</div><% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="incident-form-row">
+    <%= render partial: "form_save_buttons", locals: {no_partial_save: true} %>
+  </div>
+<% end %>
+</div>
+</div>

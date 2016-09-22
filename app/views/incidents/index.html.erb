@@ -1,0 +1,23 @@
+<%= title @status_text %>
+
+<% content_for :sidenav do %>
+  <%= render partial: 'dashboard_sidenav' %>
+<% end %>
+<% content_for :panel do %>
+  <%= dashboard_page_explanation(@current_user, @status, @incidents.length) %>
+
+  <% if @status == 'state_submission' %>
+    <%= render partial: 'state_submit_pane' %>
+  <% elsif @status == 'past_submissions' %>
+    <%= render partial: 'past_submissions_pane' %>
+  <% elsif @status == 'analytics' %>
+    <%= render partial: 'analytics_pane' %>
+  <% elsif @status.present? && Incident::STATUS_TYPES.include?(@status.to_sym) %>
+    <% if @incidents.present? %>
+      <%= render partial: 'incidents_table', locals: {incidents: @incidents} %>
+    <% end %>
+  <% else %>
+    <%= render partial: 'overview_pane' %>
+  <% end %>
+<% end %>
+<%= render template: "layouts/dashboard" %>

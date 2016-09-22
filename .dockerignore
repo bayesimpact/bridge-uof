@@ -1,0 +1,11 @@
+tmp
+log
+
+.bundle
+.git
+
+ab71.sublime-project
+ab71.sublime-workspace
+todo.md
+circle.yml
+dynamodb

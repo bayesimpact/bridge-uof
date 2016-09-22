@@ -1,0 +1,33 @@
+<h1>Agency Submissions for <%= Time.last_year %></h1>
+
+<table id="agency-submissions-table" class="bayes-table">
+  <thead>
+    <tr>
+      <th class="ori-col">ORI</th>
+      <th class="dept-col">DEPARTMENT</th>
+      <th class="submitted-col">SUBMITTED?</th>
+      <th class="button-col"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @agencies.each do |a| %>
+      <tr>
+        <td><%= a[:ori] %></td>
+        <td><%= a[:department] %></td>
+        <td>
+          <span class="<%= a[:submitted] ? 'submit-yes' : 'submit-no' %>">
+            <%= a[:submitted] ? 'YES' : 'NO' %>
+          </span>
+        </td>
+        <td class="button-col">
+          <% if a[:submitted] %>
+            <%= link_to "<i class='fa fa-eye'></i>&nbsp;&nbsp;View Incidents".html_safe,
+                {controller: 'doj', action: 'incidents', ori: a[:ori]},
+                 class: "btn btn-primary" %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,54 @@
+machine:
+  pre:
+    - curl -sSL https://s3.amazonaws.com/circle-downloads/install-circleci-docker.sh | bash -s -- 1.10.0
+    - sudo pip install --upgrade docker-compose==1.6.2
+  services:
+    - docker
+
+dependencies:
+  pre:
+    - gem install rubocop -v 0.43
+
+  override:
+    # Linting happens in the dependencies step in order to fail fast.
+    - rubocop -D
+
+    # If this branch is not relevant, should_run_ci.sh will create a skip-tests file.
+    - ./should_run_ci.sh
+
+    # We set the environment variables via the CirclCI web dashboard, but
+    # we need to pass them via local.env to the Docker containers.
+    - touch local.env
+    - echo "SITEMINDER_DECRYPT_KEY=$SITEMINDER_DECRYPT_KEY" >> local.env
+    - echo "SITEMINDER_DECRYPT_INIT_V=$SITEMINDER_DECRYPT_INIT_V" >> local.env
+    - echo "MAIL_FROM=test_from@example.com" >> local.env
+    - echo "FEEDBACK_MAIL_TO=test_feedback_to@example.com" >> local.env
+    - echo "BRANDING=ursus" >> local.env
+    - echo "INCIDENT_ID_PREFIX=URSUS" >> local.env
+
+    # Set up AWS for deployment
+    - mkdir ~/.aws
+    - touch ~/.aws/credentials
+    - echo "[default]" >> ~/.aws/credentials
+    - echo "aws_access_key_id = $AWS_ACCESS_KEY" >> ~/.aws/credentials
+    - echo "aws_secret_access_key = $AWS_SECRET_KEY" >> ~/.aws/credentials
+    - touch ~/.aws/config
+    - echo "[default]" >> ~/.aws/config
+    - echo "region=$AWS_REGION" >> ~/.aws/config
+
+    # Build Docker images if and only if we're going to run tests.
+    - test -e skip-tests || docker-compose build test
+    - test -e skip-tests || docker-compose build test-devise-only
+
+test:
+  override:
+    - test -e skip-tests || docker-compose run test
+    - test -e skip-tests || docker-compose run test-devise-only
+
+deployment:
+  master:
+    branch: master
+    commands:
+      - $(aws ecr get-login)
+      - GIT_SHA1=$CIRCLE_SHA1 docker-compose build web
+      - docker push ${DOCKER_REGISTRY_PATH}ursus:latest

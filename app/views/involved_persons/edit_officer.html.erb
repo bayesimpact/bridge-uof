@@ -1,0 +1,71 @@
+<%= title "Officers Involved" %>
+
+<%= render partial: "breadcrumbs", locals: {active_step: :officers} %>
+
+<%= render partial: "controls" %>
+<div id="pageContent">
+<div id="incidentStep">
+
+<%= render partial: "errors", locals: {record: @person} %>
+
+<%= render partial: "edit_person_headers" %>
+
+<%= form_for [@incident, @person],
+    url: @person.new_record? ? nil : incident_involved_officer_path(@incident, @current_person_index) do |f| %>
+
+  <div class="incident-form-row form-group">
+    <!-- We can sometimes prepopulate the answers based on
+         what was said in the Civilian step. -->
+    <% if @incident.general_info.num_involved_officers == 1 && @person.officer_used_force.nil? %>
+      <%= yes_no_question f, :officer_used_force, "Officer used force against a civilian? (Or multiple civilians)",
+          check_yes: @incident.involved_civilians.any? {|c| c.received_force},
+          check_no: !@incident.involved_civilians.any? {|c| c.received_force},
+          class: 'required' %>
+    <% else %>
+      <%= yes_no_question f, :officer_used_force, "Officer used force against a civilian? (Or multiple civilians)", class: 'required' %>
+   <% end %>
+  </div>
+  <div class="incident-form-row form-group additional-question" id="used_force_reason_question">
+    <%= f.label :officer_used_force_reason, "Reason for use of force - check all that apply", class: 'required' %><br>
+    <%= checkbox_grid(f, :officer_used_force_reason, InvolvedOfficer::OFFICER_USED_FORCE_REASON_TYPES, 180) %>
+  </div>
+
+  <div class="incident-form-row form-group">
+    <!-- We can sometimes prepopulate the answers based on
+         what was said in the Civilian step. -->
+    <% if @incident.general_info.num_involved_officers == 1 && @person.received_force.nil? %>
+      <%= yes_no_question f, :received_force, "Officer assaulted by civilian(s)?",
+          check_yes: @incident.involved_civilians.any? {|c| c.assaulted_officer},
+          check_no: !@incident.involved_civilians.any? {|c| c.assaulted_officer},
+          class: 'required' %>
+    <% else %>
+      <%= yes_no_question f, :received_force, "Officer assaulted by civilian(s)?", class: 'required' %>
+   <% end %>
+  </div>
+  <%= render partial: "received_force", locals: {f: f, person_type: "Officer"} %>
+
+  <%= render partial: "involved_person", locals: {f: f, person_type: "Officer"} %>
+
+  <div class="incident-form-row form-group">
+    <%= yes_no_question f, :on_duty, "Officer on duty?", class: 'required' %>
+  </div>
+  <div class="question-explanation">
+    At the time of the incident
+  </div>
+
+  <div class="incident-form-row form-group">
+    <%= f.label :dress, "Officer dress", class: 'required' %>
+    <%= radio_button_grid(f, :dress, InvolvedOfficer::DRESS_TYPES, 120) %>
+  </div>
+
+  <div class="incident-form-row form-group">
+    <%= f.label :sworn_type, "Officer type", class: 'required' %>
+    <%= radio_button_grid(f, :sworn_type, InvolvedOfficer::SWORN_TYPES, nil) %>
+  </div>
+
+  <div class="incident-form-row">
+    <%= render partial: "form_save_buttons" %>
+  </div>
+<% end %>
+</div>
+</div>

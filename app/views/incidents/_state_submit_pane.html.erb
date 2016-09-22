@@ -1,0 +1,69 @@
+<div id="stateSubmitPane">
+  <% if flash[:error] %>
+    <div class="alert alert-danger"><%= flash[:error] %></div>
+  <% end %>
+  <% @next_year_info = "<p>Submission for incidents from this year (#{Time.this_year}) will open in January.</p>".html_safe %>
+  <% if @current_user.agency_last_submission_year < Time.last_year %>
+    <!-- Haven't submitted for this season yet -->
+    <% if GlobalState.submission_open? %>
+      <h2>You may now submit incidents from last year (<%= Time.last_year %>)</h2>
+      <%= @next_year_info %>
+    <% elsif GlobalState.submission_not_yet_open? %>
+      <h2>State submission for last year (<%= Time.last_year %>) is not yet open</h2>
+    <% else %>
+      <!-- Submission is closed for the year -->
+      <h2>State submission for last year (<%= Time.last_year %>) is closed out</h2>
+      <%= @next_year_info %>
+      <p>Meanwhile, you can still input incidents here, and DOJ will notify you next year when it's time to submit.</p>
+    <% end %>
+
+    <% if GlobalState.submission_open? or GlobalState.submission_not_yet_open? %>
+      <h3 class="overview-agency-header">Agency: <%= @current_user.department %></h3>
+      <p>From <%= Time.last_year %>, your agency currently has:
+        <% @counts = @incident_counts_by_type_last_year %>
+        <ul>
+          <% @total_drafts = @counts[:draft] + @employee_draft_counts.values.sum %>
+          <li><%= pluralize(@total_drafts, 'incident') %> still in draft form.
+            <ul>
+              <% if @counts[:draft] > 0 %>
+                <li>You are still filling out <%= pluralize(@counts[:draft], 'draft') %>.</li>
+              <% end %>
+              <% unless @employee_draft_counts.empty? %>
+                <% @employee_draft_counts.each do |name, count| %>
+                <li><%= name %> is still filling out <%= pluralize(count, 'draft') %></li>
+                <% end %>
+              <% end %>
+            </ul>
+          </li>
+          <li><%= pluralize(@counts[:in_review], 'incident') %> still in need of administrator review.</li>
+          <li><%= pluralize(@counts[:approved], 'incident') %> ready for state submission<% if @incidents.length > 0 %> (listed below)<% end %>.</li>
+        </ul>
+      </p>
+    <% end %>
+    <% if GlobalState.submission_open? %>
+      <p>When ALL of your state's incidents for <%= "#{Time.last_year}" %> are fully ready, use this button to send them to the state of <% if Rails.configuration.x.branding.ursus? %>the state of California<% else %>your state<% end %>.</p>
+      <p><strong>After submission, you will no longer be able to edit any of these incidents.</strong></p>
+      <%= form_tag do %>
+        <input type="hidden" name="submission_year" value="<%= Time.last_year %>">
+        <% confirm_msg =  "You are about to submit #{pluralize(@incident_counts_by_type_last_year[:approved], 'incident')} to the state." %>
+        <%= button_tag(id: 'state-submit-button',  type: 'submit', class: 'btn-bayes-danger', data: { confirm: confirm_msg }) do %>
+          <% if Rails.configuration.x.branding.ursus? %>
+            FINAL SUBMISSION FOR <%= Time.last_year %> TO CALIFORNIA DOJ
+          <% else %>
+            FINAL STATE SUBMISSION FOR <%= Time.last_year %>
+          <% end %>
+          <i class='fa fa-bank'></i>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <% if @incidents.length > 0 %>
+      <%= render partial: 'incidents_table', locals: {incidents: @incidents} %>
+    <% end %>
+  <% else %>
+    <!-- Already submitted -->
+    <h2>Submission complete for last year (<%= Time.last_year %>).</h2>
+    <%= @next_year_info %>
+    <%= link_to "View past submissions", dashboard_path(status: 'past_submissions') %>
+  <% end %>
+</div>

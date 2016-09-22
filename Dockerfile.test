@@ -1,0 +1,12 @@
+FROM bayesimpact/ruby-2.2.3-phantomjs
+
+RUN apt-get update -qq && apt-get install -y build-essential libpq-dev nodejs
+RUN mkdir /ursus
+WORKDIR /ursus
+COPY Gemfile /ursus/Gemfile
+COPY Gemfile.lock /ursus/Gemfile.lock
+RUN bundle install --with=test
+
+COPY . /ursus
+RUN sed -i -e "s/localhost:/testdb:/" /ursus/config/aws.yml
+ENTRYPOINT ["bundle", "exec", "rspec", "--format", "documentation"]

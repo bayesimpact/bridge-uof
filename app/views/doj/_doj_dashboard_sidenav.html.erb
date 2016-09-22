@@ -1,0 +1,13 @@
+<div id="dashboardSideNav">
+  <% [
+      ["Overview", "overview"],
+      ["Submission window", "window"],
+      ["Who has submitted?", "whosubmitted"],
+      ["View incidents", "incidents"],
+      ["Analysis", "analysis"]
+   ].each do |item| %>
+    <li class="<%= 'active' if params[:action] == item[1] %> ">
+      <%= link_to item[0],  url_for(action: item[1], controller: 'doj') %>
+    </li>
+  <% end %>
+</div>

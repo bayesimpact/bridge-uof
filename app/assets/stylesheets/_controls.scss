@@ -1,0 +1,38 @@
+#controls {
+  position: absolute;
+  top: $nav-height;
+  bottom: 0;
+  right: 0;
+  width: 84px;
+
+  margin-left: 10px;
+  font-size: 46px;
+  background-color: #f3f3f3;
+
+  .fa {
+    width: 100%;
+    padding: 24px 5px;
+    color: $grayish-color;
+    cursor: pointer;
+    text-decoration: none !important;
+    border-bottom: 1px solid #ccc;
+
+    &:hover {
+      color: #777;
+    }
+
+    .button-label {
+      display: block;
+      padding-top: 4px;
+      font-size: 12px;
+      font-family: 'Source Sans Pro', sans-serif;
+      font-weight: bold;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  #controls {
+    display: none;
+  }
+}

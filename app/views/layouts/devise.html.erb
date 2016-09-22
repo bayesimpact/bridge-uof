@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<%= render "layouts/partials/head" %>
+<body>
+  <%= render "layouts/partials/nav" %>
+  <div id="dialogOverlay">
+  </div>
+  <div id="dialog">
+    <%= render "layouts/partials/alerts" %>
+    <%= yield %>
+  </div>
+</body>
+</html>

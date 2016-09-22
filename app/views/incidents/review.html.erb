@@ -1,0 +1,137 @@
+<%= title "Review" %>
+
+<%= render partial: 'breadcrumbs', locals: {active_step: :review} %>
+
+<%= render partial: "controls", locals: {show_print_button: true} %>
+<div id="pageContent">
+<div id="incidentStep" class="review">
+
+<div class="incident-status">Incident Status: <%= @incident.status_as_string %></div>
+
+<%= review_incident_explanation(@current_user, @incident.status, @incident.submitted?) %>
+
+<section>
+  <h1>General</h1>
+  <% if @incident.authorized_to_edit?(@current_user) %>
+    <%= link_to "Edit",
+                edit_incident_general_info_path(@incident.id),
+                class: "review-edit", form_class: "single-button-form" %>
+  <% end %>
+  <%= render partial: "review_table", locals: {
+    display_fields: GeneralInfo::DISPLAY_FIELDS,
+    fbi_fields: GeneralInfo::FBI_FIELDS,
+    labels: GeneralInfo::CUSTOM_LABELS_FOR_REVIEW,
+    partials: {incident_id: "incident_id"},
+    data: @incident.general_info } %>
+</section>
+
+<section>
+  <% InvolvedPerson.sorted_persons(@incident.involved_civilians).each_with_index do |person, idx| %>
+    <h1>Civilian<%= " ##{idx+1}" if @incident.general_info.num_involved_civilians > 1 %></h1>
+    <% if @incident.authorized_to_edit?(@current_user) %>
+      <% if @incident.involved_civilians.count > 1 %>
+        <%= link_to "Delete",
+                      incident_involved_civilian_path(@incident.id, idx),
+                      method: :delete,
+                      data: { confirm: "Are you sure you want to discard this civilian?" },
+                      class: "review-delete", form_class: "single-button-form" %>
+      <% end %>
+      <%= link_to "Edit",
+                    edit_incident_involved_civilian_path(@incident.id, idx),
+                    class: "review-edit", form_class: "single-button-form" %>
+    <% end %>
+    <%= render partial: "review_table", locals: {
+      display_fields: InvolvedCivilian::DISPLAY_FIELDS,
+      fbi_fields: InvolvedCivilian::FBI_FIELDS,
+      labels: InvolvedCivilian::CUSTOM_LABELS_FOR_REVIEW,
+      data: person} %>
+  <% end %>
+</section>
+
+<section>
+  <% InvolvedPerson.sorted_persons(@incident.involved_officers).each_with_index do |person, idx| %>
+    <h1>Officer<%= " ##{idx+1}" if @incident.general_info.num_involved_officers > 1 %></h1>
+    <% if @incident.authorized_to_edit?(@current_user) %>
+      <% if @incident.involved_civilians.count > 1 %>
+        <%= link_to "Delete",
+                      incident_involved_officer_path(@incident.id, idx),
+                      method: :delete,
+                      data: { confirm: "Are you sure you want to discard this officer?" },
+                      class: "review-delete", form_class: "single-button-form" %>
+      <% end %>
+      <%= link_to "Edit",
+                    edit_incident_involved_officer_path(@incident.id, idx),
+                    class: "review-edit", form_class: "single-button-form" %>
+    <% end %>
+    <%= render partial: "review_table", locals: {
+      display_fields: InvolvedOfficer::DISPLAY_FIELDS,
+      fbi_fields: InvolvedOfficer::FBI_FIELDS,
+      labels: InvolvedOfficer::CUSTOM_LABELS_FOR_REVIEW,
+      data: person} %>
+  <% end %>
+</section>
+
+<section>
+  <h1>Change History</h1>
+  <a id="showHideAuditLog">[show]</a>
+  <table id="auditLog" class="table table-striped table-bordered table-hover table-condensed">
+    <% audit_entries = @incident.audit_entries.sort_by {|e| e.created_at}.reverse %>
+    <% audit_entries.each do |entry| %>
+      <%= render partial: "audit_entry", locals: {entry: entry} %>
+    <% end %>
+  </table>
+</section>
+
+<div class='review-submit'>
+  <% if @incident.submitted? %>
+    <button class="btn-bayes" disabled>
+      Submitted to the state of California <i class="fa fa-check"></i>
+    </button>
+  <% elsif @incident.approved? %>
+    <button class="btn-bayes" disabled>
+      Reviewed, ready for state submission <i class="fa fa-paper-plane-o"></i>
+    </button>
+  <% elsif @incident.in_review? %>
+    <% if @current_user.admin? %>
+      <%= form_for @incident, html: {class: "single-button-form"} do |f| %>
+        <%= f.hidden_field :status, value: 'approved' %>
+        <%= render partial: "form_save_buttons", locals: {
+          no_partial_save: true,
+          text: 'Mark as reviewed'
+        } %>
+        <span id="review-submit-explanation">
+          Will not submit to state.
+        </span>
+      <% end %>
+    <% else %>
+      <button class="btn-bayes" disabled>
+        Sent for review <i class="fa fa-check"></i>
+      </button>
+    <% end %>
+  <% elsif @incident.draft? %>
+    <%= form_for @incident, html: {class: "single-button-form"} do |f| %>
+      <%= f.hidden_field :status, value: 'in_review' %>
+      <%= render partial: "form_save_buttons", locals: {
+        no_partial_save: true,
+        text: "Send for review"
+      } %>
+      <span id="review-submit-explanation">
+      <% if @current_user.admin? %>
+        You or another admin can do the review.
+      <% else %>
+        The administrator(s) from your agency will see this incident and perform the review.
+      <% end %>
+      </span>
+    <% end %>
+  <% end %>
+  <% if @incident.authorized_to_edit?(@current_user) %>
+    <div id="delete-incident-link">
+      or
+      <%= link_to "Delete this incident",
+                    { action: "destroy", id: @incident.id},
+                    method: :delete, data: { confirm: "Are you sure you want to delete this incident?" },
+                    class: "", form_class: "single-button-form" %>
+    </div>
+  <% end %>
+</div>
+</div>

@@ -1,0 +1,64 @@
+<h1>Analytics for <em><%= @year || 'all years' %></em></h1>
+<p>
+  Or choose a <% if @year %>different<% end %> year:
+  <% all_years = @analytics[:all_years] %>
+  <%= select_tag 'analytics-year',
+                 options_for_select(all_years.map { |y| [y == 'all' ? '(all years)' : y, analytics_path(y)] },
+                                    selected: analytics_path(@year || 'all')) %>
+</p>
+<p><em>Note: Draft incidents are not included in these statistics.</em></p>
+
+<h2 class="header-bar">Key Metrics</h2>
+<ul>
+  <li><strong><%= @analytics[:num_incidents] %></strong> total incidents</li>
+  <li><strong><%= @analytics[:num_injured_officers] %></strong> total officers seriously injured/deceased</li>
+  <li><strong><%= @analytics[:num_injured_civilians] %></strong> total civilians seriously injured/deceased</li>
+</ul>
+
+<h2 class="header-bar">Incidents by Month</h2>
+<div class="visualization">
+  <% if Rails.configuration.x.login.use_demo? %>
+      <div class="demo-watermark"></div>
+  <% end %>
+  <%= column_chart @analytics[:incidents_by_month], x_labels: Date::MONTHNAMES.compact %>
+</div>
+
+<h2 class="header-bar">Pivot Table </h2>
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="instructionsHeading">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#pivotInstructions" aria-expanded="true" aria-controls="pivotInstructions">
+          <strong>CLICK FOR INSTRUCTIONS AND DEFINITIONS</strong>
+        </a>
+      </h4>
+    </div>
+    <div id="pivotInstructions" class="panel-collapse collapse" role="tabpanel" aria-labelledby="instructionsHeading">
+      <div class="panel-body">
+        <p>Instructions</p>
+        <ul>
+          <li> Below is a "pivot table" (similar to what you'd find in Excel), letting you count how many incidents fall into different categories.</li>
+          <li>You can <strong>drag the small rectangular boxes</strong> in and out of the large gray boxes to change the row/column breakdowns.</li>
+          <li>You can also click the small drop-down arrow on any field if you want to filter out certain choices from the table.</li>
+        </ul>
+        <p>Definitions</p>
+        <ul>
+          <li>* <strong>Various</strong> - Different officers/civilians involved in a given incident had different values reported for this field.</li>
+          <li>** <strong>Multiracial</strong> - The officers/civilians involved in a given incident were all reported as having two or more races.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="visualization">
+  <% if Rails.configuration.x.login.use_demo? %>
+      <div class="demo-watermark"></div>
+  <% end %>
+  <div id="pivot-table"></div>
+</div>
+
+<script type="text/javascript">
+$(function() {
+  renderPivotTable(<%= @year %>);
+});
+</script>

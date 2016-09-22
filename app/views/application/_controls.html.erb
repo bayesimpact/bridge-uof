@@ -1,0 +1,9 @@
+<div id="controls" class="sticky <%= local_assigns[:css_class] %>">
+  <a id="helpButton" class="fa fa-question-circle fa-fw" aria-hidden="true" href="/feedback" target="_blank" title="Click here to submit a question"><span class="button-label">HELP</span></a>
+  <i id="zoomIn" class="fa fa-search-plus fa-fw" aria-hidden="true" title="Zoom in"><span class="button-label">ZOOM IN</span></i>
+  <i id="zoomReset" class="fa fa-refresh fa-fw" aria-hidden="true" title="Reset zoom level"><span class="button-label">ZOOM 100%</span></i>
+  <i id="zoomOut" class="fa fa-search-minus fa-fw" aria-hidden="true" title="Zoom out"><span class="button-label">ZOOM OUT</span></i>
+  <% if local_assigns[:show_print_button] %>
+    <i id="print" class="fa fa-print fa-fw" aria-hidden="true" title="Print"><span class="button-label">PRINT</span></i>
+  <% end %>
+</div>

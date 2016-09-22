@@ -1,0 +1,36 @@
+.agency-table-group {
+  display: inline-block;
+  background-color: #EEE;
+  margin: 10px;
+  padding: 14px;
+  border: 1px solid #CCC;
+  font-size: 90%;
+  text-align: center;
+  min-width: 250px;
+  table {
+    border-collapse: collapse;
+    margin: 0px auto 5px auto;
+    color: #555;
+    border-radius: 3px;
+    th, td {
+      padding: 2px 5px;
+    }
+    th {
+      text-align: right;
+      font-weight: bold;
+    }
+  }
+}
+
+.important-help-text {
+  color: $color-secondary-darkest-18f;
+  font-style: italic;
+}
+
+.you-are-admin {
+  text-align: center;
+}
+
+#link-show-legislation {
+  cursor: pointer;
+}

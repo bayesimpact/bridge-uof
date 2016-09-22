@@ -1,0 +1,55 @@
+<div class="incident-form-row form-group" id="injured_question">
+  <%= yes_no_question f, :injured, person_type + " injured? (even if minor)", class: 'required' %>
+</div>
+
+<div id="injury_additional_questions">
+  <div class="incident-form-row form-group additional-question">
+    <%= f.label :injury_level, person_type + " injury level", class: 'required' %>
+    <div class='help-tip' data-toggle='popover' data-trigger='hover'
+           title='SBI definition'
+           data-content='Serious bodily injury is defined as "<%= Constants::SBI_DEFINITION %>."'></div>
+    <%= radio_button_grid(f, :injury_level, InvolvedPerson::INJURY_LEVELS, 150) %>
+  </div>
+  <div class="incident-form-row form-group additional-question">
+    <%= f.label :injury_type, person_type + " injury type - check all that apply", class: 'required' %>
+    <%= checkbox_grid(f, :injury_type, InvolvedPerson::INJURY_TYPES, 180) %>
+  </div>
+  <div class="incident-form-row form-group additional-question">
+    <%= f.label :medical_aid, person_type + " medical aid received - choose highest applicable", class: 'required' %>
+    <%= radio_button_grid(f, :medical_aid, InvolvedPerson::MEDICAL_AID, 350) %>
+  </div>
+  <div class="incident-form-row form-group additional-question">
+    <%= yes_no_question f, :injury_from_preexisting_condition,  person_type + " injury caused by a pre-existing condition?", class: 'required' %>
+  </div>
+</div>
+
+<div class="incident-form-row form-group" id="gender_question">
+  <%= f.label :gender, person_type + " gender", class: 'required' %>
+  <%= radio_button_grid(f, :gender, InvolvedPerson::GENDERS, 120) %>
+</div>
+
+<div class="incident-form-row" id="age_question">
+  <div class="form-col">
+    <% age_ranges = (person_type == 'Civilian') ? InvolvedCivilian::AGES : InvolvedOfficer::AGES %>
+    <%= f.label :age, person_type + " age in years", class: 'required' %>
+    <%= f.collection_select :age, age_ranges, :to_s, :to_s, prompt: true %>
+  </div>
+</div>
+
+<div class="incident-form-row form-group" id="race_question">
+  <div class="form-col">
+    <%= f.label :race, person_type + " race - check all that apply", class: 'required' %>
+    <%= f.collection_check_boxes :race, InvolvedPerson::RACES, :to_s, :to_s, include_hidden: false do |b| %>
+      <label>
+        <%= b.check_box %>
+        <span><%= b.value %></span>
+      </label>
+      <% if b.value == InvolvedPerson::ASIAN_RACE_STR %>
+        <div class="form-col additional-question" id="asian-races">
+          <%= f.label :asian_race, "Please specify:", class: "inline-label required" %>
+          <%= checkbox_grid f, :asian_race, InvolvedPerson::ASIAN_RACES, 150 %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>

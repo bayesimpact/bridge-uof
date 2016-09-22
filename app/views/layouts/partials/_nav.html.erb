@@ -1,0 +1,72 @@
+<% if Rails.configuration.x.login.use_demo? && !cookies.has_key?(:hide_demo_msg) %>
+  <div id="demoWarning">
+    This public <%= Rails.configuration.x.branding.ursus? ? 'version of URSUS' : 'application' %> is for demonstration purposes only. The information that you input will be stored only temporarily and will not be used for any purpose.
+    <a id="hideDemoWarning" href="#">[Close]</a>
+  </div>
+<% end %>
+<nav id="navTag" class="navbar navbar-default navbar-static-top">
+  <div id="navContainer" class="container-fluid">
+    <div id="navbarHeader" class="navbar-header">
+      <!-- For screen readers -->
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a id="navbarBrand" class="navbar-brand brand-<%= Rails.configuration.x.branding.name %>" href="/">
+        <% if Rails.configuration.x.branding.ursus? %>
+          <%= image_tag "ursus_logo_cropped_notext.png" %>
+        <% else %>
+          <%= image_tag "bayes_bridge_1600px.png" %>
+        <% end %>
+      </a>
+      <% if Rails.configuration.x.login.use_demo? %>
+        <% if Rails.configuration.x.branding.whitelabel? %>
+          <a id="navbar-demo-text" class="navbar-brand">Use of Force Reporting [demo]</a>
+          <a id="navbar-demo-text-smallview" class="navbar-brand">UOF [demo]</a>
+        <% elsif Rails.configuration.x.branding.ursus? %>
+          <a id="navbar-demo-text" class="navbar-brand">PUBLIC DEMO</a>
+          <a id="navbar-demo-text-smallview" class="navbar-brand">PUBLIC DEMO</a>
+        <% end %>
+      <% end %>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-right" class="dropdown">
+        <% if defined?(@current_user) and not @current_user.nil? %>
+          <% if @current_user.doj? %>
+            <li><a href="#" id="doj-superuser"><i class="fa fa-star"></i>DOJ SUPERUSER</a></li>
+          <% else %>
+            <li id="new-incident-btns" class="btn-group">
+              <a href="/incidents/new" id="new-incident"><i class="fa fa-plus-circle"></i>NEW INCIDENT</a>
+              <a type="button" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="<%= upload_incidents_path %>">Bulk Upload</a></li>
+              </ul>
+            </li>
+          <% end %>
+          <li><a href="/">MY DASHBOARD</a></li>
+          <li id="userNavDropdown" role="presentation" class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+              <i class="fa fa-user"></i><%= @current_user.full_name %> <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <% if Rails.configuration.x.login.use_devise? %>
+                <li><%= link_to('My account', edit_user_registration_path) %></li>
+                <li><%= link_to('Sign out', destroy_user_session_path, method: :delete) %></li>
+              <% elsif Rails.configuration.x.login.use_siteminder? %>
+                <li><a href="<%= Rails.configuration.x.login.siteminder_url_account %>">My account</a></li>
+                <li><a href="<%= Rails.configuration.x.login.siteminder_url_logout %>">Log out</a></li>
+              <% elsif Rails.configuration.x.login.use_demo? %>
+                <li><%= link_to('Reset demo', reset_demo_path, method: :post) %></li>
+              <% end %>
+            </ul>
+          </li>
+        <% end %>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container-fluid -->
+</nav>

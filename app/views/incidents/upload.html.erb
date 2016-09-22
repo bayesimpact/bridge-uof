@@ -1,0 +1,38 @@
+<% content_for :sidenav do %>
+  <%= render partial: 'dashboard_sidenav' %>
+<% end %>
+
+<% content_for :panel do %>
+  <div id="bulk-upload">
+    <h1>Bulk Upload</h1>
+
+    <% if @output %>
+      <div class="block">
+        <h3>Results</h3>
+        <pre><%= @output.join("\n")%></pre>
+      </div>
+    <% end %>
+
+    <p>Use this form to upload multiple incidents at once. The uploaded file
+      must be a JSON file matching our schema <a id="showHideSchema">[show]</a>.
+    </p>
+
+    <p>
+      <a href="/feedback" target="_blank">Contact us</a> if you have questions about bulk upload.
+    </p>
+
+    <%= form_tag({action: :upload}, id: 'upload-control', multipart: true) do %>
+      <label class="btn btn-file btn-bayes">
+        <span id="fileButtonText">Choose file to upload <i class="fa fa-arrow-circle-up"></i></span>
+        <input type="file" name="file" style="display: none;" accept="application/json">
+      </label>
+    <% end %>
+
+    <div id="schema" class="block">
+      <h3>Schema</h3>
+      <pre><%= @schema %></pre>
+    </div>
+  </div>
+<% end %>
+
+<%= render template: "layouts/dashboard" %>

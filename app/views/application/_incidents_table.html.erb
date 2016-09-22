@@ -1,0 +1,37 @@
+<table id="incidents-table" class="bayes-table">
+  <thead>
+    <tr>
+      <th>INCIDENT ID</th>
+      <th>DATE AND TIME</th>
+      <th class="button-col">
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% incidents.each do |incident| %>
+      <tr>
+        <td><%= incident.incident_id.present? ? render_incident_id(incident) : "(incomplete)" %></td>
+        <td><%= incident.try { |i| i.general_info.target }.try(:display_datetime) || "(incomplete)" %></td>
+        <td class="button-col">
+          <a href="<%= url_for incident %>" class="btn btn-primary">
+            <% case incident.status
+               when 'draft' %>
+              <i class="fa fa-pencil"></i>&nbsp;&nbsp;Edit
+            <% else %>
+              <i class="fa fa-eye"></i>&nbsp;&nbsp;View
+            <% end %>
+          </a>
+
+          <% if incident.draft? %>
+            <%= button_to "Delete",
+                          { controller: "incidents", action: "destroy", id: incident.id, status: @status },
+                          method: :delete, data: { confirm: "Are you sure you want to discard this incident?" },
+                          class: "btn btn-danger", form_class: "single-button-form" %>
+
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

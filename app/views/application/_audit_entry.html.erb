@@ -1,0 +1,12 @@
+<tr class="audit-entry">
+  <td>
+    <%= audit_entry_description(entry) %>
+    <% if show_changed_fields_for_audit_entry?(entry) %>
+      <ul>
+      <% entry.changed_fields.each do |f| %>
+        <li><%= f.key %> from <%= f.old_value || "n/a" %> to <%= f.new_value || "n/a" %></li>
+      <% end %>
+      </ul>
+    <% end %>
+  </td>
+</tr>

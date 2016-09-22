@@ -1,0 +1,239 @@
+// Core styles file, imports everything else
+
+// *************************************************************
+// * STYLE RESET
+// *
+// * Import and invoke full HTML style reset. Avoids browsers taking
+// * liberties in how to style various elements.
+// *************************************************************
+@import "style_reset";
+@include style-reset();
+
+
+// *************************************************************
+// * THIRD PARTY ELEMENT STYLES
+// *************************************************************
+// "bootstrap-sprockets" must be imported before "bootstrap" and "bootstrap/variables"
+@import "bootstrap-sprockets";
+@import "bootstrap";
+@import "font-awesome";
+@import url(https://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css);
+@import "jquery-ui/autocomplete";
+@import "jquery-ui/datepicker";
+@import "jquery-ui/spinner";
+@import "jquery-ui-timepicker-addon";
+
+@import "lib/*";
+
+// *************************************************************
+// * COLOR VARIABLES
+// *************************************************************
+
+$dark-background-color: #112e51;  // used in nav and splash page
+$nav-div-line-color: #516379;  // used in nav
+$minor-button-color: #02bfe7;  // used in sidebar, InvolvedPerson selector buttons, Devise form, &c.
+$header-text-color: #0071bc;  // used as either text color or bg color for headers
+$border-separator-color: #dce4ef;  // used to separate sidebar and demarcate input fields
+$bootstrap-success-color: #468847;  // used for success messages
+$grayish-color: #323A45;  // Used in controls sidebar and footer
+
+$color-secondary-dark-18f: #cd2026;  // used as a BG color in nav, buttons, and elsewhere
+$color-secondary-darkest-18f: #981b1e;  // as above; used when we want to distinguish between two elements
+
+// *************************************************************
+// * SIZE VARIABLES
+// *************************************************************
+
+$nav-height: 50px;
+$footer-height: 84px;
+
+// *************************************************************
+// * MIXINS
+// *************************************************************
+
+@mixin mix-box-sizing($type) {
+  -webkit-box-sizing: $type;
+     -moz-box-sizing: $type;
+          box-sizing: $type;
+}
+
+// Adds a gray line behind text.
+// (Adapted from https://codepen.io/ericrasch/pen/Irlpm)
+@mixin line-behind($color, $bg-color) {
+  position: relative;
+  z-index: 1;
+
+  &:before {
+    border-top: 1px solid $color;
+    content:"";
+    margin: 0 auto; /* this centers the line to the full width specified */
+    position: absolute; /* positioning must be absolute here, and relative positioning must be applied to the parent */
+    top: 50%; left: 0; right: 0; bottom: 0;
+    width: 95%;
+    z-index: -1;
+  }
+
+  span {
+    /* to hide the lines from behind the text, you have to set the background color the same as the container */
+    background: $bg-color;
+    padding: 0 15px;
+  }
+}
+
+// *************************************************************
+// * GLOBAL STYLES
+// *************************************************************
+
+@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700);
+@import url(https://fonts.googleapis.com/css?family=Merriweather:300,700);
+
+* {
+  @include mix-box-sizing(border-box);
+}
+
+html, html a {
+  // Cross-browser font smoothing
+  // (see http://rosanko.blogspot.com/2014/01/how-to-properly-smooth-font-using-css3.html)
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
+  -webkit-font-smoothing: antialiased !important;
+}
+
+h1, h2, h3, h4, h5, h6, p, div, input, label {
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+.btn-bayes {
+  display: inline-block;
+  vertical-align: middle;
+  height: 42px;
+  line-height: 42px;
+  font-size: 18px;
+  padding: 0 14px;
+  border: none;
+  border-radius: 3px;
+  background-color: $minor-button-color;
+  text-decoration: none;
+  color: white;
+
+  &:hover {
+    opacity: 0.8;
+    text-decoration: none;
+    color: white;
+  }
+
+  &[disabled] {
+    opacity: 0.8;
+    background-color: #666;
+  }
+}
+
+.btn-bayes-danger {
+  @extend .btn-bayes;
+  background-color: $brand-danger;
+}
+
+.single-button-form {
+  display: inline-block;
+}
+
+.form-control {
+  margin-bottom: 1px;  // Fixes issue with some form controls' bottom border not being visible.
+}
+
+em {
+  font-style: italic;
+}
+
+.ursus-id-component:hover {
+  color: $header-text-color;
+  cursor: pointer;
+}
+
+.transparent {
+  opacity: 0.0;
+}
+
+// *************************************************************
+// * LAYOUT
+// *************************************************************
+
+html, body {
+  margin: 0px;
+  padding: 0px;
+  min-height: 100%;
+  height: 100%;
+}
+
+#container {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin: 0;
+  position: relative;
+}
+
+#body {
+  padding-bottom: $footer-height + 42px;
+}
+
+#pageContent {
+  margin-right: 80px;
+  margin-left: 10px;
+  height: 100%;
+  min-height: 360px;  // Minimum height to always keep all controls on page.
+
+  > div {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  #body {
+    padding: 0;
+  }
+
+  #pageContent {
+    margin: 0;
+  }
+}
+
+// *************************************************************
+// * PRINTER-FRIENDLY VIEW
+// *************************************************************
+
+@media print {
+  #pageContent {
+    margin: 0;
+
+    > div {
+      max-width: auto;
+    }
+  }
+
+  #navbar, #breadcrumbs, #controls, #dashboardSideNav {
+    display: none;
+  }
+
+  #auditLog {
+    border: 0;
+    display: block !important;
+  }
+
+  a[href]:after {
+    display: none;
+  }
+
+  .incident-status {
+    display: block !important;
+    margin-bottom: 1em;
+    font-size: 2em;
+    font-weight: bold;
+  }
+}
+
+// *************************************************************
+// * IMPORT OTHER STYLESHEETS IN THIS FOLDER
+// *************************************************************
+
+@import "*";

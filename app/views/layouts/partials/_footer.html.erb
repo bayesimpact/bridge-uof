@@ -1,0 +1,23 @@
+<!-- Just remove the footer in non-Ursus deployments for now,
+     since it's not clear what it should look like. -->
+<% if Rails.configuration.x.branding.ursus? %>
+  <footer>
+    <div id="logos">
+      <%= image_tag "ag_seal_gray.png" %>
+      <%= image_tag "bayes_logo_white.png" %>
+    </div>
+    <div id="agency-name">
+      <p>
+          <!-- A little trick to align the text here with the text below, after the "+ " -->
+          <span class="transparent">+</span>
+          <a href="https://oag.ca.gov/" target="_blank">
+              California Department of Justice
+          </a>
+      </p>
+      <p>
+          <span>+</span>
+          <a href="http://www.bayesimpact.org/" target="_blank">Bayes Impact</a>
+      </p>
+    </div>
+  </footer>
+<% end %>

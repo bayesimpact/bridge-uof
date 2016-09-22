@@ -1,0 +1,6 @@
+<% record.errors.clear if record['partial'] %>
+<% if (record.is_a? Array and record.map { |e| e.errors.any? }.any?) or (!record.is_a? Array and record.errors.any?) %>
+  <div id="error_explanation" class="person-errors alert alert-danger">
+    <p>There were problems with your form. Scroll down to see highlighted errors.</p>
+  </div>
+<% end %>

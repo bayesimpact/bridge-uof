@@ -1,0 +1,15 @@
+<input name="validate_and_continue" id="validate_and_continue" type="hidden" value="true" />
+<button type="submit" name="commit" class="btn-bayes">
+  <% if defined? text then %>
+    <%= text %>
+  <% else %>
+    Save and Continue
+  <% end %>
+  <% if (not defined? use_arrow) or use_arrow then %>
+    <i class="fa fa-arrow-circle-right"></i>
+  <% end %>
+</button>
+<% unless local_assigns[:no_partial_save] %>
+  &nbsp;&nbsp;&nbsp;&nbsp;or&nbsp;&nbsp;&nbsp;&nbsp;
+  <%= link_to "I'm not done yet, save my progress so far", {}, id: "save_and_return" %>
+<% end %>

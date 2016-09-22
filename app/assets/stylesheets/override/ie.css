@@ -1,0 +1,11 @@
+/* IE(8,9)-specific CSS hacks. */
+
+input:not([type="checkbox"]) {
+  /* Prevents text being cut off in text input fields on IE9. */
+  line-height: 1;
+}
+
+table.table-bordered {
+  /* Without this, borders don't always render on bootstrap tables due to IE weirdness. */
+  border-collapse: separate !important;
+}

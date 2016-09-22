@@ -1,0 +1,334 @@
+#incidentStep {
+  padding: 56px;
+  padding-bottom: 21px;
+  font-size: 14px;
+  max-width: 962px;  // 850 + 56*2
+
+  .additional-question {
+    padding-left: 40px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+
+    &.short {
+      padding-left: 18px;
+    }
+  }
+
+  .disabled {
+    * {
+      color: #AAA;
+      cursor: not-allowed;
+    }
+
+    label:first-of-type {
+      font-weight: normal;
+    }
+
+    label.required::after {
+      display: none;
+    }
+
+    [data-toggle="popover"] {
+      pointer-events: none;  // Disable popovers in disabled form sections.
+    }
+  }
+
+  label {
+    font-weight: normal;
+    margin: 0;
+
+    &.required::after {
+      content: ' *';
+      color: lighten($color-secondary-dark-18f, 10%);
+      font-weight: bold;
+    }
+  }
+
+  .form-col {
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    label.inline-label {
+      display: inline-block;
+    }
+
+    div.control-group {
+      display: inline;
+    }
+
+    &.inline {
+      float: left;
+      margin-right: 20px;
+    }
+  }
+
+  // Headers
+
+  h1, h2, h3, h4 {
+    font-family: 'Merriweather', serif;
+    color: $header-text-color;
+    margin: 0;
+    margin-bottom: 14px;
+  }
+  .incident-step-header {
+    margin-bottom: 28px;
+  }
+  h1 {
+    font-size: 20px;
+  }
+  h2 {
+    font-size: 18px;
+  }
+  h3 {
+    font-size: 16px;
+  }
+  div.form-not-required-explanation {
+    margin-left: 14px;
+    margin-top: 14px;
+    margin-bottom: 28px;
+  }
+  div.form-not-required-explanation:last-of-type {
+    margin-bottom: 42px;
+  }
+
+  // Error block
+
+  #error_explanation {
+    display: inline-block;
+    margin: 0;
+    p {
+      font-weight: bold;
+      font-size: 18px;
+    }
+  }
+  #error_explanation.person-errors {
+    margin-bottom: 28px;
+  }
+
+  // Form structure
+
+  .incident-form-row {
+    margin: 28px 0 0 0;
+    clear: left;
+    overflow: hidden;
+
+    // Some serious CSS jujitsu to get the form questions to be
+    // bolded, but not labels of the options of radio buttons,
+    // checkboxes, etc. We could do this with a special CSS class,
+    // but that's easy to forget to add.
+
+    label:first-of-type {
+      font-weight: bold;
+    }
+    input + span {
+      font-weight: normal;
+    }
+  }
+  .question-explanation {
+    color: #888;
+    font-weight: lighter;
+    max-width: 500px;
+    font-style: italic;
+    strong {
+      font-weight: 900;
+      text-decoration: underline;
+    }
+  }
+  .person-separator {
+    font-size: 16px;
+    margin: 0;
+    margin-top: 42px;
+    padding: 3px;
+    padding-left: 14px;
+    background-color: $minor-button-color;
+    color: white;
+  }
+  .person-separator:first-of-type {
+    margin-top: 0;
+  }
+  section {
+    margin-bottom: 28px;
+  }
+  hr {
+    margin-top: 14px;
+    margin-bottom: 28px;
+  }
+
+  // Form elements
+
+  input[type="text"], input[type="number"] {
+    width: auto;
+    display: inline-block;
+    margin-right: 14px;
+    min-width: 280px;
+    border-radius: 3px;
+  }
+  input[type="text"].short-field {
+    min-width: 0;
+    width: 100px;
+  }
+  input[type="radio"] {
+    margin: 0px 7px;
+  }
+  input[type="checkbox"] {
+    margin: 0px 7px 0px 21px;
+  }
+  select {
+    display: inline-block;
+    width: auto;
+    padding: 14px;
+    min-width: 280px;
+    // *&$#ing chrome and safari won't let you override select's border-radius
+  }
+  textarea {
+    max-width: 650px;
+    min-height: 150px;
+    border-radius: 0;
+  }
+
+  // client side HTML5 validation
+
+  input:required:invalid, input:focus:invalid, textarea:required:invalid, textarea:focus:invalid {
+      background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABhUlEQVQ4T7WTTSgEYRjH/5OPjbFlS40VbQ4mNJi8Ky4+DjhuSA4uDnjlsBdXBydHpz2wsxwcSHJAucjBx2W39RY1lJGswho50GJjN6M5KFN2Iu1bT/+eep5f//d534fDPw/3z35kD6COI8gBxACYNIuxTE4tDo5GQMGBwoBiqkQ7iKrssq/cVHkeyneYBRAdwqHX30lOVsNaUn9O1A63kNOFMCsQipxib6N4PLfPmhbhzQg4GATNLcz3V/c1SDeRWLys2eO+jVzFS70V7vMNVU2/vgdal20cmOSdHlAAtG6wnhiGATNOVlQGQOlctzab9ZYrbHaD8i6Hv8bnkWLR+7iHlLiv2EO8XHa5z7au1eRTKuDbtnGw2o7DrokqEl6KaQk9lWgbFch+SGdOIc8p+1ziQeieDezZzCAkg358gGovUEQetH+SJ2vTL+wrN3Xmwn4GeQAEAPyYgKlKB8TLN2hBHVMA0gDuACQzvgKAHADFABw/fBwT8Ajg3Q7w59XI3i781sonoDOKETonwAgAAAAASUVORK5CYII=');
+      background-position: right top;
+      background-repeat: no-repeat;
+      box-shadow: none;
+  }
+
+  input:focus:invalid {
+      background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAeVJREFUeNqkU01oE1EQ/mazSTdRmqSxLVSJVKU9RYoHD8WfHr16kh5EFA8eSy6hXrwUPBSKZ6E9V1CU4tGf0DZWDEQrGkhprRDbCvlpavan3ezu+LLSUnADLZnHwHvzmJlvvpkhZkY7IqFNaTuAfPhhP/8Uo87SGSaDsP27hgYM/lUpy6lHdqsAtM+BPfvqKp3ufYKwcgmWCug6oKmrrG3PoaqngWjdd/922hOBs5C/jJA6x7AiUt8VYVUAVQXXShfIqCYRMZO8/N1N+B8H1sOUwivpSUSVCJ2MAjtVwBAIdv+AQkHQqbOgc+fBvorjyQENDcch16/BtkQdAlC4E6jrYHGgGU18Io3gmhzJuwub6/fQJYNi/YBpCifhbDaAPXFvCBVxXbvfbNGFeN8DkjogWAd8DljV3KRutcEAeHMN/HXZ4p9bhncJHCyhNx52R0Kv/XNuQvYBnM+CP7xddXL5KaJw0TMAF8qjnMvegeK/SLHubhpKDKIrJDlvXoMX3y9xcSMZyBQ+tpyk5hzsa2Ns7LGdfWdbL6fZvHn92d7dgROH/730YBLtiZmEdGPkFnhX4kxmjVe2xgPfCtrRd6GHRtEh9zsL8xVe+pwSzj+OtwvletZZ/wLeKD71L+ZeHHWZ/gowABkp7AwwnEjFAAAAAElFTkSuQmCC');
+      background-position: right top;
+      background-repeat: no-repeat;
+  }
+
+  input:required:valid, textarea:required:valid {
+      background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAZZJREFUeNpi/P//PwMpgImBRMAy58QshrNPTzP8+vOLIUInisFQyYjhz98/DB9/fmT48/+35v7H+8KNhE2+WclZd+G0gZmJmYGThUNz1fUVMZtvbWT59eUXG9wGZIWMUPj993eJ5VeWxuy8veM/CzPL3yfvH/9H0QBSBDYZyOVm4mGYfn6q4cory5lYmFh+MrEwM/76/YsR7mk2ZjbWP///WP37/y8cqIDhx58fjvtu7XV6//ndT34G/v8FasUsDjKO/+A2PP3wpGLd+TVsfOz8XH6KAT+nHpokcu7h6d9q/BoMxToVbBYqlt9///+1GO4/WVdpXqY/zMqXn13/+vTjI9mj94/y//v9/3e9ZRObvYbDT0Y2xnm///x+wsfHB3GSGLf41jb3rv0O8nbcR66d+HPvxf2/+YZFTHaqjl8YWBnm/vv37yly5LL8+vuLgYuVa3uf/4T/Kd8SnSTZpb6FGUXwcvJxbAPKP2VkZESNOBDx8+9PBm4OwR1TwmYwcfzjsBUQFLjOxs52A2YyKysrXANAgAEA7buhysQuIREAAAAASUVORK5CYII=');
+      background-position: right top;
+      background-repeat: no-repeat;
+  }
+  a {
+    text-decoration: underline;
+  }
+  &.not-necessary { // One specific page where we don't want the link underlined
+    a.btn-bayes {
+      text-decoration: none;
+    }
+  }
+
+  .checkbox-grid {
+    margin-left: 20px;
+
+    .item {
+      float: left;
+      margin-right: 20px;
+      margin-top: 3px;
+
+      input[type=checkbox], input[type=radio] {
+        margin: 0;
+        margin-right: 5px;
+      }
+
+      label {
+        display: inline;
+        font-weight: normal !important;
+      }
+    }
+
+    .has-error {
+      display: inline;
+    }
+
+    &:after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+  }
+  .person-link {
+    // margin: 5px;
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    vertical-align: middle;
+    // padding: 4px 10px;
+    border-radius: 10px;
+    text-decoration: none;
+    background-color: $header-text-color;
+    color: white;
+    opacity: 0.33;
+    &:hover {
+      opacity: 0.66;
+    }
+  }
+  .person-link-current {
+    opacity: 1.0;
+    cursor: default;
+    pointer-events: none;
+    border: 3px solid darken($header-text-color, 20%);
+    padding: -3px;
+    line-height: 24px;
+  }
+  .person-link-disabled {
+    background-color: #BBB;
+    cursor: not-allowed;
+    opacity: 1.0;
+    &:hover {
+      opacity: 1.0;
+    }
+  }
+  & > ul > li {
+    margin-bottom: 10px;
+  }
+  &.not-necessary {
+    width: 80%;
+    margin: 56px;
+  }
+
+  .order-of-force {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 90%;
+
+    li {
+      width: 275px;
+      height: 45px;
+      line-height: 43px;  // 45 - 2 1-pixel borderlines
+      margin: 0 10px 15px 0px;
+      padding: 0 10px;
+      text-align: left;
+      cursor: move;
+      overflow: hidden;
+
+      .order {
+        font-weight: 700;
+      }
+    }
+
+    &.ui-sortable-disabled li {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+  }
+}
+
+#incidentStep > ul > li {
+  margin-bottom: 10px;
+}
+#incidentStep.not-necessary {
+  width: 80%;
+  margin: 56px;
+}
+
+.ui-menu .ui-menu-item {
+  font-size: 14px;
+}
+
+.charge-dropdown .ui-menu-item {
+  white-space: pre;
+  font-family: monospace;
+}

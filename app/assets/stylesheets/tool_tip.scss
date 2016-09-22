@@ -1,0 +1,22 @@
+.help-tip {
+  margin-left: 6px;
+  text-align: center;
+  background-color: #BCDBEA;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  font-size: 16px;
+  line-height: 16px;
+  display: inline-block;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #666;
+  }
+
+  &:before{
+    content: '?';
+    font-weight: bold;
+    color: #fff;
+  }
+}

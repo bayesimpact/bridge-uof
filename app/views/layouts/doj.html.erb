@@ -1,0 +1,8 @@
+<% content_for :sidenav do %>
+  <%= render partial: 'doj_dashboard_sidenav' %>
+<% end %>
+
+<% content_for :panel do %>
+  <%= yield %>
+<% end %>
+<%= render template: "layouts/dashboard" %>

@@ -1,0 +1,13 @@
+<h1>Submission for <%= Time.last_year %> is
+  <span id="window-status" class="window-<%= GlobalState.submission_open? ? 'open' : 'closed' %>">
+    <%= GlobalState.submission_open? ? 'OPEN' : 'CLOSED' %>
+  </span>
+</h1>
+
+<%= form_tag({controller: "doj", action: "window_toggle"}, {id: "window-submit-form"}) do %>
+  <input type="hidden" name="submission_year" value="<%= Time.last_year %>">
+  <input type="hidden" name="submission_open" value="<%= GlobalState.submission_open? %>">
+  <% close_confirmation = "This will prevent agencies from submitting or changing any more data for #{Time.last_year}. You can undo this, but it's meant to be closed once and for all. Are you sure you want to close the window now?" %>
+  <% open_confirmation = "This will allow agencies to submit data for #{Time.last_year}. Are you sure you're ready to open the window?" %>
+  <%= submit_tag submission_window_button_text, class: "btn btn-bayes", data: {confirm: GlobalState.submission_open? ? close_confirmation : open_confirmation } %>
+<% end %>

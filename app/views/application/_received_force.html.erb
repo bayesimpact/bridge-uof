@@ -1,0 +1,32 @@
+<% @klass = (person_type == 'Civilian') ? InvolvedCivilian : InvolvedOfficer %>
+<% @perpetrator = (person_type == 'Civilian') ? 'officer' : 'civilian' %>
+<% @victim = (person_type == 'Civilian') ? 'civilian' : 'officer' %>
+
+<div id="received_force_type_question">
+  <div class="incident-form-row form-group additional-question type-of-force">
+    <%= f.label :received_force_type, "Type of force used on #@victim by #@perpetrator(s) - check all that apply", class: 'required' %>
+    <%= checkbox_grid(f, :received_force_type, @klass::RECEIVED_FORCE_TYPES, 320) %>
+  </div>
+
+  <div class="incident-form-row form-group additional-question">
+    <%= f.label :received_force_location, "Location on #@victim where #@perpetrator(s) used force - check all that apply", class: 'required' %>
+    <%= checkbox_grid(f, :received_force_location, @klass::RECEIVED_FORCE_LOCATIONS, 200) %>
+  </div>
+
+  <% if person_type == 'Civilian' %>
+    <div id="order-of-force-section" class="incident-form-row additional-question short">
+      <%= f.check_box :order_of_force_specified, id: 'order-of-force-specified' %>
+      <%= f.label :order_of_force_specified, "Check here if you would like to specify the order in which different types of force were used.", for: 'order-of-force-specified' %>
+
+      <div class="additional-question">
+        <p class="question-explanation">
+          Drag the types of force into the appropriate order, from first event to last event.
+        </p>
+
+        <%= f.hidden_field :order_of_force_str, id: 'order-of-force-str' %>
+        <ol class="order-of-force">
+        </ol>
+      </div>
+    </div>
+  <% end %>
+</div>

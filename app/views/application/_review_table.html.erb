@@ -1,0 +1,12 @@
+<table class="table table-striped table-bordered table-hover table-condensed">
+  <% for key in display_fields %>
+    <tr>
+      <%= render partial: "display_item", locals: {
+        key: labels[key] || key.to_s.custom_humanize,
+        value: (data.send(key) rescue nil),
+        is_fbi_field: fbi_fields.include?(key),
+        partial: local_assigns[:partials].try { |p| p[key.to_sym] }
+      } %>
+    </tr>
+  <% end %>
+</table>

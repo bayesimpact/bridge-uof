@@ -1,0 +1,18 @@
+<h1>URSUS feedback from <%= @user.full_name %></h1>
+<h4>Source:</h4>
+<p>
+  <%= @feedback.source %>
+</p>
+<h4>Content:</h4>
+<p>
+  <%= @feedback.content %>
+</p>
+<h4>User info:</h4>
+<ul>
+	<li>Name: <%= @user.full_name %></li>
+	<li>ORI: <%= @user.ori %></li>
+	<li>Department: <%= @user.department %></li>
+	<li>Role: <%= @user.role %></li>
+	<li>Email: <%= @user.email %></li>
+</ul>
+<p>Sent at <%= @feedback.created_at %></p>

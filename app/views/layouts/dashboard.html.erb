@@ -1,0 +1,18 @@
+<% content_for :body do %>
+  <%= render partial: "controls" %>
+  <div id="pageContent">
+    <div class="row" id="dashboardContainer">
+      <div id="sidenavColumn">
+        <%= yield :sidenav %>
+      </div>
+      <div id="dashboardColumn" class="status-<%= @status %>">
+        <% if flash[:notice] %>
+          <div class="alert alert-success"><%= flash[:notice] %></div>
+        <% end %>
+        <%= yield :panel %>
+      </div>
+    </div>
+  </div>
+  <div class="footer-padding"></div>
+<% end %>
+<%= render template: "layouts/application" %>

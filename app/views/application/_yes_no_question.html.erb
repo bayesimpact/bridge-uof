@@ -1,0 +1,28 @@
+<div class='row'>
+  <div class="col-md-6">
+    <%= f.label field, label, class: label_class %>
+    <% unless help_content.nil? %>
+      <div class='help-tip' data-toggle='popover' data-trigger='hover'
+           title='<%= help_title %>' data-content='<%= help_content %>'></div>
+    <% end %>
+  </div>
+
+  <span class="col-md-6">
+    <label>
+      <% if check_yes.nil? %>
+        <%= f.radio_button field, true %>
+      <% else %>
+        <%= f.radio_button field, true, checked: check_yes %>
+      <% end %>
+      <span><%= yes_label %></span>
+    </label>
+    <label>
+      <% if check_no.nil? %>
+        <%= f.radio_button field, false %>
+      <% else %>
+        <%= f.radio_button field, false, checked: check_no %>
+      <% end %>
+      <span><%= no_label %></span>
+    </label>
+  </span>
+</div>

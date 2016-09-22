@@ -1,0 +1,26 @@
+<%= title "No forms necessary" %>
+
+<%= render partial: "controls" %>
+<div id="pageContent">
+  <div id="incidentStep" class="not-necessary">
+
+    <h1 class="incident-step-header">Use of force reporting not required</h1>
+
+    <div class="form-not-required-explanation">
+      <p>
+        This form is only required if any of the following are true:
+        <ul>
+          <li>A civilian is seriously injured<sup>1</sup> by an officer's use of force.</li>
+          <li>An officer is seriously injured<sup>1</sup> by a civilian assault.</li>
+          <li>A firearm is discharged, either by an officer toward a civilian, or a civilian towards an officer.</li>
+        </ul>
+      </p>
+      <p>
+        <sup>1</sup> Serious bodily injury is defined as "<%= Constants::SBI_DEFINITION %>."
+      </p>
+    </div>
+
+    <%= link_to "Back to Dashboard", root_path, class: "btn-bayes" %>
+    or <%= link_to "Change my answers", "javascript:history.go(-1)" %>
+  </div>
+</div>

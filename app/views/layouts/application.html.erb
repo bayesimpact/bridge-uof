@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<%= render "layouts/partials/head" %>
+<body>
+  <div id="container">
+    <%= render "layouts/partials/nav" %>
+    <div id="body">
+      <%= content_for?(:body) ? yield(:body) : yield %>
+    </div>
+  	<%= render "layouts/partials/footer" %>
+  </div>
+</body>
+</html>

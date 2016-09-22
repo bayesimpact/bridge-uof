@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<%= render "layouts/partials/head" %>
+<body id="splash">
+    <section class="left-section">
+        <div class="inner">
+            <div id="ursus-logo"><%= image_tag "ursus_logo.png" %></div>
+            <div class="collaboration line-behind"><span>a collaboration between</span></div>
+            <div id="logos">
+                    <a class="logo" href="https://oag.ca.gov/" target="_blank">
+                        <%= image_tag "ag_seal_gray.png", class: "ag-seal" %>
+                    </a>
+                    <a class="logo" href="http://www.bayesimpact.org/" target="_blank">
+                        <%= image_tag "bayes_logo_triangle.png", class: "bayes-logo-triangle" %>
+                        <%= image_tag "bayes_logo_name.png", class: "bayes-logo-name" %>
+                    </a>
+            </div>
+        </div>
+    </section>
+    <section class="right-section">
+        <div class="inner">
+            <h1>Welcome to URSUS</h1>
+            <p id="description">
+                URSUS is a California <a href="https://oag.ca.gov/" target="_blank">Department of Justice</a>
+                application developed in collaboration with <a href="http://www.bayesimpact.org/" target="_blank">Bayes Impact</a>, a San Francisco technology nonprofit.
+            </p>
+            <hr>
+            <p>New CA legislation requires annual reporting of certain Use of Force incidents.</p>
+            <p>This application helps law enforcement agencies determine which incidents require reporting, fill out or upload incident information, and send the report to the state.</p>
+            <p>Read the text of <a href="https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=201520160AB71" target="_blank">Assembly Bill 71</a>, creating Government Code section 12525.2 on Use of Force reporting.</p>
+            <%= form_tag do  %>
+                <button type="submit" class="btn btn-danger">ENTER</button>
+            <% end %>
+        </div>
+    </section>
+    <div id="mobile-footer">
+        <div class="collaboration line-behind"><span>a collaboration between</span></div>
+        <div>
+            <div class="logo">
+                <%= image_tag "ag_seal_gray.png", class: "ag-seal" %>
+            </div>
+            <div class="logo">
+                <%= image_tag "bayes_logo_triangle.png", class: "bayes-logo-triangle" %>
+                <%= image_tag "bayes_logo_name.png", class: "bayes-logo-name" %>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

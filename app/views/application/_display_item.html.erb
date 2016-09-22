@@ -1,0 +1,22 @@
+<td class="review-table-key">
+    <b><%= key %></b>
+    <% if is_fbi_field %>
+        <button class = "btn btn-default fbi-seal"
+                data-toggle="popover" data-trigger="hover" title="FBI data field"
+                data-content="In the future, this data may be reported by DOJ to the FBI.">
+        </button>
+    <% end %>
+</td>
+<td class="review-table-value">
+    <% if partial %>
+        <%= render partial: partial, locals: { value: value } %>
+    <% elsif value.instance_of?(Array) %>
+        <%= value.join(', ') %>
+    <% elsif value == nil || value == '' %>
+        n/a
+    <% elsif value.instance_of?(DateTime) %>
+        <%= value.strftime("%a %b %e %H:%M %Y") %>
+    <% else %>
+        <%= (value == !!value) ? (value ? "Yes" : "No") : value.to_s %>
+    <% end %>
+</td>

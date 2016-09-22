@@ -1,0 +1,54 @@
+$breadcrumbs-height: 50px;
+$ursus-id-width: 230px;
+
+#breadcrumbs {
+  background-color: #212121;
+  padding: 0 14px;
+  font-size: 0;  // Remove pesky spacing between inline elements
+
+  a, #breadcrumbs-ursus-id {
+    display: inline-block;
+    height: $breadcrumbs-height;
+    line-height: $breadcrumbs-height;
+    padding: 0 14px;
+    margin: 0;
+    font-weight: normal;
+    font-size: 16px;
+    text-decoration: none;
+    text-align: right;
+    color: #DDD;
+  }
+  a:hover, a.active {
+    border-bottom: 2px solid white;
+  }
+  a.disabled {
+    pointer-events: none;
+    color: #525252;
+  }
+  a.active {
+    font-weight: bold;
+    color: white;
+  }
+  a:not(:first-child) {
+    padding-left: 0;
+  }
+  a:not(:first-child):before {
+    font-family: FontAwesome;
+    content: "\f054";
+    padding-right: 14px;
+    margin-left: 0;
+  }
+  a:last-of-type {
+    margin-right: $ursus-id-width;
+  }
+
+  #breadcrumbs-ursus-id {
+    position: absolute;
+    right: 0;
+    width: $ursus-id-width;
+
+    &:before {
+      content: "";
+    }
+  }
+}

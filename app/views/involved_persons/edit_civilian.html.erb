@@ -1,0 +1,99 @@
+<%= title "Civilians Involved" %>
+
+<%= render partial: "breadcrumbs", locals: {active_step: :civilians} %>
+
+<%= render partial: "controls" %>
+<div id="pageContent">
+<div id="incidentStep">
+
+<%= render partial: "errors", locals: {record: @person} %>
+
+<%= render partial: "edit_person_headers" %>
+
+<%= form_for [@incident, @person],
+    url: @person.new_record? ? nil : incident_involved_civilian_path(@incident, @current_person_index) do |f| %>
+
+  <div class="incident-form-row form-group">
+    <%= yes_no_question f, :assaulted_officer, "Civilian assaulted officer? (Or multiple officers)", class: 'required' %>
+  </div>
+
+  <div class="incident-form-row form-group">
+    <%= f.label :custody_status, "Civilian arrested and / or in custody?", class: 'required' %><br>
+    <%= radio_button_grid(f, :custody_status, InvolvedCivilian::CUSTODY_STATUS_TYPES, 150) %>
+  </div>
+  <div class="incident-form-row form-group alert alert-warning" id="fled-info-text">
+    Because the suspect fled, it's difficult to be certain about many perceptions (age, race, etc). To avoid potential mistakes in the data, many such fields you'll find are disabled below. Fill out the remaining ones as usual.
+  </div>
+  <div class="incident-form-row additional-question" id="charge_questions">
+    <div class="form-col inline">
+      <% if Rails.configuration.x.deployment.whitelabel? %>
+        <%= f.label :highest_charge, content_tag(:span, 'Enter highest charge') + popover('', 'For this demo, we use California criminal codes to populate the boxes below.'), class: 'required' %>
+      <% else %>
+        <%= f.label :highest_charge, 'Enter highest charge', class: 'required' %>
+      <% end %>
+      <div class="question-explanation">
+        e.g. 148(A)(1)
+      </div>
+      <%= f.text_field :highest_charge, class: "form-control", required: false, size: 60, placeholder: "Start typing here to see suggestions" %>
+    </div>
+    <div class="form-col inline">
+      <%= f.label :crime_qualifier, "Enter livescan qualifier code, if any" %>
+      <div class="question-explanation">
+        e.g. 182(A)(1)
+      </div>
+      <%= f.text_field :crime_qualifier, class: "form-control", required: false, size: 60, placeholder: "Start typing here to see suggestions"  %>
+    </div>
+  </div>
+
+  <div class="incident-form-row form-group">
+    <%= yes_no_question f, :perceived_armed, "Civilian perceived armed?", class: 'required' %>
+  </div>
+  <div class="incident-form-row form-group additional-question" id="perceived_armed_weapon_question">
+    <%= f.label :perceived_armed_weapon, "Type of weapon - check all that apply", class: 'required' %>
+    <%= checkbox_grid(f, :perceived_armed_weapon, InvolvedCivilian::PERCEIVED_WEAPONS, 270) %>
+  </div>
+
+  <div class="incident-form-row form-group" id="confirmed_armed_question">
+    <%= yes_no_question f, :confirmed_armed, "Civilian confirmed armed?", class: 'required' %>
+  </div>
+  <div class="incident-form-row form-group additional-question" id="confirmed_armed_weapon_question">
+    <%= f.label :confirmed_armed_weapon, "Weapons - check all that apply", class: 'required' %>
+    <%= checkbox_grid(f, :confirmed_armed_weapon, InvolvedCivilian::CONFIRMED_WEAPONS, 270) %>
+  </div>
+  <div class="incident-form-row form-group additional-question" id="firearm_type_question">
+    <%= f.label :firearm_type, "Firearm types - check all that apply", class: 'required' %><br>
+    <%= checkbox_grid(f, :firearm_type, InvolvedCivilian::FIREARM_TYPES, 120) %>
+  </div>
+
+  <div class="incident-form-row form-group">
+    <%= yes_no_question f, :resisted, "Civilian resisted?", no_label: "No (Cooperative)", class: 'required' %>
+  </div>
+  <div class="incident-form-row form-group additional-question" id="resistance_type_question">
+    <%= f.label :resistance_type, "Choose highest level of resistance", class: 'required' %>
+    <%= radio_button_grid(f, :resistance_type, InvolvedCivilian::RESISTANCE_TYPES, 200,
+          popovers = {
+            'Passive non-compliance' => 'Does not respond to verbal commands but also offers no physical form of resistance.',
+            'Resistance' => 'Physically evasive movements to defeat an officer’s attempt at control, including bracing, tensing, running away or verbally signaling an intention to avoid or prevent being taken into or retained in custody.',
+            'Assaultive' => 'Aggressive or combative; attempting or threatening to assault or disarm the officer or another person.',
+            'Life-threatening' => 'Any action likely to result in serious injury or possibly the death of the officer or another person.'
+          }) %>
+  </div>
+
+  <div class="incident-form-row form-group">
+    <%= yes_no_question f, :received_force, "Was force used on this civilian by one or more officers?", class: 'required' %>
+  </div>
+  <%= render partial: "received_force", locals: {f: f, person_type: "Civilian"} %>
+
+  <div class="incident-form-row form-group">
+    <%= f.label :mental_status, "Civilian erratic behavior (as perceived at the time of incident) - check all that apply", class: 'required' %>
+    <%= checkbox_grid(f, :mental_status, InvolvedCivilian::MENTAL_STATUSES, 230) %>
+  </div>
+
+  <%= render partial: "involved_person", locals: {f: f, person_type: "Civilian"} %>
+
+  <div class="incident-form-row">
+    <%= render partial: "form_save_buttons" %>
+  </div>
+<% end %>
+</div>
+</div>

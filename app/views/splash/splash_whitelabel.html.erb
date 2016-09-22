@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<%= render "layouts/partials/head" %>
+<body id="splash-whitelabel">
+    <div class="inner">
+        <h1>This site demonstrates the Bayes Impact police use of force reporting system.</h1>
+        <p>This is the first product of our larger <a href="http://www.bayesimpact.org/focus/justice">Bridge</a> initiative to improve police integrity and community relations.</p>
+        <p>This application, implemented first in California under the name
+        <a id='demo-splash-ursus-popover' data-toggle='popover' data-trigger='click' data-placement='top' href="#"
+           data-content='<p>As a result of <a href="https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=201520160AB71" target="_blank">Assembly Bill 71</a>, police departments in California are now required to report to the state all incidents that result in serious bodily injury.</p><p>To achieve this, Bayes Impact worked with the California Department of Justice to build the first version of this application, which is being provided to CA law enforcement agencies under the name URSUS.</p>'>URSUS</a>, helps police departments determine which incidents require reporting, fill out or upload incident information, send the report to the state, and perform analysis.</p>
+        <p>Click the button below to log into the demo application as an example user of a fictitious police department.</p>
+        <%= form_tag do  %>
+            <button type="submit" class="btn btn-danger">ENTER</button>
+        <% end %>
+    </div>
+</body>
+</html>

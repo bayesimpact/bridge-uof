@@ -1,0 +1,16 @@
+<h1 class="incident-step-header">
+  <%= @type.capitalize %>
+  <% if @num_involved_persons > 1 %>
+    <% @num_involved_persons.times do |i| %>
+      <% if @current_person_index == i %>
+        <%= link_to (i+1).to_s, '#', class: "person-link person-link-current" %>
+      <% elsif i == @involved_persons.length and i <= @disabled_beyond %>
+        <%= link_to (i+1).to_s, new_person_path(@type, @incident), class: "person-link"%>
+      <% elsif i > @disabled_beyond %>
+        <a class="person-link person-link-disabled"><%= (i+1).to_s %></a>
+      <% else %>
+        <%= link_to (i+1).to_s, edit_person_path(@type, @incident, i), class: "person-link" %>
+      <% end %>
+    <% end %>
+  <% end %>
+</h1>
