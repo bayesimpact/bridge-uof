@@ -1,20 +1,22 @@
-# Bridge
+![Use of force data collection tool](https://raw.githubusercontent.com/bayesimpact/bridge-uof/master/app/assets/images/bayes_bridge_title_1600px.png)
+
+# Bridge: Use of Force Reporting
 
 ## Introduction
 
-**[Bridge](https://demo-bridge-uof.bayesimpact.org)** is an application developed for California police departments by San Francisco technology nonprofit [Bayes Impact](http://www.bayesimpact.org/), in collaboration with the [California Department of Justice](https://oag.ca.gov/).
+**[Bridge-UOF](https://demo-bridge-uof.bayesimpact.org)** is an application developed for California police departments by San Francisco technology nonprofit [Bayes Impact](http://www.bayesimpact.org/), in collaboration with the [California Department of Justice](https://oag.ca.gov/).
 
-Bridge helps police officers determine which incidents require reporting, fill out or upload incident information, and send the report to the state.
+Bridge-UOF helps police officers determine which incidents require reporting, fill out or upload incident information, and send the report to the state.
 
 Its first implementation is in California under the name [URSUS](http://ursusdemo.doj.ca.gov/), as a result of [Assembly Bill 71](https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=201520160AB71).
 
-Our reasons for open-sourcing Bridge are two-fold: (1) we want to foster transparency in government software, and (2) we hope that it can be a useful model for other states and localities who wish to implement similar software.
+Our reasons for open-sourcing Bridge-UOF are two-fold: (1) we want to foster transparency in government software, and (2) we hope that it can be a useful model for other states and localities who wish to implement similar software.
 
 ## Installation
 
 _Note: These instructions assume that you're running a Unix-like system._
 
-To simplify the process of developing, testing, and deploying Bridge, we use [Docker](https://docs.docker.com/engine/installation/) containers.
+To simplify the process of developing, testing, and deploying Bridge-UOF, we use [Docker](https://docs.docker.com/engine/installation/) containers.
 
 1. Install [Docker](https://docs.docker.com/engine/installation/) and [docker-compose](https://docs.docker.com/compose/install/) and start the Docker daemon.
 
@@ -40,11 +42,11 @@ To simplify the process of developing, testing, and deploying Bridge, we use [Do
   docker-compose up --build -d web
   ```
 
-6. Point your browser to `<IP address of your Docker container>:3000` and you should see the Bridge landing page.
+6. Point your browser to `<IP address of your Docker container>:3000` and you should see the Bridge-UOF landing page.
 
 ### Authentication Modes
 
-Bridge supports three different authentication modes, specified in `local.env`:
+Bridge-UOF supports three different authentication modes, specified in `local.env`:
 
 * In `DEMO` mode (used on our [public demo server](https://demo-Bridge.bayesimpact.org)), a new account is created whenever a user logs in without a cookie. All accounts have admin privileges and each account is in a separate, sandboxed "department".
 * In `DEVISE` mode (used for testing), log-in and sign-up is handled via a form.
@@ -54,7 +56,7 @@ Note that `DEVISE` mode uses a slightly different schema for users than the othe
 
 ### Servers
 
-Note that running Bridge in development mode actually starts 3 different servers _(see [`docker-compose.yml`](https://github.com/bayesimpact/ab71/blob/master/docker-compose.yml for the full details)_:
+Note that running Bridge-UOF in development mode actually starts 3 different servers _(see [`docker-compose.yml`](https://github.com/bayesimpact/ab71/blob/master/docker-compose.yml for the full details)_:
 
 1. The Rails server (`<docker IP>:3000`). _(In production, we run this behind [nginx](https://www.nginx.com/).)_
 2. The [DynamoDB](https://aws.amazon.com/dynamodb/) local server (`<docker IP>:8000`), which can be accessed with the JavaScript shell at `<docker IP>:8000/shell` (instructions on this shell [here](http://docs.aws.amazon.com/amazondynamodb/latest/gettingstartedguide/GettingStarted.JsShell.html)). _(In production this is replaced with keys to use the real Amazon-hosted DynamoDB.)_
@@ -89,4 +91,4 @@ See `CONTRIBUTING.md`.
 
 ## License
 
-Bridge is released under the [Apache License 2.0](https://opensource.org/licenses/Apache-2.0).
+Bridge-UOF is released under the [Apache License 2.0](https://opensource.org/licenses/Apache-2.0).
