@@ -1,4 +1,4 @@
-![Use of force data collection tool](https://raw.githubusercontent.com/bayesimpact/bridge-uof/master/app/assets/images/bayes_bridge_title_1600px.png)
+![Use of force data collection tool](https://raw.githubusercontent.com/bayesimpact/bridge-uof/master/app/assets/images/bayes_bridge_uof_600px.png)
 
 # Bridge: Use of Force Reporting
 
