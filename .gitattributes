@@ -1,0 +1,8 @@
+app/assets/javascripts/lib/* linguist-vendored
+app/assets/stylesheets/lib/* linguist-vendored
+
+app/assets/javascripts/crimes.js linguist-vendored
+app/assets/javascripts/crime_qualifiers.js linguist-vendored
+app/assets/javascripts/police_agency_oris.js linguist-vendored
+app/models/constants/department_by_ori.rb linguist-vendored 
+app/models/constants/contracting_oris.rb linguist-vendored
