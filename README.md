@@ -14,7 +14,7 @@ Our reasons for open-sourcing Bridge-UOF are two-fold: (1) to foster transparenc
 
 * [Bayes Impact website](http://www.bayesimpact.org)
 * [Bridge](http://www.bayesimpact.org/focus/justice) at Bayes Impact
-* [Blog post](http://www.bayesimpact.org/stories/?name=bridge-uof-launch) launching this product, with much context
+* [Blog post](http://www.bayesimpact.org/stories/?name=bridge-uof-launch) launching this product, with much context and press links
 
 ## Installation
 
