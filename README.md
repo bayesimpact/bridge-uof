@@ -6,11 +6,17 @@
 
 **[Bridge-UOF](https://demo-bridge-uof.bayesimpact.org)** is an application developed for California police departments by San Francisco technology nonprofit [Bayes Impact](http://www.bayesimpact.org/), in collaboration with the [California Department of Justice](https://oag.ca.gov/).
 
-Bridge-UOF helps police officers determine which incidents require reporting, fill out or upload incident information, and send the report to the state.
+The app helps police officers determine which incidents require reporting, fill out or upload incident information, and send the report to the state. Law enforcement agencies can manage employees and incident flow, perform analytics, and communicate with the state. The state can oversee all agencies and track reporting completion.
 
 Its first implementation is in California under the name [URSUS](http://ursusdemo.doj.ca.gov/), as a result of [Assembly Bill 71](https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=201520160AB71).
 
-Our reasons for open-sourcing Bridge-UOF are two-fold: (1) we want to foster transparency in government software, and (2) we hope that it can be a useful model for other states and localities who wish to implement similar software.
+Our reasons for open-sourcing Bridge-UOF are two-fold: (1) to foster transparency in government software, and (2) to be a useful model for other states and localities who wish to implement similar initiatives.
+
+## More information on Bridge and Bayes Impact
+
+* [Bayes Impact website](http://www.bayesimpact.org)
+* [Bridge](http://www.bayesimpact.org/focus/justice) at Bayes Impact
+* [Blog post](http://www.bayesimpact.org/stories/?name=bridge-uof-launch) launching this product, with much context
 
 ## Installation
 
