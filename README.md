@@ -2,7 +2,7 @@
 
 ## Introduction
 
-**[Bridge-UOF](https://demo-bridge-uof.bayesimpact.org)** is an application developed for California police departments by San Francisco technology nonprofit [Bayes Impact](http://www.bayesimpact.org/), in collaboration with the [California Department of Justice](https://oag.ca.gov/). It is the first product released in our larger [Bridge initative](http://www.bayesimpact.org/focus/justice) to rebuild police-community relations through data.
+**Bridge-UOF** is an application developed for California police departments by San Francisco technology nonprofit [Bayes Impact](http://www.bayesimpact.org/), in collaboration with the [California Department of Justice](https://oag.ca.gov/). It is the first product released in our larger [Bridge initative](http://www.bayesimpact.org/focus/justice) to rebuild police-community relations through data.
 
 The app helps police officers determine which incidents require reporting, fill out or upload incident information, and send the report to the state. Law enforcement agencies can manage employees and incident flow, perform analytics, and communicate with the state. The state can oversee all agencies and track reporting completion.
 
