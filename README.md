@@ -1,5 +1,7 @@
 ![Use of force data collection tool](https://raw.githubusercontent.com/bayesimpact/bridge-uof/master/app/assets/images/bayes_bridge_uof_1600px.png)
 
+[![CircleCI](https://circleci.com/gh/bayesimpact/bridge-uof.svg?style=svg)](https://circleci.com/gh/bayesimpact/bridge-uof)
+
 ## Introduction
 
 **Bridge-UOF** is an application developed for California police departments by San Francisco technology nonprofit [Bayes Impact](http://www.bayesimpact.org/), in collaboration with the [California Department of Justice](https://oag.ca.gov/). It is the first product released in our larger [Bridge initative](http://www.bayesimpact.org/focus/justice) to rebuild police-community relations through data.
