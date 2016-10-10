@@ -40,6 +40,16 @@ describe '[General Info Page]', type: :request do
     expect_form_success
   end
 
+  it 'continues to the next page when complete' do
+    AgencyStatus.find_or_create_by_ori(User.first.ori)
+                .mark_year_submitted!(Time.current.year - 1)
+
+    answer_all_general_info
+    find('button[type=submit]').click
+
+    expect_form_failure
+  end
+
   it 'allows partial save', driver: :poltergeist do
     today_str = Time.zone.today.strftime('%m/%d/%Y')
     fill_in 'Date', with: today_str

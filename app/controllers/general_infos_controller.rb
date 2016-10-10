@@ -19,10 +19,18 @@ class GeneralInfosController < StepsBaseController
       # Save the incident ORI and year, so that we can later check if it's changed.
       old_incident = { ori: @incident.ori, year: @incident.year }
 
-      # Try to validate, save, and audit the updated fields
-      check_that_ori_is_valid(formatted_params)
-      save_succeeded = save_and_audit(@general_info, formatted_params)
-      return render :edit unless save_succeeded
+      # Try to validate, save, and audit the updated fields.
+      # Note that validate_ori() and validate_incident_year() are special validators that
+      # require knowledge of the submitting ORI and so must be run at the controller
+      # level rather than at the model level with the other validators.
+      ready_to_save = validate_ori(formatted_params) && validate_incident_year(formatted_params)
+      save_succeeded = save_and_audit(@general_info, formatted_params, ready_to_save)
+      unless save_succeeded
+        # Re-run the ori and incident_year validators because save_and_audit() cleared their error messages.
+        validate_ori(formatted_params)
+        validate_incident_year(formatted_params)
+        return render :edit
+      end
 
       # Update successful, fields valid.
       @incident.general_info = @general_info
@@ -47,13 +55,36 @@ class GeneralInfosController < StepsBaseController
       redirect_to dashboard_path
     end
 
-    # Check that the incident ORI is allowed. (We can't do this check on the model level
-    # b/c the GeneralInfo model doesn't have access to the incident or user yet.)
-    # If invalid, adds an error to the GeneralInfo model.
-    def check_that_ori_is_valid(formatted_params)
+    # Check that the incident ORI is allowed.
+    # (We can't do this check on the model level b/c the GeneralInfo model
+    # doesn't have access to the incident or user yet.)
+    # If invalid, returns false and adds an error to the GeneralInfo model.
+    def validate_ori(formatted_params)
       @ori = formatted_params['contracting_for_ori'] || @incident.ori
       if @current_user.allowed_oris.exclude? @ori
         @general_info.errors.add(:contracting_for_ori, "invalid ORI")
+        false
+      else
+        true
+      end
+    end
+
+    # Check that the incident's year hasn't been submitted by the user's agency yet.
+    # (We can't do this check on the model level b/c the GeneralInfo model
+    # doesn't have access to the incident or user yet.)
+    # If invalid, returns false and adds an error to the GeneralInfo model.
+    def validate_incident_year(formatted_params)
+      date_str = formatted_params['incident_date_str']
+      year = date_str.split('/').last.to_i
+
+      ori = formatted_params['contracting_for_ori'] || @incident.ori
+      agency_status = AgencyStatus.find_or_create_by_ori(ori)
+
+      if agency_status.complete_submission_years.include? year
+        @general_info.errors.add(:incident_date_str, "ORI #{ori} has already submitted for this year")
+        false
+      else
+        true
       end
     end
 

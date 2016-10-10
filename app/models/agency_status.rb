@@ -19,6 +19,10 @@ class AgencyStatus
     end
   end
 
+  def self.find_or_create_by_ori(ori)
+    find_by_ori(ori) || create(ori: ori)
+  end
+
   def self.find_by_ori(ori)
     find(ori)  # Since ORI is the primary key
   end
