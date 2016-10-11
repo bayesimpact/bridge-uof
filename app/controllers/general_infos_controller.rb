@@ -24,7 +24,7 @@ class GeneralInfosController < StepsBaseController
 
       # Update successful, fields valid.
       @incident.general_info = @general_info
-      @incident.ori = @general_info.contracting_for_ori if @general_info.contacting_for_ori
+      @incident.ori = @general_info.contracting_for_ori if @general_info.contracting_for_ori
 
       regenerate_incident_id_if_necessary!(old_incident)
       remove_people_if_necessary_to_match_counts!

@@ -222,7 +222,7 @@ module Helpers
 
   def submit_to_state
     visit_status :state_submission
-    click_button 'FINAL SUBMISSION'
+    click_button 'SUBMISSION'
   end
 
   # Visit the dashboard page showing incidents of the given status

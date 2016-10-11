@@ -11,7 +11,7 @@ class IncidentDateValidator < ActiveModel::EachValidator
       date = Date.strptime(value, '%m/%d/%Y')
 
       ori = record.contracting_for_ori || record.default_ori
-      agency_status = ori ? AgencyStatus.find_or_create_by_ori(ori) : nil
+      agency_status = AgencyStatus.find_or_create_by_ori(ori) if ori
 
       if valid_years.exclude? date.year
         record.errors[attribute] << "invalid year #{date.year} - you can only create incidents for #{valid_years_str}"
