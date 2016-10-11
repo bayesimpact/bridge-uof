@@ -69,15 +69,14 @@ class ApplicationController < ActionController::Base
 
     # Calls update_attributes on a given model and (if sucessful) saves an AuditEntry
     # with a record of all changed fields to the given Incident.
-    # Call with ready_to_save=false to run validation but not save the AuditEntry.
     # Returns true if changes were saved, false if they failed to save.
-    def save_and_audit(model, attributes, ready_to_save = true)
+    def save_and_audit(model, attributes)
       # Save existing model state.
       old_values = Hash[attributes.keys.map { |k| [k, model.send(k)] }]
       is_new = !model.persisted?
 
       # Update the model and save the audit entry (if valid).
-      if model.update_attributes(attributes) && ready_to_save
+      if model.update_attributes(attributes)
         build_audit_entry(model, attributes, old_values, is_new)
         true
       else

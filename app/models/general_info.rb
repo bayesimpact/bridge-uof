@@ -27,6 +27,12 @@ class GeneralInfo
   field :num_involved_civilians, :integer
   field :num_involved_officers, :integer
 
+  # These fields are written prior to validation in order to validate the ORI and year.
+  # This is necessary because the GeneralInfo model doesn't have a corresponding Incident
+  # until *after* validation.
+  field :current_user_id, :string
+  field :default_ori, :string
+
   validates :incident_date_str, incident_date: true
   validates :incident_time_str, incident_time: true
   validates :address, presence: true
@@ -43,6 +49,7 @@ class GeneralInfo
   validates :num_involved_civilians, :num_involved_officers,
             numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: 20,
                             message: "should be a positive number (1-20)" }
+  validates :contracting_for_ori, ori: true
 
   delegate :incident_id, to: :incident
 
