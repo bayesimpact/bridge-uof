@@ -20,13 +20,11 @@ class GeneralInfosController < StepsBaseController
       old_incident = { ori: @incident.ori, year: @incident.year }
 
       # Try to validate, save, and audit the updated fields.
-      unless save_and_audit(@general_info, formatted_params)
-        return render :edit
-      end
+      return render :edit unless save_and_audit(@general_info, formatted_params)
 
       # Update successful, fields valid.
       @incident.general_info = @general_info
-      @incident.ori = @ori
+      @incident.ori = @general_info.contacting_for_ori if @general_info.contacting_for_ori
 
       regenerate_incident_id_if_necessary!(old_incident)
       remove_people_if_necessary_to_match_counts!
