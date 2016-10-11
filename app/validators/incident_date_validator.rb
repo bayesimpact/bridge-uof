@@ -11,13 +11,13 @@ class IncidentDateValidator < ActiveModel::EachValidator
       date = Date.strptime(value, '%m/%d/%Y')
 
       ori = record.contracting_for_ori || record.default_ori
-      agency_status = AgencyStatus.find_or_create_by_ori(ori)
+      agency_status = ori ? AgencyStatus.find_or_create_by_ori(ori) : nil
 
       if valid_years.exclude? date.year
         record.errors[attribute] << "invalid year #{date.year} - you can only create incidents for #{valid_years_str}"
       elsif date > Time.zone.today
         record.errors[attribute] << "future date #{value} not allowed (today is #{Time.zone.today.strftime('%m/%d/%Y')})"
-      elsif agency_status.complete_submission_years.include? date.year
+      elsif agency_status && agency_status.complete_submission_years.include?(date.year)
         record.errors[attribute] << "ORI #{ori} has already submitted for this year"
       end
     rescue ArgumentError
