@@ -1,10 +1,10 @@
 # Validates that the incident ORI is allowed.
 class OriValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
-    ori = value || record.default_ori
-    current_user = User.where(user_id: record.current_user_id).first if record.current_user_id
+    ori = value || record.incident.target.try(:ori)
+    user = record.incident.target.try(:user)
 
-    if current_user && current_user.allowed_oris.exclude?(ori)
+    if user && user.allowed_oris.exclude?(ori)
       record.errors[attribute] << "invalid ORI: #{ori}"
     end
   end

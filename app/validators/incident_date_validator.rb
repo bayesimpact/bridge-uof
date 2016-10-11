@@ -10,7 +10,7 @@ class IncidentDateValidator < ActiveModel::EachValidator
       raise ArgumentError unless value =~ DATE_REGEX
       date = Date.strptime(value, '%m/%d/%Y')
 
-      ori = record.contracting_for_ori || record.default_ori
+      ori = record.contracting_for_ori || record.incident.ori
       agency_status = AgencyStatus.find_or_create_by_ori(ori) if ori
 
       if valid_years.exclude? date.year

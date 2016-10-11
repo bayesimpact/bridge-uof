@@ -36,13 +36,7 @@ class GeneralInfosController < StepsBaseController
   private
 
     def set_general_info
-      @general_info = @incident.general_info.target || GeneralInfo.new
-
-      # Give the GeneralInfo model :ori and :current_user_id attributes,
-      # that are necessary for validation (because the GeneralInfo model doesn't
-      # have a corresponding Incident until *after* validation).
-      @general_info.default_ori = @incident.ori
-      @general_info.current_user_id = @current_user.user_id
+      @general_info = @incident.general_info.target || GeneralInfo.new(incident: @incident)
     end
 
     def partial_save(formatted_params)
