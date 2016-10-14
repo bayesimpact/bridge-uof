@@ -40,19 +40,19 @@ class Incident
 
   def next_step
     if submitted?
+      # Don't run validation for submitted incidents because
+      # we already know they're completely valid.
       :review
+    elsif screener.nil? || screener.invalid?
+      :screener
+    elsif general_info.nil? || general_info.invalid?
+      :general_info
+    elsif involved_civilians.to_a.count(&:valid?) < general_info.num_involved_civilians
+      :involved_civilians
+    elsif involved_officers.to_a.count(&:valid?) < general_info.num_involved_officers
+      :involved_officers
     else
-      if screener.nil? || screener.invalid?
-        :screener
-      elsif general_info.nil? || general_info.invalid?
-        :general_info
-      elsif involved_civilians.to_a.count(&:valid?) < general_info.num_involved_civilians
-        :involved_civilians
-      elsif involved_officers.to_a.count(&:valid?) < general_info.num_involved_officers
-        :involved_officers
-      else
-        :review
-      end
+      :review
     end
   end
 
