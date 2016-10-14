@@ -44,7 +44,7 @@ describe '[General Info Page]', type: :request do
     AgencyStatus.find_or_create_by_ori(User.first.ori)
                 .mark_year_submitted!(Time.current.year - 1)
 
-    answer_all_general_info
+    answer_all_general_info(date: Time.zone.today - 1.year)
     find('button[type=submit]').click
 
     expect_form_failure

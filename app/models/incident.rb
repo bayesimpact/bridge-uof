@@ -39,16 +39,20 @@ class Incident
   end
 
   def next_step
-    if screener.nil? || screener.invalid?
-      :screener
-    elsif general_info.nil? || general_info.invalid?
-      :general_info
-    elsif involved_civilians.to_a.count(&:valid?) < general_info.num_involved_civilians
-      :involved_civilians
-    elsif involved_officers.to_a.count(&:valid?) < general_info.num_involved_officers
-      :involved_officers
-    else
+    if submitted?
       :review
+    else
+      if screener.nil? || screener.invalid?
+        :screener
+      elsif general_info.nil? || general_info.invalid?
+        :general_info
+      elsif involved_civilians.to_a.count(&:valid?) < general_info.num_involved_civilians
+        :involved_civilians
+      elsif involved_officers.to_a.count(&:valid?) < general_info.num_involved_officers
+        :involved_officers
+      else
+        :review
+      end
     end
   end
 
