@@ -91,8 +91,10 @@ class ApplicationController < ActionController::Base
     def check_authorization
       if !@incident.authorized_to_view?(@current_user)
         raise BridgeExceptions::UnathorizedToView.new
-      elsif !@incident.authorized_to_edit?(@current_user) && params[:action] != 'review'
-        redirect_to review_incident_path(@incident)
+      elsif !@incident.authorized_to_edit?(@current_user)
+        raise BridgeExceptions::UnathorizedToView.new if @incident.next_step != :review
+
+        redirect_to review_incident_path(@incident) if params[:action] != 'review'
       end
     end
 

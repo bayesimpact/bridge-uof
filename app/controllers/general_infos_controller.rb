@@ -36,7 +36,13 @@ class GeneralInfosController < StepsBaseController
   private
 
     def set_general_info
-      @general_info = @incident.general_info.target || GeneralInfo.new(incident: @incident)
+      if @incident.general_info.present?
+        @general_info = @incident.general_info.target
+      else
+        @general_info = GeneralInfo.new(incident: @incident)
+        # Setting general_info.incident causes validation to run, so clear those errors.
+        @general_info.errors.clear
+      end
     end
 
     def partial_save(formatted_params)
