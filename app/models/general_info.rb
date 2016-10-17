@@ -10,7 +10,7 @@ class GeneralInfo
   table name: :general_infos
   belongs_to :incident
 
-  field :contracting_for_ori, :string
+  field :ori, :string
   field :incident_date_str, :string
   field :incident_time_str, :string
   field :address, :string
@@ -43,7 +43,7 @@ class GeneralInfo
   validates :num_involved_civilians, :num_involved_officers,
             numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: 20,
                             message: "should be a positive number (1-20)" }
-  validates :contracting_for_ori, ori: true
+  validates :ori, ori: true
 
   delegate :incident_id, to: :incident
 

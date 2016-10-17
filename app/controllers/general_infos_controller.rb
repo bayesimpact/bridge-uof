@@ -24,7 +24,6 @@ class GeneralInfosController < StepsBaseController
 
       # Update successful, fields valid.
       @incident.general_info = @general_info
-      @incident.ori = @general_info.contracting_for_ori if @general_info.contracting_for_ori
 
       regenerate_incident_id_if_necessary!(old_incident)
       remove_people_if_necessary_to_match_counts!
@@ -39,7 +38,7 @@ class GeneralInfosController < StepsBaseController
       if @incident.general_info.present?
         @general_info = @incident.general_info.target
       else
-        @general_info = GeneralInfo.new(incident: @incident)
+        @general_info = GeneralInfo.new(ori: @incident.ori, incident: @incident)
         # Setting general_info.incident causes validation to run, so clear those errors.
         @general_info.errors.clear
       end

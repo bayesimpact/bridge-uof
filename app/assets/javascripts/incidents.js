@@ -6,11 +6,11 @@ $(function(){
     window.location.href = $(this).find("a").attr('href');
   });
 
-  $('#screener_contracting_for_ori').change(function () {
-    if ($('#screener_contracting_for_ori').val() == $('#screener_contracting_for_ori option:first').val()) {
+  $('#screener_ori').change(function () {
+    if ($('#screener_ori').val() == $('#screener_ori option:first').val()) {
       $('#filling-out-for').hide();
     } else {
-      $('#filling-out-for-ori').text($('#screener_contracting_for_ori').val());
+      $('#filling-out-for-ori').text($('#screener_ori').val());
       $('#filling-out-for').show();
     }
   }).change();

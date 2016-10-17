@@ -12,7 +12,7 @@
     },
     "general_info": {
       "partial": "f",
-      "contracting_for_ori": null,
+      "ori": null,
       "incident_date_str": "04\/01\/2016",
       "incident_time_str": "1830",
       "address": "1355 Market St",
@@ -101,7 +101,7 @@
     },
     "general_info": {
       "partial": "f",
-      "contracting_for_ori": null,
+      "ori": null,
       "incident_date_str": "02\/01\/2016",
       "incident_time_str": "1830",
       "address": "1355 Market St",
