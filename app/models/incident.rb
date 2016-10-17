@@ -16,9 +16,8 @@ class Incident
   belongs_to :user
 
   field :status, :string, default: STATUS_TYPES.first
-  field :ursus_id_str, :string  # The IncidentId value object is accessed
-                                # through the #incident_id method.
-                                # TODO: Change the field name to something like 'id_str'.
+  field :ursus_id_str, :string  # The IncidentId value object is accessed through the #incident_id method.
+  # TODO: Change the 'ursus_id_str' field name to 'id_str' or 'incident_id_str'.
 
   validates :user, presence: true
   validates :ursus_id_str, uniqueness: true, allow_nil: true
