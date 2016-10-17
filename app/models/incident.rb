@@ -22,9 +22,8 @@ class Incident
   validates :user, presence: true
   validates :ursus_id_str, uniqueness: true, allow_nil: true
 
-  # For convenience we programmatically create a set of getters draft?,
-  # need_fixing? ... and a set of setters draft!, need_fixing! to quickly check
-  # or set the status of an incident.
+  # For convenience, we programmatically create a set of getters draft?, in_review?, etc.
+  # and a set of setters draft!, in_review!, etc. to check or set the status of an incident.
   STATUS_TYPES.each do |value|
     class_eval "def #{value}?() self.status == '#{value}' end"
     class_eval "def #{value}!() update_attributes status: '#{value}' end"
