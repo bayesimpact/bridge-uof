@@ -98,7 +98,7 @@ describe '[Incident with contracting ORI relationships]' do
     it 'before the window is opened, has no submission button and renders the right message' do
       visit_status :state_submission
       expect(page).to have_content("not yet open")
-      expect(page).not_to have_button('FINAL SUBMISSION')
+      expect(page).not_to have_button('SUBMISSION')
     end
 
     it 'allows state submission during the submission window' do
@@ -109,7 +109,7 @@ describe '[Incident with contracting ORI relationships]' do
       visit_status :state_submission
       expect(page).to have_content("1 incident ready for state submission")
       expect(page).to have_content("You may now submit incidents")
-      click_button 'FINAL SUBMISSION'
+      click_button 'SUBMISSION'
 
       expect(AgencyStatus.where(ori: @parent_ori_admin.ori).first.last_submission_year).to eq(@current_submission_year)
       expect(AgencyStatus.where(ori: @sub_ori_user.ori).first.last_submission_year).to eq(@current_submission_year)
@@ -126,7 +126,7 @@ describe '[Incident with contracting ORI relationships]' do
 
       # Disables subsequent state submission
       visit_status :state_submission
-      expect(page).not_to have_button('FINAL SUBMISSION')
+      expect(page).not_to have_button('SUBMISSION')
       expect(page).to have_content("Submission complete")
     end
 

@@ -5,13 +5,11 @@ describe '[Splash page]', type: :request do
     login(dont_handle_splash: true)
     visit root_path
     expect(current_path).to end_with('/welcome')
-    expect(page).to have_content('Welcome to URSUS')
 
     # Until the user clicks 'ENTER' on the splash page, they'll keep getting
     # redirected there
     visit root_path
     expect(current_path).to end_with('/welcome')
-    expect(page).to have_content('Welcome to URSUS')
 
     click_button('ENTER')
     expect(current_path).not_to end_with('/welcome')  # Sent away from splash

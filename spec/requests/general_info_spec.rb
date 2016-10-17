@@ -40,6 +40,16 @@ describe '[General Info Page]', type: :request do
     expect_form_success
   end
 
+  it "doesn't allow incidents with years that have already been submitted for" do
+    AgencyStatus.find_or_create_by_ori(User.first.ori)
+                .mark_year_submitted!(Time.current.year - 1)
+
+    answer_all_general_info(date: Time.zone.today - 1.year)
+    find('button[type=submit]').click
+
+    expect_form_failure
+  end
+
   it 'allows partial save', driver: :poltergeist do
     today_str = Time.zone.today.strftime('%m/%d/%Y')
     fill_in 'Date', with: today_str

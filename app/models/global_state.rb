@@ -1,5 +1,3 @@
-require 'set'
-
 # This class is a singleton (see HasOnlyOneInstance).
 # Use the accessor functions below to get and set.
 class GlobalState

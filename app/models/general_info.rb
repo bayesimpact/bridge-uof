@@ -43,6 +43,7 @@ class GeneralInfo
   validates :num_involved_civilians, :num_involved_officers,
             numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: 20,
                             message: "should be a positive number (1-20)" }
+  validates :contracting_for_ori, ori: true
 
   delegate :incident_id, to: :incident
 
@@ -79,6 +80,6 @@ class GeneralInfo
     end
 
     def upcase_state
-      state.upcase!
+      state.upcase! if state
     end
 end

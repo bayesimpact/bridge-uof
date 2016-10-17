@@ -39,7 +39,11 @@ class Incident
   end
 
   def next_step
-    if screener.nil? || screener.invalid?
+    if submitted?
+      # Don't run validation for submitted incidents because
+      # we already know they're completely valid.
+      :review
+    elsif screener.nil? || screener.invalid?
       :screener
     elsif general_info.nil? || general_info.invalid?
       :general_info
