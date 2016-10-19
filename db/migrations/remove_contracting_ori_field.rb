@@ -4,10 +4,10 @@ class RemoveContractingOriField < DynamoDB::Migration::Unit
   def update
     logger = Logger.new(STDOUT)
 
-    logger.info 'Running migration #{self.class.name}:'
+    logger.info "Running migration #{self.class.name}:"
 
     incident_ids = Incident.all.map(&:id)
-    logger.info 'Updating #{incident_ids.length} Incident records ...'
+    logger.info "Updating #{incident_ids.length} Incident records ..."
     incident_ids.each do |id|
       client.update_item(
         table_name: "#{Dynamoid.config.namespace}_incidents",
@@ -17,13 +17,17 @@ class RemoveContractingOriField < DynamoDB::Migration::Unit
     end
 
     general_info_ids = GeneralInfo.all.map(&:id)
-    logger.info 'Updating #{general_info_ids.length} GeneralInfo records ...'
+    logger.info "Updating #{general_info_ids.length} GeneralInfo records ..."
     general_info_ids.each do |id|
-      client.update_item(
-        table_name: "#{Dynamoid.config.namespace}_general_infos",
-        key: { 'id' => id },
-        update_expression: "SET ori = contracting_for_ori REMOVE contracting_for_ori"
-      )
+      begin
+        client.update_item(
+          table_name: "#{Dynamoid.config.namespace}_general_infos",
+          key: { 'id' => id },
+          update_expression: "SET ori = contracting_for_ori REMOVE contracting_for_ori",
+          condition_expression: "attribute_exists (contracting_for_ori)"
+        )
+      rescue Aws::DynamoDB::Errors::ConditionalCheckFailedException
+      end
     end
 
     logger.info 'Done!'
