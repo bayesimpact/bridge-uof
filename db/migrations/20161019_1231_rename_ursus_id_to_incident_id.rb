@@ -16,6 +16,7 @@ class RenameUrsusIdToIncidentId < DynamoDB::Migration::Unit
           condition_expression: "attribute_exists (ursus_id_str)"
         )
       rescue Aws::DynamoDB::Errors::ConditionalCheckFailedException
+        logger.debug "  Skipping #{id} because it has no ursus_id_str"
       end
     end
 

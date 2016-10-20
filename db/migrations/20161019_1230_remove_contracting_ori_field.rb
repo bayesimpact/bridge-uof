@@ -27,6 +27,7 @@ class RemoveContractingOriField < DynamoDB::Migration::Unit
           condition_expression: "attribute_exists (contracting_for_ori)"
         )
       rescue Aws::DynamoDB::Errors::ConditionalCheckFailedException
+        logger.debug "  Skipping #{id} because it has no contracting_for_ori"
       end
     end
 
