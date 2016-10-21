@@ -34,7 +34,9 @@ module Dynamoid
       @read_capacity_used = Hash.new { |h, k| h[k] = 0 }
       @write_capacity_used = Hash.new { |h, k| h[k] = 0 }
 
+      @monitoring = true
       yield
+      @monitoring = false
 
       puts "  Read capacity used: #{Dynamoid.adapter.read_capacity_used.values.reduce(:+)}"
       Dynamoid.adapter.read_capacity_used.each do |table, capacity|
@@ -52,7 +54,7 @@ module Dynamoid
     def benchmark(method, *args)
       result = yield
 
-      if args
+      if @monitoring && args
         case method
         when 'get_item'
           @read_capacity_used[args[0][0]] += 1
