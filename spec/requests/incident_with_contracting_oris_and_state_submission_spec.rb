@@ -132,11 +132,28 @@ describe '[Incident with contracting ORI relationships]' do
 
     it 'state submission fails if any incidents in the ORI are not complete' do
       GlobalState.open_submission_window!
-      create_partial_incident :general
-      visit_status :state_submission
 
+      # Submission fails with draft incident
+
+      create_partial_incident :review
+
+      visit_status :state_submission
       expect(status_nav_count(:draft)).to eq(1)
-      expect(status_nav_count(:approved)).to eq(1)
+
+      click_button 'SUBMISSION'
+      expect(page).to have_content("Your agency has 1 unreviewed incident")
+
+      visit_status :state_submission
+      expect(page).not_to have_content("Submission complete")
+
+      # Submission fails with in_review incident
+
+      visit_status :draft
+      click_link 'View'
+      click_button 'Send for review'
+
+      visit_status :state_submission
+      expect(status_nav_count(:in_review)).to eq(1)
 
       click_button 'SUBMISSION'
       expect(page).to have_content("Your agency has 1 unreviewed incident")
