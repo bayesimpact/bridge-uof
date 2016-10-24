@@ -149,7 +149,7 @@ describe '[Incident with contracting ORI relationships]' do
       # Submission fails with in_review incident
 
       visit_status :draft
-      click_link 'View'
+      click_link 'Edit'
       click_button 'Send for review'
 
       visit_status :state_submission
