@@ -4,6 +4,7 @@ class IncidentsController < ApplicationController
   before_action :redirect_doj_users, only: [:index, :new, :submit_to_state!]
   before_action :set_status
   before_action :set_incident, only: [:show, :update, :review, :destroy]
+  before_action :set_incidents, only: [:index, :submit_to_state!]
   before_action :set_year, only: [:index, :json]
 
   def new
@@ -11,8 +12,6 @@ class IncidentsController < ApplicationController
   end
 
   def index
-    set_incidents
-
     if @status == 'analytics'
       raise ActionController::BadRequest.new unless @current_user.admin?
 
@@ -180,9 +179,12 @@ class IncidentsController < ApplicationController
       elsif @agency_last_submission_year == Time.last_year
         raise BridgeExceptions::UnableToSubmitError.new "You have already submitted for #{Time.last_year}"
       elsif params[:submission_year] != Time.last_year.to_s
+        year = params[:submission_year] || '<no year specified>'
         raise BridgeExceptions::UnableToSubmitError.new "Currently accepting submissions for #{Time.last_year} " \
-                                                       "(you tried to submit for " \
-                                                       "#{params[:submission_year] || '<no year specified>'})"
+                                                       "(you tried to submit for #{year})"
+      elsif @incident_counts_by_type[:draft] > 0 || @incident_counts_by_type[:in_review] > 0
+        num_unreviewed = @incident_counts_by_type[:draft] + @incident_counts_by_type[:in_review]
+        raise BridgeExceptions::UnableToSubmitError.new "Your agency has #{num_unreviewed.pluralize('unreviewed incident')}"
       end
     end
 end
