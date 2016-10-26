@@ -22,6 +22,8 @@ class Incident
   # TODO: Change the field name from 'ursus_id_str' to 'id_str' or 'incident_id_str'.
   field :ursus_id_str, :string
 
+  global_secondary_index hash_key: :ursus_id_str, projected_attributes: [hash_key]
+
   validates :user, :ori, presence: true
   validates :ursus_id_str, uniqueness: true, allow_nil: true
 
