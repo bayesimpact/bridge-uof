@@ -19,11 +19,10 @@ class Incident
   field :status, :string, default: STATUS_TYPES.first
 
   # The IncidentId value object is accessed through the #incident_id method.
-  # TODO: Change the field name from 'ursus_id_str' to 'id_str' or 'incident_id_str'.
-  field :ursus_id_str, :string
+  field :incident_id_str, :string
 
   validates :user, :ori, presence: true
-  validates :ursus_id_str, uniqueness: true, allow_nil: true
+  validates :incident_id_str, uniqueness: true, allow_nil: true
 
   # For convenience we programmatically create a set of getters draft?,
   # need_fixing? ... and a set of setters draft!, need_fixing! to quickly check
