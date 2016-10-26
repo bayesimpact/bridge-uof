@@ -1,4 +1,6 @@
-# This is necessary for models that use devise, though I'm not quite sure why. -AN
+# Validates that an attribute of the given object is unique -
+# that is, no other instance of this model has that attribute value.
+# Avoids a SCAN operation if possible by attempting a secondary index query.
 class UniquenessValidator < ActiveModel::EachValidator
   def validate_each(document, attribute, value)
     records = begin
