@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/bayesimpact/Dynamoid.git
-  revision: 8f1a54f135a9fedc0de7d4f7c6016d85780f1ef0
+  revision: fce611dc569e6a7581efdbb169fe544c81b22a45
   specs:
-    dynamoid (1.1.0)
-      activemodel (~> 4)
+    dynamoid (1.2.1)
+      activemodel (>= 4)
       aws-sdk-resources (~> 2)
       concurrent-ruby (>= 1.0)
 
@@ -156,7 +156,7 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
     mini_portile2 (2.1.0)
-    minitest (5.9.0)
+    minitest (5.9.1)
     nokogiri (1.6.8)
       mini_portile2 (~> 2.1.0)
       pkg-config (~> 1.1.7)
