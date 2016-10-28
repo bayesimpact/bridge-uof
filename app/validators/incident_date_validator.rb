@@ -32,8 +32,8 @@ class IncidentDateValidator < ActiveModel::EachValidator
       # Only perform this check if the GeneralInfo model has an associated incident
       # (this may not be the case, i.e. when the incident is being created via bulk upload).
       if incident.present?
-        ori = record.contracting_for_ori || incident.ori
-        submitted_years = AgencyStatus.find_or_create_by_ori(ori).complete_submission_years
+        submitted_years = AgencyStatus.find_or_create_by_ori(incident.ori)
+                                      .complete_submission_years
 
         if submitted_years.include? year
           record.errors[attribute] << "ORI #{ori} has already submitted for this year"

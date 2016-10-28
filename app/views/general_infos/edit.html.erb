@@ -14,8 +14,8 @@
   <% if @current_user.contracting_oris.size > 0 %>
     <div class="incident-form-row form-group">
       <div class="form-col">
-        <%= f.label :contracting_for_ori, 'Which agency are you filling out this report on behalf of?' %>
-        <%= f.select :contracting_for_ori, @current_user.allowed_oris.map {|o| [display_ori(o), o]} %>
+        <%= f.label :ori, 'Which agency are you filling out this report on behalf of?' %>
+        <%= f.select :ori, @current_user.allowed_oris.map {|o| [display_ori(o), o]} %>
         <div class="question-explanation">
           Our records indicate that your department provides policing services for <%= pluralize(@current_user.contracting_oris.size, ' contract city') %>.
         </div>

@@ -5,8 +5,6 @@ FactoryGirl.define do
       num_officers  1
     end
 
-    ori { build(:dummy_user).ori }
-
     user { User.find_by_user_id(build(:dummy_user).user_id) || create(:dummy_user) }
 
     after(:create) do |incident, e|  # e is the FactoryGirl evaluator (has access to transient attributes).

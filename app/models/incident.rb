@@ -15,9 +15,7 @@ class Incident
   has_many :audit_entries
   belongs_to :user
 
-  field :ori, :string  # (The user may be reporting on behalf of a different ORI.)
   field :status, :string, default: STATUS_TYPES.first
-
   # The IncidentId value object is accessed through the #incident_id method.
   field :incident_id_str, :string
 
@@ -26,12 +24,15 @@ class Incident
   validates :user, :ori, presence: true
   validates :incident_id_str, uniqueness: true, allow_nil: true
 
-  # For convenience we programmatically create a set of getters draft?,
-  # need_fixing? ... and a set of setters draft!, need_fixing! to quickly check
-  # or set the status of an incident.
+  # For convenience, we programmatically create a set of getters draft?, in_review?, etc.
+  # and a set of setters draft!, in_review!, etc. to check or set the status of an incident.
   STATUS_TYPES.each do |value|
     class_eval "def #{value}?() self.status == '#{value}' end"
     class_eval "def #{value}!() update_attributes status: '#{value}' end"
+  end
+
+  def ori
+    general_info.target.try(:ori) || user.target.try(:ori)
   end
 
   # This is the accessor method for the IncidentId value object.
