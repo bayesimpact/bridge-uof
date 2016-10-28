@@ -17,6 +17,8 @@ class User
   field :user_id
   field :splash_complete, :boolean, default: false
 
+  global_secondary_index hash_key: :ori, projected_attributes: :all
+
   validates :first_name, :last_name, :email, :ori, :department, :role, presence: true
   validates :user_id, presence: true, uniqueness: true
 

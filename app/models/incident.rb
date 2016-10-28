@@ -21,6 +21,8 @@ class Incident
   # The IncidentId value object is accessed through the #incident_id method.
   field :incident_id_str, :string
 
+  global_secondary_index hash_key: :ursus_id_str, projected_attributes: [hash_key]
+
   validates :user, :ori, presence: true
   validates :incident_id_str, uniqueness: true, allow_nil: true
 

@@ -8,7 +8,7 @@ class GetAllIncidentsQuery < Query
       if params[:user].admin?
         # Admins oversee incidents of all users in their ORI and contracting ORIs.
         params[:user].allowed_oris.flat_map do |ori|
-          User.where(ori: ori).all.flat_map do |user|
+          User.find_all_by_secondary_index(ori: ori).flat_map do |user|
             user.incidents.records
           end
         end
