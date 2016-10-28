@@ -1,5 +1,10 @@
 # Monkey-patches to the Integer class go here.
 class Integer
+  # Allows ActionView::Helpers::TextHelper#pluralize to be used outside of views.
+  def pluralize(word)
+    ActionController::Base.helpers.pluralize(self, word)
+  end
+
   # Run a block a given number of times, sleeping and retrying when
   # an exception of the given type is caught.
   def tries(catching: StandardError)

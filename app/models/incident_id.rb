@@ -16,7 +16,7 @@ class IncidentId
     5.tries(catching: BridgeExceptions::IncidentIdCollisionError) do
       try_id = prefix + (0...Incident::INCIDENT_ID_CODE_LENGTH).map { chars[rand(chars.length)] }.join
 
-      unless @incident.update_attribute(:ursus_id_str, try_id)
+      unless @incident.update_attribute(:incident_id_str, try_id)
         exception_msg = "Failed to generate a unique ID for this incident. Most recently tried #{try_id}"
         raise BridgeExceptions::IncidentIdCollisionError.new(exception_msg)
       end
@@ -46,8 +46,7 @@ class IncidentId
   private
 
     def id_string
-      # TODO: Change the field name in the incident table from 'ursus_id_str' to 'id_str'.
-      generate! unless @incident.ursus_id_str
-      @incident.ursus_id_str
+      generate! unless @incident.incident_id_str
+      @incident.incident_id_str
     end
 end

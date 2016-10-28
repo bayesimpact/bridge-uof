@@ -130,6 +130,38 @@ describe '[Incident with contracting ORI relationships]' do
       expect(page).to have_content("Submission complete")
     end
 
+    it 'state submission fails if any incidents in the ORI are not complete' do
+      GlobalState.open_submission_window!
+
+      # Submission fails with draft incident
+
+      create_partial_incident :review
+
+      visit_status :state_submission
+      expect(status_nav_count(:draft)).to eq(1)
+
+      click_button 'SUBMISSION'
+      expect(page).to have_content("Your agency has 1 unreviewed incident")
+
+      visit_status :state_submission
+      expect(page).not_to have_content("Submission complete")
+
+      # Submission fails with in_review incident
+
+      visit_status :draft
+      click_link 'Edit'
+      click_button 'Send for review'
+
+      visit_status :state_submission
+      expect(status_nav_count(:in_review)).to eq(1)
+
+      click_button 'SUBMISSION'
+      expect(page).to have_content("Your agency has 1 unreviewed incident")
+
+      visit_status :state_submission
+      expect(page).not_to have_content("Submission complete")
+    end
+
     it 'shows a "Past Submissions" entry for 0-incident-submission years' do
       status = AgencyStatus.find_by_ori(@parent_ori_admin.ori)
       status.mark_year_submitted!(1337)  # Add another past submission for good measure

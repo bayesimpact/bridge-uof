@@ -16,11 +16,11 @@ class Incident
   belongs_to :user
 
   field :status, :string, default: STATUS_TYPES.first
-  field :ursus_id_str, :string  # The IncidentId value object is accessed through the #incident_id method.
-  # TODO: Change the 'ursus_id_str' field name to 'id_str' or 'incident_id_str'.
+  # The IncidentId value object is accessed through the #incident_id method.
+  field :incident_id_str, :string
 
-  validates :user, presence: true
-  validates :ursus_id_str, uniqueness: true, allow_nil: true
+  validates :user, :ori, presence: true
+  validates :incident_id_str, uniqueness: true, allow_nil: true
 
   # For convenience, we programmatically create a set of getters draft?, in_review?, etc.
   # and a set of setters draft!, in_review!, etc. to check or set the status of an incident.
