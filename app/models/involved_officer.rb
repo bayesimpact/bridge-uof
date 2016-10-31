@@ -13,7 +13,6 @@ class InvolvedOfficer < InvolvedPerson
   field :received_force_type, :array, default: []
   field :on_duty, :boolean
   field :dress, :string
-  field :sworn_type, :string
 
   validates :age, inclusion: { in: AGES }
   validates :officer_used_force, inclusion: { in: [true, false], message: Constants::ERROR_BLANK_FIELD }
@@ -21,7 +20,6 @@ class InvolvedOfficer < InvolvedPerson
   validates :received_force, inclusion: { in: [true, false], message: Constants::ERROR_BLANK_FIELD }
   validates :on_duty, inclusion: { in: [true, false], message: Constants::ERROR_BLANK_FIELD }
   validates :dress, inclusion: { in: DRESS_TYPES }
-  validates :sworn_type, inclusion: { in: SWORN_TYPES }
 
   with_options if: :received_force do
     validates :received_force_type, presence: true, subset: { in: RECEIVED_FORCE_TYPES }
