@@ -13,7 +13,7 @@ class AddSecondaryIndexToIncidents < DynamoDB::Migration::Unit
           attribute_type: "S"
         },
         {
-          attribute_name: "ursus_id_str",
+          attribute_name: "incident_id_str",
           attribute_type: "S"
         }
       ],
@@ -24,10 +24,10 @@ class AddSecondaryIndexToIncidents < DynamoDB::Migration::Unit
       global_secondary_index_updates: [
         {
           create: {
-            index_name: Incident.indexes['ursus_id_str'].name,
+            index_name: Incident.indexes['incident_id_str'].name,
             key_schema: [
               {
-                attribute_name: "ursus_id_str",
+                attribute_name: "incident_id_str",
                 key_type: "HASH"
               }
             ],
