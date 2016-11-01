@@ -6,12 +6,19 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   protect_from_forgery with: :exception
 
+  before_action :check_maintenance_mode
   before_action :log_params
   before_action :consider_splash, unless: :devise_controller?
 
   after_action :track_action
 
   protected
+
+    def check_maintenance_mode
+      if GlobalState.maintenance_mode?
+        return render 'pages/maintenance', layout: nil
+      end
+    end
 
     def set_incident
       @incident_id = params[:incident_id] || params[:id]
