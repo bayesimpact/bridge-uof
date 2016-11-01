@@ -100,7 +100,6 @@ describe '[Incident]', type: :request do
       check 'Vietnamese'
       choose_for_question 'Yes', text: 'on duty'
       choose_for_question 'Patrol Uniform', text: 'dress'
-      choose 'Sworn officer'
       click_button 'Save and Continue'
 
       expect(current_path).to end_with('/review')
