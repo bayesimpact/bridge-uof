@@ -24,7 +24,7 @@ class AddSecondaryIndexToUsers < DynamoDB::Migration::Unit
       global_secondary_index_updates: [
         {
           create: {
-            index_name: Incident.indexes['ori'].name,
+            index_name: User.indexes['ori'].name,
             key_schema: [
               {
                 attribute_name: "ori",
