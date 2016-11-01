@@ -53,7 +53,6 @@ module Constants
       confirmed_armed_weapon: InvolvedCivilian::CONFIRMED_WEAPONS,
       officer_used_force_reason: InvolvedOfficer::OFFICER_USED_FORCE_REASON_TYPES,
       dress: InvolvedOfficer::DRESS_TYPES,
-      sworn_type: InvolvedOfficer::SWORN_TYPES
     }.freeze
   end
 end

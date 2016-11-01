@@ -17,10 +17,8 @@ module Constants
 
     OFFICER_USED_FORCE_REASON_TYPES = ['To effect arrest', 'To prevent escape', 'To overcome resistance'].freeze
 
-    SWORN_TYPES = ['Sworn officer', 'Non-sworn uniformed department employee'].freeze
-
     DISPLAY_FIELDS = ([
-      :officer_used_force, :officer_used_force_reason, :on_duty, :dress, :sworn_type
+      :officer_used_force, :officer_used_force_reason, :on_duty, :dress
     ] + Constants::InvolvedPerson::DISPLAY_FIELDS).freeze
 
     FBI_FIELDS = Constants::InvolvedPerson::FBI_FIELDS.freeze
@@ -29,7 +27,6 @@ module Constants
       officer_used_force: "Officer used force against civilian(s)?",
       received_force: "Officer assaulted by civilian(s)?",
       on_duty: "On duty?",
-      sworn_type: "Officer type"
     }.merge(Constants::InvolvedPerson::CUSTOM_LABELS_FOR_REVIEW).freeze
   end
 end
