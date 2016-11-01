@@ -164,34 +164,6 @@ describe '[Incident]', type: :request do
       expect(current_path).to end_with('/involved_officers/new')
     end
 
-    it 'help button and feedback page work correctly', driver: :poltergeist do
-      Feedback.create_table
-      expect(Feedback.count).to eq(0)
-
-      new_incident
-      click_link('helpButton')
-      # Should open in new tab
-      expect(windows.length).to eq(2)
-
-      page.within_window windows.last do
-        expect(current_path).to end_with('/feedback')
-
-        fill_in 'feedback[source]', with: "Foo"
-        # Deliberately don't fill out the second field, ensure it throws an error.
-        click_button 'Submit Feedback'
-        expect(current_path).to end_with('/feedback')
-
-        fill_in 'feedback[content]', with: "Bar"
-        click_button 'Submit Feedback'
-        expect(current_path).to end_with('/thank_you')
-      end
-
-      expect(Feedback.count).to eq(1)
-      f = Feedback.first
-      expect(f.source).to eq("Foo")
-      expect(f.content).to eq("Bar")
-    end
-
     it 'displays the Help button on the right pages'  do
       visit "/feedback"
       expect(page).to have_no_css('#helpButton')
