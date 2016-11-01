@@ -2,7 +2,7 @@
 development:
   access_key_id: AKIA1111111111111UA
   secret_access_key: secret
-  endpoint: http://localhost:8010
+  endpoint: http://localhost:8000
 
 test:
   access_key_id: AKIA1111111111111UA
