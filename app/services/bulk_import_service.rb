@@ -1,22 +1,35 @@
-# BulkImportService.import_from_json handles bulk import of incidents.
+# BulkImportService.import handles bulk import of incidents.
 class BulkImportService
-  def self.import_from_json(file, user)
-    begin
-      incidents = JSON.parse(file.read)
-    rescue JSON::ParserError => e
-      filename = file.original_filename
-      output = ["Invalid file!", "An error occurred while parsing #{filename}:", "    #{e.message}"]
-    else
-      output = ["Uploading #{incidents.size} #{incidents.size == 1 ? 'incident' : 'incidents'} ..."]
-      incidents.each_with_index do |incident, idx|
-        output << _import_incident(incident, user, idx)
-      end
-    end
+  def self.import(file, user)
+    incidents = _parse_file(file)
 
+    output = ["Uploading #{incidents.size} #{incidents.size == 1 ? 'incident' : 'incidents'} ..."]
+    incidents.each_with_index do |incident, idx|
+      output << _import_incident(incident, user, idx)
+    end
     output
+  rescue BridgeExceptions::ImportError => e
+    e.message.split("\n")
   end
 
   # "Private methods"
+
+  # Parse a JSON or XML file into an array of hashes representing incidents.
+  def self._parse_file(file)
+    filename = file.original_filename
+    contents = file.read
+
+    begin
+      # Parse as JSON by default, but parse as XML if the extension is '.xml'.
+      if filename.end_with?('.xml')
+        Hash.from_xml(contents)['incidents']
+      else
+        JSON.parse(contents)
+      end
+    rescue JSON::ParserError, REXML::ParseException => e
+      raise BridgeExceptions::ImportError.new "Invalid file!\nAn error occurred while parsing #{filename}:\n    #{e.message}"
+    end
+  end
 
   def self._import_incident(incident, user, idx)
     incident = Incident.from_json(incident.to_json, user)

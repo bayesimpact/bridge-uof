@@ -1,4 +1,5 @@
 require 'json'
+require 'rexml/document'
 
 # An incident filed within Ursus.
 class Incident
@@ -129,14 +130,50 @@ class Incident
     IncidentDeserializerService.from_json(json, user)
   end
 
-  def self.schema
-    {
+  def self.json_schema
+    raw_json_schema = {
       'ori' => '<string>',
-      'screener' => Screener.schema,
-      'general_info' => GeneralInfo.schema,
-      'involved_civilians[]' => InvolvedCivilian.schema,
-      'involved_officers[]' => InvolvedOfficer.schema
+      'screener' => Screener.json_schema,
+      'general_info' => GeneralInfo.json_schema,
+      'involved_civilians[]' => InvolvedCivilian.json_schema,
+      'involved_officers[]' => InvolvedOfficer.json_schema
     }
+
+    # Apply some formatting to the schema for display purposes.
+    JSON.pretty_generate(raw_json_schema)
+        .gsub(/"(<.*>)"/, "\\1")   # remove quotes from <type>s
+        .tr("'", '"')
+  end
+
+  def self.xml_schema
+    raw_xml_schema = %(
+      <?xml version="1.0" encoding="UTF-8"?>
+      <incidents type="array">
+        <incident>
+          <ori>{{ string }}</ori>
+          <screener>
+            #{Screener.xml_schema}
+          </screener>
+          <general-info>
+            #{GeneralInfo.xml_schema}
+          </general-info>
+          <involved-civilians type="array">
+            <involved-civilian>
+              #{InvolvedCivilian.xml_schema}
+            </involved-civilian>
+          </involved-civilians>
+          <involved-officers type="array">
+            <involved-officer>
+              #{InvolvedOfficer.xml_schema}
+            </involved-officer>
+          </involved-officers>
+        </incident>
+      </incidents>
+    )
+
+    formatted_xml = ""
+    REXML::Document.new(raw_xml_schema).write(output: formatted_xml, indent: 2)
+    formatted_xml
   end
 
   protected

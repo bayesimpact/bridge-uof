@@ -16,6 +16,9 @@ describe '[Incident serialization and bulk upload]', type: :request do
   end
 
   it 'serializes and deserializes incidents properly' do
+    puts Incident.json_schema
+    puts Incident.xml_schema
+
     deserialized_incident = Incident.from_json(@valid_json, @user)
 
     expect(deserialized_incident).to be(@original_incident)
@@ -43,23 +46,45 @@ describe '[Incident serialization and bulk upload]', type: :request do
 
   it 'cries on broken JSON' do
     straight_up_broken_json = @valid_json[5..-1]
-    expect { Incident.from_json(straight_up_broken_json, @user) }.to raise_error("JSON parsing error: invalid JSON")
+    expect { Incident.from_json(straight_up_broken_json, @user) }.to raise_error("Parsing error: invalid JSON")
 
     json_with_missing_fields = {
       "ori" => @user.ori,
       "screener" => JSON.parse(@valid_json)['screener']
     }.to_json
-    expect { Incident.from_json(json_with_missing_fields, @user) }.to raise_error("JSON parsing error: missing section: general_info")
+    expect { Incident.from_json(json_with_missing_fields, @user) }.to raise_error("Parsing error: missing section: general_info")
 
     json_with_extra_garbage = @valid_json.sub('"shots_fired":"t"', '"shots_fired":"t","secondary_agency":"t"')
-    expect { Incident.from_json(json_with_extra_garbage, @user) }.to raise_error("JSON parsing error: unexpected field: secondary_agency in Screener")
+    expect { Incident.from_json(json_with_extra_garbage, @user) }.to raise_error("Parsing error: unexpected field: secondary_agency in Screener")
   end
 
-  it 'can create an incident via the JSON upload form', driver: :poltergeist do
+  it 'can create an incident via JSON upload', driver: :poltergeist do
     # TODO: Test that ORI validation is enabled in devise/siteminder mode and disabled in demo mode.
 
     file = Tempfile.new(['incident', '.json'])
     file.write("[ #{@valid_json} ]")
+    file.close
+
+    visit 'incidents/upload'
+    execute_script('$("input[type=file]").show().appendTo("form");')
+    attach_file('file', file.path)
+
+    expect(page).to have_content('Uploading 1 incident ...')
+    expect(page).to have_content('Created incident')
+    expect(Incident.count).to eq(1)
+    expect(Incident.first).to be_valid
+    expect(Incident.first).to be_in_review
+  end
+
+  it 'can create an incident via XML upload', driver: :poltergeist do
+    # TODO: Test that ORI validation is enabled in devise/siteminder mode and disabled in demo mode.
+
+    valid_xml = { incident: JSON.parse(@valid_json) }.to_xml(root: 'incidents')
+                                                     .sub('<incidents>', '<incidents type="array">')
+    puts valid_xml
+
+    file = Tempfile.new(['incident', '.xml'])
+    file.write("[ #{valid_xml} ]")
     file.close
 
     visit 'incidents/upload'

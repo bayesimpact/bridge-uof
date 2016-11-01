@@ -1,6 +1,7 @@
 # Custom exceptions go here.
 module BridgeExceptions
   class DeserializationError < StandardError; end
+  class ImportError < StandardError; end
   class IncidentIdCollisionError < StandardError; end
   class SiteminderAuthenticationError < StandardError; end
   class SiteminderCookieNotFoundError < StandardError; end

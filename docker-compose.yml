@@ -3,11 +3,11 @@ services:
   # Development database. In production we'll use the Amazon-hosted DynamoDB
   db:
     image: tray/dynamodb-local
-    command: [-inMemory, -port, "8000", "-sharedDb"]
+    command: [-inMemory, -port, "8010", "-sharedDb"]
     environment:
       _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
     ports:
-      - "8000:8000"
+      - "8010:8010"
     restart: always
   # Web app (Rails)
   web:
@@ -17,7 +17,7 @@ services:
         - GIT_SHA1
     image: "${DOCKER_REGISTRY_PATH}ursus"
     ports:
-      - "3000:80"
+      - "4000:80"
     volumes:
       - ./app:/ursus/app
     links:

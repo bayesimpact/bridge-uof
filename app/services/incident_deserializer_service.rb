@@ -24,12 +24,12 @@ class IncidentDeserializerService
     case e.message
     when /key not found: \"(\w*)\"/
       # rubocop:disable Style/PerlBackrefs
-      BridgeExceptions::DeserializationError.new("JSON parsing error: missing section: #{$1}")
+      BridgeExceptions::DeserializationError.new("Parsing error: missing section: #{$1}")
       # rubocop:enable Style/PerlBackrefs
     when /unexpected token/
-      BridgeExceptions::DeserializationError.new("JSON parsing error: invalid JSON")
+      BridgeExceptions::DeserializationError.new("Parsing error: invalid JSON")
     else
-      BridgeExceptions::DeserializationError.new("JSON parsing error: #{e.message}")
+      BridgeExceptions::DeserializationError.new("Parsing error: #{e.message}")
     end
   end
 

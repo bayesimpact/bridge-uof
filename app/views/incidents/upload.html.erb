@@ -14,7 +14,7 @@
     <% end %>
 
     <p>Use this form to upload multiple incidents at once. The uploaded file
-      must be a JSON file matching our schema <a id="showHideSchema">[show]</a>.
+      must be a JSON or XML file matching our schema <a id="showHideSchema">[show]</a>.
     </p>
 
     <p>
@@ -24,13 +24,19 @@
     <%= form_tag({action: :upload}, id: 'upload-control', multipart: true) do %>
       <label class="btn btn-file btn-bayes">
         <span id="fileButtonText">Choose file to upload <i class="fa fa-arrow-circle-up"></i></span>
-        <input type="file" name="file" style="display: none;" accept="application/json">
+        <input type="file" name="file" style="display: none;" accept="application/json,application/xml">
       </label>
     <% end %>
 
     <div id="schema" class="block">
-      <h3>Schema</h3>
-      <pre><%= @schema %></pre>
+      <div id="jsonSchema">
+        <h3><b>JSON Schema</b> / <a class="toggle-schema">XML Schema</a></h3>
+        <pre><%= @json_schema %></pre>
+      </div>
+      <div id="xmlSchema">
+        <h3><a class="toggle-schema">JSON Schema</a> / <b>XML Schema</b></h3>
+        <pre><%= @xml_schema %></pre>
+      </div>
     </div>
   </div>
 <% end %>
