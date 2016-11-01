@@ -26,7 +26,7 @@ module Constants
     CUSTOM_LABELS_FOR_REVIEW = {
       officer_used_force: "Officer used force against civilian(s)?",
       received_force: "Officer assaulted by civilian(s)?",
-      on_duty: "On duty?",
+      on_duty: "On duty?"
     }.merge(Constants::InvolvedPerson::CUSTOM_LABELS_FOR_REVIEW).freeze
   end
 end
