@@ -1,44 +1,57 @@
-<%= title "Submit Feedback" %>
+<%= title "Help" %>
 
 <div id="incidentStep">
 
-<%= render partial: "errors", locals: {record: @feedback} %>
+<h1 class="incident-form-header">Need help?</h1>
 
-<h1 class="incident-form-header">Submit your feedback or question</h1>
+<ul>
+  <li>Look at our <a class="link-inactive">FAQ [coming soon]</a> to see if your question is answered.</li>
+  <li>Watch the <a class="link-inactive">training video [coming soon]</a>.</li>
+  <li>Still have a question? Or want to send feedback?
+    <a data-toggle="collapse" data-target="#feedback-form-collapsible">Click here for a feedback form.</a></li>
 
-<%= form_for @feedback, url: feedback_path, method: "post", html: {id: "feedbackForm"} do |f| %>
-  <div class="incident-form-row">
-    <div class="form-col">
-      <%= f.label :source, "Which part gave you difficulty?" %>
-      <div class="question-explanation">
-        Please copy the question header, or skip this if you have a general question.
+
+<div class="collapse alert alert-info" id="feedback-form-collapsible">
+
+  <h2>Feedback form</h2>
+
+  <%= render partial: "errors", locals: {record: @feedback} %>
+
+  <%= form_for @feedback, url: feedback_path, method: "post", html: {id: "feedbackForm"} do |f| %>
+    <div class="incident-form-row">
+      <div class="form-col">
+        <%= f.label :source, "Which part gave you difficulty?" %>
+        <div class="question-explanation">
+          Please copy the question header, or skip this if you have a general question.
+        </div>
+        <%= f.text_area :source, class: "form-control" %>
       </div>
-      <%= f.text_area :source, class: "form-control" %>
     </div>
-  </div>
-  <div class="incident-form-row">
-    <div class="form-col">
-      <%= f.label :content, "Please explain the issue. " %>
-      <div class="question-explanation">
-        Were some options unclear? Is your incident more complex than can be captured here? Anything else?
+    <div class="incident-form-row">
+      <div class="form-col">
+        <%= f.label :content, "Please explain the issue. " %>
+        <div class="question-explanation">
+          Were some options unclear? Is your incident more complex than can be captured here? Anything else?
+        </div>
+        <%= f.text_area :content, class: "form-control big-text-input" %>
       </div>
-      <%= f.text_area :content, class: "form-control big-text-input" %>
     </div>
+    <div class="incident-form-row">
+      <p>
+        Your question will be sent to
+        <% if Rails.configuration.x.branding.ursus? %>
+          DOJ staff.
+        <% elsif Rails.configuration.x.branding.whitelabel? %>
+          Bayes Impact.
+        <% else %>
+          the application's owners.
+        <% end %>
+        The team will read carefully and get back to you.
+      </p>
+      <%= render partial: "form_save_buttons", locals: {text: 'Submit Feedback', no_partial_save: true} %>
+    </div>
+  <% end %>
+
   </div>
-  <div class="incident-form-row">
-    <p>
-      Your question will be sent to
-      <% if Rails.configuration.x.branding.ursus? %>
-        DOJ staff.
-      <% elsif Rails.configuration.x.branding.whitelabel? %>
-        Bayes Impact.
-      <% else %>
-        the application's owners.
-      <% end %>
-      The team will read carefully and get back to you.
-    </p>
-    <%= render partial: "form_save_buttons", locals: {text: 'Submit Feedback', no_partial_save: true} %>
-  </div>
-<% end %>
 
 </div>
