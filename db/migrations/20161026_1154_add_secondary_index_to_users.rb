@@ -9,7 +9,7 @@ class AddSecondaryIndexToUsers < DynamoDB::Migration::Unit
     index_name = User.indexes['ori'].name
     existing_indexes = client.describe_table(table_name: table_name).table
                              .global_secondary_indexes
-                             .flat_map {|idx| idx.index_name}
+                             .flat_map(&:index_name)
 
     if existing_indexes.include? index_name
       logger.info "Index #{index_name} already exists!"
