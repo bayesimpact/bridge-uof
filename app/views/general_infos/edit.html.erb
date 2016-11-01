@@ -99,7 +99,7 @@
     <div class="form-col">
       <%= f.label :num_involved_civilians, "Number of civilians involved", class: 'required' %>
       <p class="question-explanation">
-        The total number of civilians who had force used on them and/or who assaulted an officer
+        The total number of civilians who had force used on them and/or who assaulted an officer.
       </p>
       <%= f.text_field :num_involved_civilians, class: "form-control",
                        type: :number, min: 1 %>
@@ -109,7 +109,7 @@
     <div class="form-col">
       <%= f.label :num_involved_officers, "Number of sworn officers involved", class: 'required' %>
       <p class="question-explanation">
-        Among officers present on the scene, the number who used force on a civilian and/or were assaulted by a civilian.
+        Among sworn officers present on the scene, the number who used force on a civilian and/or were assaulted by a civilian.
       </p>
       <%= f.text_field :num_involved_officers, class: "form-control",
                        type: :number, min: 1 %>
