@@ -9,7 +9,6 @@ FactoryGirl.define do
     received_force_location ['Head']
     on_duty true
     dress 'Tactical'
-    sworn_type 'Sworn officer'
     age '21-25'
     race { InvolvedPerson::RACES.sample_one_or_two_elements }
     asian_race { race.include?(InvolvedPerson::ASIAN_RACE_STR) ? InvolvedPerson::ASIAN_RACES.sample_one_or_two_elements : nil }

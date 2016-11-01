@@ -58,11 +58,6 @@
     <%= radio_button_grid(f, :dress, InvolvedOfficer::DRESS_TYPES, 120) %>
   </div>
 
-  <div class="incident-form-row form-group">
-    <%= f.label :sworn_type, "Officer type", class: 'required' %>
-    <%= radio_button_grid(f, :sworn_type, InvolvedOfficer::SWORN_TYPES, nil) %>
-  </div>
-
   <div class="incident-form-row">
     <%= render partial: "form_save_buttons" %>
   </div>
