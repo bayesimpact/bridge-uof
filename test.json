@@ -83,8 +83,7 @@
         "received_force": "f",
         "received_force_type": null,
         "on_duty": "t",
-        "dress": "Patrol Uniform",
-        "sworn_type": "Sworn officer"
+        "dress": "Patrol Uniform"
       }
     ]
   },
@@ -172,8 +171,7 @@
         "received_force": "f",
         "received_force_type": null,
         "on_duty": "t",
-        "dress": "Patrol Uniform",
-        "sworn_type": "Sworn officer"
+        "dress": "Patrol Uniform"
       }
     ]
   }
