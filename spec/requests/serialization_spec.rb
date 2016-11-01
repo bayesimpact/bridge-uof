@@ -16,9 +16,6 @@ describe '[Incident serialization and bulk upload]', type: :request do
   end
 
   it 'serializes and deserializes incidents properly' do
-    puts Incident.json_schema
-    puts Incident.xml_schema
-
     deserialized_incident = Incident.from_json(@valid_json, @user)
 
     expect(deserialized_incident).to be(@original_incident)
