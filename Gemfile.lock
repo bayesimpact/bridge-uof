@@ -8,6 +8,13 @@ GIT
       concurrent-ruby (>= 1.0)
 
 GIT
+  remote: https://github.com/bayesimpact/dynamodb-migration.git
+  revision: ec9680e8039ca40e0a971e0e88751ad50edf206d
+  specs:
+    dynamodb-migration (0.5.0)
+      aws-sdk (~> 2)
+
+GIT
   remote: https://github.com/bayesimpact/orm_adapter-dynamoid.git
   revision: f5ee8530312dd0d1da36ae00f95b9947e5db1794
   specs:
@@ -68,12 +75,12 @@ GEM
     arel (6.0.3)
     autoprefixer-rails (6.3.7)
       execjs
-    aws-sdk (2.3.21)
-      aws-sdk-resources (= 2.3.21)
-    aws-sdk-core (2.3.21)
+    aws-sdk (2.6.14)
+      aws-sdk-resources (= 2.6.14)
+    aws-sdk-core (2.6.14)
       jmespath (~> 1.0)
-    aws-sdk-resources (2.3.21)
-      aws-sdk-core (= 2.3.21)
+    aws-sdk-resources (2.6.14)
+      aws-sdk-core (= 2.6.14)
     bcrypt (3.1.11)
     bootstrap-sass (3.3.6)
       autoprefixer-rails (>= 5.2.1)
@@ -272,6 +279,7 @@ DEPENDENCIES
   coffee-rails (~> 4.1.0)
   devise (~> 3.5)
   dotenv-rails
+  dynamodb-migration!
   dynamoid!
   dynamoid-devise
   es5-shim-rails
@@ -298,7 +306,7 @@ DEPENDENCIES
   uglifier (>= 1.3.0)
 
 RUBY VERSION
-   ruby 2.2.3p173
+  ruby 2.2.3p173
 
 BUNDLED WITH
    1.12.5

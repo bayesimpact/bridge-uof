@@ -170,7 +170,6 @@ module Helpers
     end
     choose_for_question options[:on_duty?] || 'Yes', text: 'on duty'
     choose_for_question options[:dress] || 'Patrol Uniform', text: 'dress'
-    choose_for_question options[:sworn_type] || 'Sworn officer', text: 'Officer type'
 
     click_button 'Save and Continue' if options[:submit]
   end
