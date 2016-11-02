@@ -15,7 +15,9 @@ module Constants
       'Discharge of firearm (hit)', 'Other dangerous weapon', 'Animal'
     ].freeze
 
-    OFFICER_USED_FORCE_REASON_TYPES = ['To effect arrest', 'To prevent escape', 'To overcome resistance'].freeze
+    OFFICER_USED_FORCE_REASON_TYPES = ['To effect arrest or take into custody',
+                                       'To prevent escape',
+                                       'To overcome resistance'].freeze
 
     SWORN_TYPES = ['Sworn officer', 'Non-sworn uniformed department employee'].freeze
 
