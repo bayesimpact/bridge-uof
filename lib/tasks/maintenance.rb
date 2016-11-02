@@ -5,7 +5,7 @@ namespace :maintenance do
   end
 
   desc "Stop maintenance mode"
-  task start: :environment do
-    GlobalState.start_maintenance_mode!
+  task stop: :environment do
+    GlobalState.stop_maintenance_mode!
   end
 end
