@@ -1,4 +1,7 @@
 $(function(){
+  togglePreExistingCondition()
+  medicalAid()
+
   function enableDisableSubQuestion(state) {
     // For 'on' callback function, the parameters are stored under data.
     state = state.data || state;
@@ -75,4 +78,19 @@ $(function(){
     $('#multiple-agencies-info-text').toggle($('#screener_multiple_agencies_true').is(':checked'));
     $('#shots-fired-info-text').toggle($('#screener_shots_fired_true').is(':checked'));
   }).change();
+
+
+  function medicalAid() {
+    $('.medical-aid-received input[type="radio"]').on('click', function () {
+      togglePreExistingCondition()
+    })
+  }
+
+  function togglePreExistingCondition() {
+    if ($('input[value="No medical assistance or refused assistance"]').is(':checked')) {
+      $('.additional-question.pre-existing-condition').hide()
+    } else {
+      $('.additional-question.pre-existing-condition').show()
+    }
+  }
 });
