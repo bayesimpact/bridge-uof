@@ -21,7 +21,7 @@ module Constants
       WEAPON_FIREARM, 'Firearm replica', 'Knife, blade, or stabbing instrument', 'Other dangerous weapon'
     ].freeze
 
-    RESISTANCE_TYPES = ['Passive non-compliance', 'Resistance', 'Assaultive', 'Life-threatening'].freeze
+    RESISTANCE_TYPES = ['Passive non-compliance', 'Active Resistance', 'Assaultive', 'Life-threatening'].freeze
 
     RECEIVED_FORCE_TYPES = [
       'Carotid restraint control hold', 'Other control hold/takedown',

@@ -65,7 +65,7 @@ describe '[Incident]', type: :request do
       check_for_question 'Firearm', text: 'Weapons'
       check_for_question 'Rifle', text: 'Firearm types'
       choose_for_question 'Yes', text: 'resisted'
-      choose_for_question 'Assaultive', text: 'highest level of resistance'
+      choose_for_question 'Assaultive', text: 'highest level of active resistance'
       choose_for_question 'Yes', text: 'force used on this civilian'
       check 'Electronic control device'
       check 'Head'
