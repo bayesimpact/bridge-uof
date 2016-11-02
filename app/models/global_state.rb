@@ -63,14 +63,14 @@ class GlobalState
   end
 
   def self.maintenance_mode?
-    instance.maintenance_mode
+    instance[:maintenance_mode]
   end
 
   def self.start_maintenance_mode!
     instance.update_attributes(maintenance_mode: true)
   end
 
-  def self.end_maintenance_mode!
+  def self.stop_maintenance_mode!
     instance.update_attributes(maintenance_mode: false)
   end
 end
