@@ -128,7 +128,7 @@ module Helpers
   def answer_all_civilian(options = {})
     expect(current_path).to match(%r{\/involved_civilians(\/new)?})
     choose_for_question options[:assaulted_officer?] || 'No', text: 'assaulted officer'
-    choose_for_question options[:custody_status] || 'In custody', text: 'arrested and / or in custody'
+    choose_for_question options[:custody_status] || 'In custody (other)', text: 'arrested and / or in custody'
     fill_in 'highest charge', with: options[:highest_charge] || 'Fake charge 123'
     choose_for_question options[:perceived_armed?] || 'No', text: 'perceived armed'
     choose_for_question options[:confirmed_armed?] || 'No', text: 'confirmed armed'

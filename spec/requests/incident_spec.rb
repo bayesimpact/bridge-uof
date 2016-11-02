@@ -57,7 +57,7 @@ describe '[Incident]', type: :request do
 
       expect(current_path).to match(%r{\/involved_civilians(\/new)?})
       choose_for_question 'No', text: 'assaulted officer'
-      choose_for_question 'In custody', text: 'arrested and / or in custody'
+      choose_for_question 'In custody (other)', text: 'arrested and / or in custody'
       fill_in 'highest charge', with: 'Fake Charge 1234'
       choose_for_question 'Yes', text: 'perceived armed'
       check_for_question 'Other dangerous weapon', text: 'Type of weapon'

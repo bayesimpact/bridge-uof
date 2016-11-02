@@ -33,9 +33,11 @@ module Constants
 
     FIREARM_TYPES = ['Handgun', 'Rifle', 'Shotgun', 'Other firearm'].freeze
 
-    CUSTODY_STATUS_TYPES = ['Cited and released', 'In custody', 'Fled', 'Deceased', 'None of these'].freeze
+    CUSTODY_STATUS_TYPES = ['Cited and released', 'In custody (other)',
+                            'In custody (W&I section 5150)', 'Fled',
+                            'Deceased', 'None of these'].freeze
 
-    CUSTODY_STATUSES_BOOKED = ['Cited and released', 'In custody'].freeze
+    CUSTODY_STATUSES_BOOKED = ['Cited and released', 'In custody (other)'].freeze
 
     DISPLAY_FIELDS = ([
       :assaulted_officer, :custody_status, :highest_charge, :crime_qualifier, :perceived_armed,
