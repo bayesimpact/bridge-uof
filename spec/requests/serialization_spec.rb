@@ -81,7 +81,7 @@ describe '[Incident serialization and bulk upload]', type: :request do
 
     it 'displays an error message on broken JSON' do
       json_file = Tempfile.new(['incident', '.json'])
-      json_file.write("[ #{@valid_json} ]}")
+      json_file.write("[ #{@valid_json} ]blah")
       json_file.close
 
       visit 'incidents/upload'
