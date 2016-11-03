@@ -3,11 +3,11 @@ services:
   # Development database. In production we'll use the Amazon-hosted DynamoDB
   db:
     image: tray/dynamodb-local
-    command: [-inMemory, -port, "8010", "-sharedDb"]
+    command: [-inMemory, -port, "8000", "-sharedDb"]
     environment:
       _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
     ports:
-      - "8010:8010"
+      - "8000:8000"
     restart: always
   # Web app (Rails)
   web:
