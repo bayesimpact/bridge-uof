@@ -153,6 +153,17 @@ em {
   opacity: 0.0;
 }
 
+a[data-toggle="collapse"] {
+  cursor: pointer;
+}
+
+#incidentStep a.link-inactive {
+  cursor: not-allowed;
+  pointer-events: none;
+  color: #555;
+}
+
+
 // *************************************************************
 // * LAYOUT
 // *************************************************************

@@ -42,7 +42,7 @@ class IncidentDeserializerService
       incident.involved_officers = involved_officers
       incident.audit_entries << AuditEntry.new(user: user, custom_text: 'imported this incident')
       incident.incident_id.generate!
-      incident.update_attribute :status, :in_review
+      incident.update_attribute :status, :approved
       incident.save!
     rescue => e
       incident.destroy

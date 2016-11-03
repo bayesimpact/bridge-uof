@@ -158,7 +158,6 @@ $(function() {
     form.clickIfAllUnset('asian_race', 'cambodian');
     form.clickTrueIfUnset('on_duty');
     form.clickIfUnset('dress', 'patrol_uniform');
-    form.clickIfUnset('sworn_type', 'sworn_officer');
     if (!form.hasDoneSomething) {
       this.submit();
     }

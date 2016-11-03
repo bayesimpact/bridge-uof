@@ -70,7 +70,7 @@ describe '[Incident serialization and bulk upload]', type: :request do
     expect(page).to have_content('Created incident')
     expect(Incident.count).to eq(1)
     expect(Incident.first).to be_valid
-    expect(Incident.first).to be_in_review
+    expect(Incident.first).to be_approved
   end
 
   it 'can create an incident via XML upload', driver: :poltergeist do
