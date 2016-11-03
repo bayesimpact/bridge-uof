@@ -7,7 +7,7 @@ describe '[Incident serialization and bulk upload]', type: :request do
     stub_const('Constants::DEPARTMENT_BY_ORI', @user.ori => @user.department)
 
     # Serialize in the `before :each` so that we can play with this valid json in all of the tests.
-    create_complete_incident
+    create(:incident)
     @valid_json = Incident.first.to_json
 
     # Remove the original incident from the DB to avoid ID collisions.
@@ -31,7 +31,7 @@ describe '[Incident serialization and bulk upload]', type: :request do
     #   3. involved_civilians[0].gender = 'Alien'
     @invalid_json = @valid_json.sub('"shots_fired":"t"', '"shots_fired":null')
                                .sub(%r{"incident_date_str":"[\d\/]*"}, '"incident_date_str":"06/06/9999"')
-                               .sub('"gender":"Female"', '"gender":"Alien"')
+                               .sub('"gender":"Male"', '"gender":"Alien"')
 
     expect { Incident.from_json(@invalid_json, @user) }.to raise_error do |error|
       expect(error.message).to include('Validation failed')

@@ -8,7 +8,7 @@ describe '[Incident]', type: :request do
   end
 
   describe '[from a single logged-in (admin) user]' do
-    let(:user) { User.first}
+    let(:user) { User.first }
 
     before :each do
       login

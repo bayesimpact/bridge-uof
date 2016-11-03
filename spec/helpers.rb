@@ -212,8 +212,7 @@ module Helpers
     find_button('Send for review').click
   end
 
-  def create_and_review_incident
-    create_complete_incident
+  def review_incident
     visit_status :in_review
     click_link 'View'
     click_button 'Mark as reviewed'

@@ -41,6 +41,8 @@ RSpec.configure do |config|
     RSpec::Mocks.with_temporary_scope do
       Constants::DEPARTMENT_BY_ORI = {
         'ORI01234' => 'Foo Police Department',  # This is the ORI/dept of the User fixture.
+        'ALPHA_ORI' => 'ALPHA_DEPT',
+        'BRAVO_ORI' => 'BRAVO_DEPT',
         'PARENT_ORI' => 'PARENT_DEPT',
         'SUB_ORI' => 'SUB_DEPT'
       }.freeze

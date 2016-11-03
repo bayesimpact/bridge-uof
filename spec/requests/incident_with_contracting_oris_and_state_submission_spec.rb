@@ -57,11 +57,11 @@ describe '[Incident with contracting ORI relationships]' do
   describe '[admins of a contracting ORI]' do
     it 'can see all incidents created by their own or contracted ORIs' do
       login(user: sub_ori_user)
-      create_complete_incident
+      create(:incident, user_id: sub_ori_user.user_id)
       logout
 
       login(user: parent_ori_user)
-      create_complete_incident
+      create(:incident, user_id: parent_ori_user.user_id)
       logout
 
       login(user: parent_ori_admin)
@@ -76,12 +76,12 @@ describe '[Incident with contracting ORI relationships]' do
     let(:previous_submission_year) { current_submission_year - 1 }
 
     before :each do
-      AgencyStatus.create!(ori: parent_ori_admin.ori).mark_year_submitted!(previous_submission_year)
-      AgencyStatus.create!(ori: sub_ori_user.ori).mark_year_submitted!(previous_submission_year)
+      [parent_ori_admin.ori, sub_ori_user.ori].each do |ori|
+        AgencyStatus.create!(ori: ori).mark_year_submitted!(previous_submission_year)
+      end
 
       login(user: parent_ori_user)
-      expect(current_path).to eq(dashboard_path)
-      create_complete_incident
+      create(:incident, user_id: parent_ori_user.user_id)
       logout
 
       login(user: parent_ori_admin)
@@ -131,7 +131,7 @@ describe '[Incident with contracting ORI relationships]' do
 
       # Submission fails with draft incident
 
-      create_partial_incident :review
+      create(:incident, user_id: parent_ori_admin.user_id, submit: false)
 
       visit_status :state_submission
       expect(status_nav_count(:draft)).to eq(1)

@@ -11,7 +11,7 @@ describe '[Incident ID]', type: :request do
     login user: user
   end
 
-  it 'generates valid ursus id after general_info step' do
+  it 'generates valid ID after general_info step' do
     create_partial_incident(:general)
     expect(Incident.first.incident_id).to be_blank
     answer_all_general_info submit: true
@@ -30,7 +30,7 @@ describe '[Incident ID]', type: :request do
     i.incident_id.code.each_char { |c| expect(Incident::INCIDENT_ID_CODE_CHARS).to include c }
   end
 
-  it 'generates unique ursus IDs' do
+  it 'generates unique IDs' do
     5.times { create_partial_incident(:civilians) }
     ids = Incident.all.map { |i| i.incident_id.to_s }
     expect(ids.sort).to eq(Set.new(ids).to_a.sort)

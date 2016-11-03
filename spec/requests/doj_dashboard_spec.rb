@@ -1,28 +1,24 @@
 require 'rails_helper'
 
 describe '[DOJ Dashboard]', type: :request do
-  it 'prevents non-doj users from seeing the doj dashboard' do
+  it 'prevents non-DOJ users from seeing the DOJ dashboard' do
     login
     expect { visit doj_path }.to raise_error(ActionController::BadRequest)
   end
 
   describe '[with some mock data]' do
-    before :each do
-      stub_const('Constants::DEPARTMENT_BY_ORI', 'ALPHA_ORI' => 'ALPHA_DEPT', 'BRAVO_ORI' => 'BRAVO_DEPT')
-    end
-
     let(:elvis) do
       build(:dummy_user, first_name: "Elvis", last_name: "Presley",
                          email: "elvis@example.com", role: Rails.configuration.x.roles.doj,
                          user_id: 'elvis', ori: 'ALPHA_ORI')
     end
 
-    describe '[logged in as a doj user]' do
+    describe '[logged in as a DOJ user]' do
       before :each do
         login user: elvis
       end
 
-      it 'redirects doj users from the normal dashboard to the DOJ one' do
+      it 'redirects DOJ users from the normal dashboard to the DOJ one' do
         expect(current_path).to eq(doj_path)
         visit dashboard_path
         expect(current_path).to eq(doj_path)
@@ -69,9 +65,10 @@ describe '[DOJ Dashboard]', type: :request do
         GlobalState.open_submission_window!
 
         # Log in as a regular admin user, make an incident, submit to state
-        @user = build(:dummy_user, ori: 'ALPHA_ORI')
-        login user: @user
-        create_and_review_incident
+        user = build(:dummy_user, ori: 'ALPHA_ORI')
+        login user: user
+        create(:incident)
+        review_incident
         submit_to_state
         logout
 
@@ -80,6 +77,9 @@ describe '[DOJ Dashboard]', type: :request do
       end
 
       it '/whosubmitted shows agency submission statuses and links to their incidents' do
+        # Ensure that there are only two incidents.
+        stub_const('Constants::DEPARTMENT_BY_ORI', 'ALPHA_ORI' => 'ALPHA_DEPT', 'BRAVO_ORI' => 'BRAVO_DEPT')
+
         visit doj_whosubmitted_path
         rows = all('#agency-submissions-table tbody tr')
         expect(rows.length).to eq(2)
