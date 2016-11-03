@@ -1,7 +1,4 @@
 $(function(){
-  togglePreExistingCondition()
-  medicalAid()
-
   function enableDisableSubQuestion(state) {
     // For 'on' callback function, the parameters are stored under data.
     state = state.data || state;
@@ -80,17 +77,11 @@ $(function(){
   }).change();
 
 
-  function medicalAid() {
-    $('.medical-aid-received input[type="radio"]').on('click', function () {
-      togglePreExistingCondition()
-    })
-  }
-
-  function togglePreExistingCondition() {
+  $('#medical-aid-received input[type="radio"]').on('click', function () {
     if ($('input[value="No medical assistance or refused assistance"]').is(':checked')) {
-      $('.additional-question.pre-existing-condition').hide()
+      disableQuestions('.additional-question#pre-existing-condition');
     } else {
-      $('.additional-question.pre-existing-condition').show()
+      enableQuestions('.additional-question#pre-existing-condition');
     }
-  }
+  });
 });

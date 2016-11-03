@@ -21,7 +21,7 @@ module Constants
       WEAPON_FIREARM, 'Firearm replica', 'Knife, blade, or stabbing instrument', 'Other dangerous weapon'
     ].freeze
 
-    RESISTANCE_TYPES = ['Passive non-compliance', 'Active Resistance', 'Assaultive', 'Life-threatening'].freeze
+    RESISTANCE_TYPES = ['Passive non-compliance', 'Active resistance', 'Assaultive', 'Life-threatening'].freeze
 
     RECEIVED_FORCE_TYPES = [
       'Carotid restraint control hold', 'Other control hold/takedown',
@@ -33,8 +33,8 @@ module Constants
 
     FIREARM_TYPES = ['Handgun', 'Rifle', 'Shotgun', 'Other firearm'].freeze
 
-    CUSTODY_STATUS_TYPES = ['Cited and released', 'In custody (other)',
-                            'In custody (W&I section 5150)', 'Fled',
+    CUSTODY_STATUS_TYPES = ['Cited and released', 'In custody (W&I section 5150)',
+                            'In custody (other)', 'Fled',
                             'Deceased', 'None of these'].freeze
 
     CUSTODY_STATUSES_BOOKED = ['Cited and released', 'In custody (other)'].freeze

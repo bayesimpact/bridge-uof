@@ -19,7 +19,7 @@
 
   <div class="incident-form-row form-group">
     <%= f.label :custody_status, "Civilian arrested and / or in custody?", class: 'required' %><br>
-    <%= radio_button_grid(f, :custody_status, InvolvedCivilian::CUSTODY_STATUS_TYPES, 150) %>
+    <%= radio_button_grid(f, :custody_status, InvolvedCivilian::CUSTODY_STATUS_TYPES, 200) %>
   </div>
   <div class="incident-form-row form-group alert alert-warning" id="fled-info-text">
     Because the suspect fled, it's difficult to be certain about many perceptions (age, race, etc). To avoid potential mistakes in the data, many such fields you'll find are disabled below. Fill out the remaining ones as usual.
@@ -69,7 +69,7 @@
     <%= yes_no_question f, :resisted, "Civilian resisted?", no_label: "No (Cooperative)", class: 'required' %>
   </div>
   <div class="incident-form-row form-group additional-question" id="resistance_type_question">
-    <%= f.label :resistance_type, "Choose highest level of active resistance", class: 'required' %>
+    <%= f.label :resistance_type, "Choose highest level of resistance", class: 'required' %>
     <%= radio_button_grid(f, :resistance_type, InvolvedCivilian::RESISTANCE_TYPES, 200,
           popovers = {
             'Passive non-compliance' => 'Does not respond to verbal commands but also offers no physical form of resistance.',

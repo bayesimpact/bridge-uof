@@ -46,7 +46,7 @@ class InvolvedPerson
   end
 
   def medical_aid_refused?
-    medical_aid.eql?("No medical assistance or refused assistance")
+    medical_aid == "No medical assistance or refused assistance"
   end
 
   def display_race

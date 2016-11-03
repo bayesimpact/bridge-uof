@@ -14,11 +14,11 @@
     <%= f.label :injury_type, person_type + " injury type - check all that apply", class: 'required' %>
     <%= checkbox_grid(f, :injury_type, InvolvedPerson::INJURY_TYPES, 180) %>
   </div>
-  <div class="incident-form-row form-group additional-question medical-aid-received">
+  <div class="incident-form-row form-group additional-question" id="medical-aid-received">
     <%= f.label :medical_aid, person_type + " medical aid received - choose highest applicable", class: 'required' %>
     <%= radio_button_grid(f, :medical_aid, InvolvedPerson::MEDICAL_AID, 350) %>
   </div>
-  <div class="incident-form-row form-group additional-question pre-existing-condition">
+  <div class="incident-form-row form-group additional-question" id="pre-existing-condition">
     <%= yes_no_question f, :injury_from_preexisting_condition,
           person_type + " medical aid received due to pre-existing condition?",
           class: 'required' %>
