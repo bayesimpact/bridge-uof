@@ -4,8 +4,8 @@ class BulkImportService
     incidents = _parse_file(file)
 
     output = ["Uploading #{incidents.size} #{incidents.size == 1 ? 'incident' : 'incidents'} ..."]
-    incidents.each_with_index do |incident, idx|
-      output << _import_incident(incident, user, idx)
+    incidents.each_with_index do |incident_hash, idx|
+      output << _import_incident(incident_hash, user, idx)
     end
     output
   rescue BridgeExceptions::BulkUploadError => e
@@ -32,8 +32,8 @@ class BulkImportService
     end
   end
 
-  def self._import_incident(incident, user, idx)
-    incident = Incident.from_json(incident.to_json, user)
+  def self._import_incident(incident_hash, user, idx)
+    incident = Incident.from_hash(incident_hash, user)
     "##{idx + 1}. Created incident #{incident.incident_id}."
   rescue BridgeExceptions::DeserializationError => e
     "##{idx + 1}. Error occurred!\n        #{e.message}"

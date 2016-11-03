@@ -114,7 +114,11 @@ class Incident
       involved_officers.zip(other.involved_officers).all? { |o1, o2| o1.equal? o2 }
   end
 
-  def to_json
+  def self.from_hash(json, user)
+    IncidentDeserializerService.from_hash(json, user)
+  end
+
+  def to_hash
     raise "Incident is not complete" unless complete?
 
     {
@@ -123,11 +127,7 @@ class Incident
       general_info: general_info.to_hash,
       involved_civilians: involved_civilians.map(&:to_hash),
       involved_officers: involved_officers.map(&:to_hash)
-    }.to_json
-  end
-
-  def self.from_json(json, user)
-    IncidentDeserializerService.from_json(json, user)
+    }
   end
 
   def self.json_schema
