@@ -3,9 +3,11 @@ FactoryGirl.define do
     transient do
       num_civilians 1
       num_officers  1
+      submit        true
+      user_id       { build(:dummy_user).user_id }
     end
 
-    user { User.find_by_user_id(build(:dummy_user).user_id) || create(:dummy_user) }
+    user { User.find_by_user_id(user_id) || create(:dummy_user) }
 
     after(:create) do |incident, e|  # e is the FactoryGirl evaluator (has access to transient attributes).
       incident.screener = create :screener
@@ -25,7 +27,7 @@ FactoryGirl.define do
         incident.involved_officers << create(:involved_officer)
       end
 
-      incident.in_review!
+      incident.in_review! if e.submit
     end
   end
 end

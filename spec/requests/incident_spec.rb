@@ -8,9 +8,10 @@ describe '[Incident]', type: :request do
   end
 
   describe '[from a single logged-in (admin) user]' do
+    let(:user) { User.first}
+
     before :each do
       login
-      @user = User.first
     end
 
     it 'smoke test -- create a complete incident, send for review' do
@@ -106,18 +107,15 @@ describe '[Incident]', type: :request do
       find_button('Send for review').click
     end
 
-    it 'creates an incident that is visible from dashboard' do
+    it 'creates an incident that is visible from dashboard, and sets ORI and department automatically' do
       new_incident
       answer_all_screener submit: true
+
       visit_status :draft
       expect(page).to have_content('Edit')
-    end
 
-    it 'sets the ori and department automatically' do
-      new_incident
-      answer_all_screener submit: true
-      expect(Incident.first.ori).to eq(@user.ori)
-      expect(Incident.first.department).to eq(@user.department)
+      expect(Incident.first.ori).to eq(user.ori)
+      expect(Incident.first.department).to eq(user.department)
     end
 
     it 'shows all filled-out civilians and officers on the review page' do
@@ -182,8 +180,9 @@ describe '[Incident]', type: :request do
     end
 
     it 'shows the right counts by all filter options on the dashboard' do
-      create_complete_incident
-      create_partial_incident :review
+      create(:incident, submit: false)
+      create(:incident, submit: true)
+
       statuses = [nil, :draft, :in_review, :approved]
       statuses.each do |s|
         if s.nil?
@@ -204,23 +203,18 @@ describe '[Incident]', type: :request do
       end
 
       new_incident
-
       expect(breadcrumbs_classes).to eq(%w(active disabled disabled disabled disabled))
 
       answer_all_screener submit: true
-
       expect(breadcrumbs_classes).to eq(%w(disabled active disabled disabled disabled))
 
       answer_all_general_info submit: true, num_civilians: 2
-
       expect(breadcrumbs_classes).to eq(%w(disabled enabled active disabled disabled))
 
       all('#breadcrumbs a')[1].click
-
       expect(breadcrumbs_classes).to eq(%w(disabled active enabled disabled disabled))
 
       all('#breadcrumbs a')[2].click
-
       expect(breadcrumbs_classes).to eq(%w(disabled enabled active disabled disabled))
     end
 
@@ -280,100 +274,98 @@ describe '[Incident]', type: :request do
   end
 
   describe '[with multiple users]' do
-    before :each do
-      roles = Rails.configuration.x.roles
-      @alice = create(:dummy_user, first_name: "Alice", last_name: "Anderson", email: "alice@example.com", role: roles.user, user_id: 'alice')
-      @bob = create(:dummy_user, first_name: "Bob", last_name: "Bobberson", email: "bob@example.com", role: roles.user, user_id: 'bob')
-      @claire = create(:dummy_user, first_name: "Claire", last_name: "Clarinet", email: "claire@example.com", role: roles.admin, user_id: 'claire')
-      @dan = create(:dummy_user, first_name: "Dan", last_name: "Danish", email: "dan@example.com", role: roles.admin, ori: "another_ori", user_id: 'dan')
-    end
+    let(:roles) { Rails.configuration.x.roles }
+
+    let(:alice) { build(:dummy_user, first_name: "Alice", last_name: "Anderson", email: "alice@example.com", role: roles.user, user_id: 'alice') }
+    let(:bob) { build(:dummy_user, first_name: "Bob", last_name: "Bobberson", email: "bob@example.com", role: roles.user, user_id: 'bob') }
+    let(:claire) { build(:dummy_user, first_name: "Claire", last_name: "Clarinet", email: "claire@example.com", role: roles.admin, user_id: 'claire') }
+    let(:dan) { build(:dummy_user, first_name: "Dan", last_name: "Danish", email: "dan@example.com", role: roles.admin, ori: "another_ori", user_id: 'dan') }
 
     it 'allows users to only see authorized incidents' do
-      login(user: @alice)
-      create_partial_incident :review
-      create_complete_incident
+      login(user: alice)
+      create(:incident, user_id: alice.user_id, submit: false)
+      create(:incident, user_id: alice.user_id, submit: true)
+      visit dashboard_path
       # Alice can see her own incidents
       expect(status_nav_count(:draft)).to eq(1)
       expect(status_nav_count(:in_review)).to eq(1)
       logout
 
       # Bob can't see Alice's incidents
-      login(user: @bob)
+      login(user: bob)
       expect(status_nav_count(:draft)).to eq(0)
       expect(status_nav_count(:in_review)).to eq(0)
       # But he can see his own
-      create_partial_incident :review
-      create_complete_incident
+      create(:incident, user_id: bob.user_id, submit: false)
+      create(:incident, user_id: bob.user_id, submit: true)
+      visit dashboard_path
       expect(status_nav_count(:draft)).to eq(1)
       expect(status_nav_count(:in_review)).to eq(1)
       logout
 
       # Alice can't see Bob's new incidents
-      login(user: @alice)
+      login(user: alice)
       expect(status_nav_count(:draft)).to eq(1)
       expect(status_nav_count(:in_review)).to eq(1)
       logout
 
       # Claire (the admin) can see BOTH of their complete incidents,
       # but neither of their incomplete incidents.
-      login(user: @claire)
+      login(user: claire)
       expect(status_nav_count(:draft)).to eq(0)
       expect(status_nav_count(:in_review)).to eq(2)
       # Claire can see and review her own incidents
-      create_partial_incident :review
-      create_complete_incident
+      create(:incident, user_id: claire.user_id, submit: false)
+      create(:incident, user_id: claire.user_id, submit: true)
+      visit dashboard_path
       expect(status_nav_count(:draft)).to eq(1)
       expect(status_nav_count(:in_review)).to eq(3)
       logout
 
       # Alice can't see Claire's incidents
-      login(user: @alice)
+      login(user: alice)
       expect(status_nav_count(:draft)).to eq(1)
       expect(status_nav_count(:in_review)).to eq(1)
       logout
 
       # Bob can't see Claire's incidents
-      login(user: @bob)
+      login(user: bob)
       expect(status_nav_count(:draft)).to eq(1)
       expect(status_nav_count(:in_review)).to eq(1)
       logout
 
       # Dan can't see anyone's incidents
-      login(user: @dan)
+      login(user: dan)
       expect(status_nav_count(:draft)).to eq(0)
       expect(status_nav_count(:in_review)).to eq(0)
       logout
     end
 
     it 'lets an administrator edit another employee\'s incident' do
-      login(user: @alice)
-      create_complete_incident
+      login(user: alice)
+      create(:incident, user_id: alice.user_id)
       logout
 
-      login(user: @claire)
+      login(user: claire)
       visit_status :in_review
       find('a', text: 'View').click
       expect(current_path).to end_with('/review')
-      expect(page).to have_content('White')
-      expect(page).to have_no_content('Cambodian')
+      expect(page).to have_no_content('Female')
 
       find('h1', text: 'Officer').find('~a', text: 'Edit').click
       expect(current_path).to end_with('/involved_officers/0/edit')
-      check 'Cambodian'
+      choose 'Female'
       click_button 'Save and Continue'
-      expect(page).to have_content('White')
-      expect(page).to have_content('Cambodian')
+      expect(page).to have_content('Female')
     end
 
     it 'lets an administrator see who has drafts underway and how many, but not view them' do
-      login(user: @alice)
-      create_partial_incident :review
-      create_partial_incident :review
+      login(user: alice)
+      create_list(:incident, 2, user_id: alice.user_id, submit: false)
       logout
 
-      login(user: @claire)
-      new_incident
-      answer_all_screener submit: true
+      login(user: claire)
+      create_partial_incident :general
       visit root_path
       expect(status_nav_count(:draft)).to eq(1)
       expect(page).to have_content("Employees in your ORI also have 2 incidents that are not yet ready")
@@ -381,7 +373,7 @@ describe '[Incident]', type: :request do
     end
 
     it 'non-admins can edit incidents before, but not after, sending for review' do
-      login(user: @alice)
+      login(user: alice)
       create_partial_incident :review, 2, 2
       expect(current_path).to end_with('/review')
       expect(page).to have_css('.review-edit')
@@ -398,11 +390,11 @@ describe '[Incident]', type: :request do
     end
 
     it 'admins can edit others\' incidents after they are submitted for review' do
-      login(user: @alice)
-      create_complete_incident 2, 2
+      login(user: alice)
+      create(:incident, num_civilians: 2, num_officers: 2)
       logout
 
-      login(user: @claire)
+      login(user: claire)
       visit_status :in_review
       find('a', text: 'View').click
       expect(current_path).to end_with('/review')
@@ -418,7 +410,7 @@ describe '[Incident]', type: :request do
                                  injury_from_preexisting_condition: false, medical_aid: 'Medical assistance - treated at facility and released')
       end
 
-      login(user: @claire)
+      login(user: claire)
 
       # Create 6 incidents with 2 officer injuries and 3 civilian injuries.
       create :incident

@@ -9,14 +9,17 @@ describe '[DOJ Dashboard]', type: :request do
   describe '[with some mock data]' do
     before :each do
       stub_const('Constants::DEPARTMENT_BY_ORI', 'ALPHA_ORI' => 'ALPHA_DEPT', 'BRAVO_ORI' => 'BRAVO_DEPT')
-      @elvis = create(:dummy_user, first_name: "Elvis", last_name: "Presley",
-                                   email: "elvis@example.com", role: Rails.configuration.x.roles.doj,
-                                   user_id: 'elvis', ori: 'ALPHA_ORI')
+    end
+
+    let(:elvis) do
+      build(:dummy_user, first_name: "Elvis", last_name: "Presley",
+                         email: "elvis@example.com", role: Rails.configuration.x.roles.doj,
+                         user_id: 'elvis', ori: 'ALPHA_ORI')
     end
 
     describe '[logged in as a doj user]' do
       before :each do
-        login user: @elvis
+        login user: elvis
       end
 
       it 'redirects doj users from the normal dashboard to the DOJ one' do
@@ -66,14 +69,14 @@ describe '[DOJ Dashboard]', type: :request do
         GlobalState.open_submission_window!
 
         # Log in as a regular admin user, make an incident, submit to state
-        @user = create(:dummy_user, ori: 'ALPHA_ORI')
+        @user = build(:dummy_user, ori: 'ALPHA_ORI')
         login user: @user
         create_and_review_incident
         submit_to_state
         logout
 
         # Log back in as DOJ user
-        login user: @elvis
+        login user: elvis
       end
 
       it '/whosubmitted shows agency submission statuses and links to their incidents' do

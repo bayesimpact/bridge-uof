@@ -1,14 +1,17 @@
 require 'rails_helper'
 
 describe '[Incident ID]', type: :request do
+  let(:user) { build :dummy_user, ori: 'CA0123456' }
+
   before :all do
     Rails.configuration.x.branding.incident_id_prefix = 'PREFIX'
   end
 
-  it 'generates valid ursus id after general_info step' do
-    user = build :dummy_user, ori: 'CA0123456'
+  before :each do
     login user: user
+  end
 
+  it 'generates valid ursus id after general_info step' do
     create_partial_incident(:general)
     expect(Incident.first.incident_id).to be_blank
     answer_all_general_info submit: true
@@ -28,8 +31,7 @@ describe '[Incident ID]', type: :request do
   end
 
   it 'generates unique ursus IDs' do
-    login
-    5.times { create_complete_incident }
+    5.times { create_partial_incident(:civilians) }
     ids = Incident.all.map { |i| i.incident_id.to_s }
     expect(ids.sort).to eq(Set.new(ids).to_a.sort)
   end

@@ -17,7 +17,7 @@ services:
         - GIT_SHA1
     image: "${DOCKER_REGISTRY_PATH}ursus"
     ports:
-      - "4000:80"
+      - "3000:80"
     volumes:
       - ./app:/ursus/app
     links:
@@ -46,7 +46,7 @@ services:
       - LOGIN_MECHANISM=SITEMINDER
       - RAILS_ENV=test
     env_file: local.env
-    command: --exclude-pattern spec/**/*devise**_spec.rb
+    command: "--exclude-pattern spec/**/*{devise,db_}**_spec.rb"
     volumes:
       - ./app:/ursus/app:ro
       - ./spec:/ursus/spec:ro
