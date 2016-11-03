@@ -9,8 +9,6 @@ describe '[Incident serialization and bulk upload]', type: :request do
     # Serialize in the `before :each` so that we can play with this valid json in all of the tests.
     create_complete_incident
     @valid_json = Incident.first.to_hash.to_json
-    @valid_xml = { incident: JSON.parse(@valid_json) }.to_xml(root: 'incidents')
-                                                      .sub('<incidents>', '<incidents type="array">')
 
     # Remove the original incident from the DB to avoid ID collisions.
     @original_incident = Incident.first
@@ -60,6 +58,11 @@ describe '[Incident serialization and bulk upload]', type: :request do
   end
 
   describe '[Bulk upload]', driver: :poltergeist do
+    let(:valid_xml) do
+      { incident: JSON.parse(@valid_json) }.to_xml(root: 'incidents')
+                                           .sub('<incidents>', '<incidents type="array">')
+    end
+
     it 'can create an incident via JSON upload' do
       json_file = Tempfile.new(['incident', '.json'])
       json_file.write("[ #{@valid_json} ]")
@@ -90,13 +93,13 @@ describe '[Incident serialization and bulk upload]', type: :request do
     end
 
     it 'can create an incident via XML upload' do
-      @xml_file = Tempfile.new(['incident', '.xml'])
-      @xml_file.write(@valid_xml)
-      @xml_file.close
+      xml_file = Tempfile.new(['incident', '.xml'])
+      xml_file.write(valid_xml)
+      xml_file.close
 
       visit 'incidents/upload'
       execute_script('$("input[type=file]").show().appendTo("form");')
-      attach_file('file', @xml_file.path)
+      attach_file('file', xml_file.path)
 
       expect(page).to have_content('Uploading 1 incident ...')
       expect(page).to have_content('Created incident')
@@ -107,7 +110,7 @@ describe '[Incident serialization and bulk upload]', type: :request do
 
     it 'displays an error message on broken XML' do
       xml_file = Tempfile.new(['incident', '.xml'])
-      xml_file.write("#{@valid_xml}<blah>")
+      xml_file.write("#{valid_xml}<blah>")
       xml_file.close
 
       visit 'incidents/upload'
