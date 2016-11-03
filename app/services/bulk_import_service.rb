@@ -8,7 +8,7 @@ class BulkImportService
       output << _import_incident(incident, user, idx)
     end
     output
-  rescue BridgeExceptions::ImportError => e
+  rescue BridgeExceptions::BulkUploadError => e
     e.message.split("\n")
   end
 
@@ -27,7 +27,8 @@ class BulkImportService
         JSON.parse(contents)
       end
     rescue JSON::ParserError, REXML::ParseException => e
-      raise BridgeExceptions::ImportError.new "Invalid file!\nAn error occurred while parsing #{filename}:\n    #{e.message}"
+      msg = "Invalid file!\nAn error occurred while parsing #{filename}:\n    #{e.message}"
+      raise BridgeExceptions::BulkUploadError.new(msg)
     end
   end
 
