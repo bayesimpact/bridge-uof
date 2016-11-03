@@ -75,7 +75,6 @@ describe '[Incident serialization and bulk upload]', type: :request do
 
     valid_xml = { incident: JSON.parse(@valid_json) }.to_xml(root: 'incidents')
                                                      .sub('<incidents>', '<incidents type="array">')
-    puts valid_xml
 
     file = Tempfile.new(['incident', '.xml'])
     file.write("[ #{valid_xml} ]")
