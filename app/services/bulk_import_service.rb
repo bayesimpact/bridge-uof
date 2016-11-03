@@ -27,7 +27,7 @@ class BulkImportService
         JSON.parse(contents)
       end
     rescue JSON::ParserError, REXML::ParseException => e
-      msg = "Invalid file!\nAn error occurred while parsing #{filename}:\n    #{e.message}"
+      msg = "Invalid file!\nAn error occurred while parsing #{filename}:\n    #{e.to_s.split("\n").first}"
       raise BridgeExceptions::BulkUploadError.new(msg)
     end
   end

@@ -9,6 +9,8 @@ describe '[Incident serialization and bulk upload]', type: :request do
     # Serialize in the `before :each` so that we can play with this valid json in all of the tests.
     create_complete_incident
     @valid_json = Incident.first.to_hash.to_json
+    @valid_xml = { incident: JSON.parse(@valid_json) }.to_xml(root: 'incidents')
+                                                      .sub('<incidents>', '<incidents type="array">')
 
     # Remove the original incident from the DB to avoid ID collisions.
     @original_incident = Incident.first
@@ -41,7 +43,12 @@ describe '[Incident serialization and bulk upload]', type: :request do
     end
   end
 
-  it 'cries on broken JSON' do
+  it 'cries when given incorrect data' do
+    # Note that, while this test uses JSON clarity for simplicity,
+    # the same results hold for XML import, since the method being tested,
+    # Incident.from_hash, operates on hashes that have already been
+    # parsed from JSON or XML.
+
     json_with_missing_fields = {
       "ori" => @user.ori,
       "screener" => JSON.parse(@valid_json)['screener']
@@ -52,42 +59,63 @@ describe '[Incident serialization and bulk upload]', type: :request do
     expect { Incident.from_hash(JSON.parse(json_with_extra_garbage), @user) }.to raise_error("Parsing error: unexpected field: secondary_agency in Screener")
   end
 
-  it 'can create an incident via JSON upload', driver: :poltergeist do
-    # TODO: Test that ORI validation is enabled in devise/siteminder mode and disabled in demo mode.
+  describe '[Bulk upload]', driver: :poltergeist do
+    it 'can create an incident via JSON upload' do
+      json_file = Tempfile.new(['incident', '.json'])
+      json_file.write("[ #{@valid_json} ]")
+      json_file.close
 
-    file = Tempfile.new(['incident', '.json'])
-    file.write("[ #{@valid_json} ]")
-    file.close
+      visit 'incidents/upload'
+      execute_script('$("input[type=file]").show().appendTo("form");')
+      attach_file('file', json_file.path)
 
-    visit 'incidents/upload'
-    execute_script('$("input[type=file]").show().appendTo("form");')
-    attach_file('file', file.path)
+      expect(page).to have_content('Uploading 1 incident ...')
+      expect(page).to have_content('Created incident')
+      expect(Incident.count).to eq(1)
+      expect(Incident.first).to be_valid
+      expect(Incident.first).to be_in_review
+    end
 
-    expect(page).to have_content('Uploading 1 incident ...')
-    expect(page).to have_content('Created incident')
-    expect(Incident.count).to eq(1)
-    expect(Incident.first).to be_valid
-    expect(Incident.first).to be_in_review
-  end
+    it 'displays an error message on broken JSON' do
+      json_file = Tempfile.new(['incident', '.json'])
+      json_file.write("[ #{@valid_json} ]}")
+      json_file.close
 
-  it 'can create an incident via XML upload', driver: :poltergeist do
-    # TODO: Test that ORI validation is enabled in devise/siteminder mode and disabled in demo mode.
+      visit 'incidents/upload'
+      execute_script('$("input[type=file]").show().appendTo("form");')
+      attach_file('file', json_file.path)
 
-    valid_xml = { incident: JSON.parse(@valid_json) }.to_xml(root: 'incidents')
-                                                     .sub('<incidents>', '<incidents type="array">')
+      expect(page).to have_content('Invalid file!')
+      expect(Incident.count).to eq(0)
+    end
 
-    file = Tempfile.new(['incident', '.xml'])
-    file.write("[ #{valid_xml} ]")
-    file.close
+    it 'can create an incident via XML upload' do
+      @xml_file = Tempfile.new(['incident', '.xml'])
+      @xml_file.write(@valid_xml)
+      @xml_file.close
 
-    visit 'incidents/upload'
-    execute_script('$("input[type=file]").show().appendTo("form");')
-    attach_file('file', file.path)
+      visit 'incidents/upload'
+      execute_script('$("input[type=file]").show().appendTo("form");')
+      attach_file('file', @xml_file.path)
 
-    expect(page).to have_content('Uploading 1 incident ...')
-    expect(page).to have_content('Created incident')
-    expect(Incident.count).to eq(1)
-    expect(Incident.first).to be_valid
-    expect(Incident.first).to be_in_review
+      expect(page).to have_content('Uploading 1 incident ...')
+      expect(page).to have_content('Created incident')
+      expect(Incident.count).to eq(1)
+      expect(Incident.first).to be_valid
+      expect(Incident.first).to be_in_review
+    end
+
+    it 'displays an error message on broken XML' do
+      xml_file = Tempfile.new(['incident', '.xml'])
+      xml_file.write("#{@valid_xml}<blah>")
+      xml_file.close
+
+      visit 'incidents/upload'
+      execute_script('$("input[type=file]").show().appendTo("form");')
+      attach_file('file', xml_file.path)
+
+      expect(page).to have_content('Invalid file!')
+      expect(Incident.count).to eq(0)
+    end
   end
 end
