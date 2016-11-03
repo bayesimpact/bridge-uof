@@ -1,10 +1,11 @@
 FactoryGirl.define do
   factory :incident, class: Incident do
     transient do
+      user_id       { build(:dummy_user).user_id }
       num_civilians 1
       num_officers  1
       submit        true
-      user_id       { build(:dummy_user).user_id }
+      stop_step     nil
     end
 
     user { User.find_by_user_id(user_id) || create(:dummy_user) }
@@ -19,15 +20,19 @@ FactoryGirl.define do
         )
       end
 
-      e.num_civilians.times do
-        incident.involved_civilians << create(:involved_civilian)
-      end
+      unless e.stop_step == :civilians
+        e.num_civilians.times do
+          incident.involved_civilians << create(:involved_civilian)
+        end
 
-      e.num_officers.times do
-        incident.involved_officers << create(:involved_officer)
-      end
+        unless e.stop_step == :officers
+          e.num_officers.times do
+            incident.involved_officers << create(:involved_officer)
+          end
 
-      incident.in_review! if e.submit
+          incident.in_review! if e.submit
+        end
+      end
     end
   end
 end

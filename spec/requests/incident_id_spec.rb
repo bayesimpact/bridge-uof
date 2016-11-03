@@ -33,6 +33,6 @@ describe '[Incident ID]', type: :request do
   it 'generates unique IDs' do
     5.times { create_partial_incident(:civilians) }
     ids = Incident.all.map { |i| i.incident_id.to_s }
-    expect(ids.sort).to eq(Set.new(ids).to_a.sort)
+    expect(ids.uniq.length).to eq(5)
   end
 end

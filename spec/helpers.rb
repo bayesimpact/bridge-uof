@@ -181,6 +181,9 @@ module Helpers
 
   # Start a new incident, and fill out all the pages up to (but not
   # including) stop_step, which should be one of the elements of Incident::STEPS.
+  # NOTE: This is much slower than creating an incident from a factory.
+  #       If you don't care about the requests being performed during incident creation,
+  #       consider create(:incident, stop_step = :step, num_civilians: 1, num_officers: 1) instead.
   def create_partial_incident(stop_step, num_civilians = 1, num_officers = 1, general_info = {})
     expect(Incident::STEPS).to include stop_step
 
@@ -206,6 +209,9 @@ module Helpers
   end
 
   # Create a new incident, fill out all pages, and send for supervisor review.
+  # NOTE: This is much slower than creating an incident from a factory.
+  #       If you don't care about the requests being performed during incident creation,
+  #       consider create(:incident, num_civilians: 1, num_officers: 1) instead.
   def create_complete_incident(num_civilians = 1, num_officers = 1, general_info = {})
     create_partial_incident(:review, num_civilians, num_officers, general_info)
     expect(current_path).to end_with('/review')

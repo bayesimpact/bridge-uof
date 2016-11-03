@@ -7,7 +7,8 @@ describe '[Involved Civilian Page]', type: :request do
 
   describe '[incident with one civilian]' do
     before :each do
-      create_partial_incident :civilians
+      create(:incident, stop_step: :civilians)
+      visit incident_path(Incident.first)
       expect(current_path).to end_with('involved_civilians/new')
     end
 
@@ -170,7 +171,8 @@ describe '[Involved Civilian Page]', type: :request do
 
   describe '[incident with 3 civilians]' do
     before :each do
-      create_partial_incident(:civilians, 3, 1)
+      create(:incident, num_civilians: 3, stop_step: :civilians)
+      visit incident_path(Incident.first)
       expect(current_path).to end_with('involved_civilians/new')
     end
 
@@ -210,7 +212,8 @@ describe '[Involved Civilian Page]', type: :request do
   end
 
   it "orders 5 civilians correctly, by creation time" do
-    create_partial_incident(:civilians, 5, 1)
+    create(:incident, num_civilians: 5, stop_step: :civilians)
+    visit incident_path(Incident.first)
     expect(current_path).to end_with('involved_civilians/new')
 
     5.times do
