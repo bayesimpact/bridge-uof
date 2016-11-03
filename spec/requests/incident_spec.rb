@@ -73,8 +73,7 @@ describe '[Incident]', type: :request do
       choose_for_question 'Yes', text: 'injured'
       choose_for_question 'Serious bodily injury', text: 'Civilian injury level'
       check 'Abrasion/Laceration'
-      choose_for_question 'Admitted to hospital - critical injuries',
-        text: 'Civilian medical aid received - choose highest applicable'
+      choose_for_question 'Admitted to hospital - critical injuries', text: 'medical aid received - choose highest applicable'
       choose_for_question 'Yes', text: 'pre-existing condition'
       choose 'Female'
       select '10-17', from: 'age'
