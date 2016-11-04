@@ -1,5 +1,6 @@
 # Custom exceptions go here.
 module BridgeExceptions
+  class BulkUploadError < StandardError; end
   class DeserializationError < StandardError; end
   class IncidentIdCollisionError < StandardError; end
   class SiteminderAuthenticationError < StandardError; end

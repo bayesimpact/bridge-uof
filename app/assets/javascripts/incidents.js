@@ -22,7 +22,6 @@ $(function(){
   });
 
   $('#showHideAuditLog').toggleLinkFor($('#auditLog'));
-  $('#showHideSchema').toggleLinkFor($('#schema'));
 
   $('#upload-control input[type=file]').change(function () {
     $('#upload-control').submit();

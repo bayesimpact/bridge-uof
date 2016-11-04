@@ -6,13 +6,16 @@ class GlobalState
 
   field :submission_open, :boolean
   field :last_complete_submission_year, :integer
+  field :maintenance_mode, :boolean
 
-  validates :submission_open, inclusion: [true, false]
+  validates :submission_open, inclusion: { in: [true, false], message: Constants::ERROR_BLANK_FIELD }
+  validates :maintenance_mode, inclusion: { in: [true, false], message: Constants::ERROR_BLANK_FIELD }
 
   self.DEFAULT_FIELDS = {
     # Ursus begins as if we've already closed out for 2015
     submission_open: false,
-    last_complete_submission_year: 2015
+    last_complete_submission_year: 2015,
+    maintenance_mode: false
   }
 
   # In a given calendar year, state submission goes through 3 phases:
@@ -57,5 +60,17 @@ class GlobalState
     # Users can always create incidents for the current year, and also
     # for last year iff submission hasn't closed out for the year.
     submission_closed_for_year? ? [Time.current.year] : [Time.current.year - 1, Time.current.year]
+  end
+
+  def self.maintenance_mode?
+    instance[:maintenance_mode]
+  end
+
+  def self.start_maintenance_mode!
+    instance.update_attributes(maintenance_mode: true)
+  end
+
+  def self.stop_maintenance_mode!
+    instance.update_attributes(maintenance_mode: false)
   end
 end
