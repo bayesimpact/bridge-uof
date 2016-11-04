@@ -1,13 +1,12 @@
-# IncidentDeserializerService.from_json handles incident deserialization.
+# IncidentDeserializerService.from_hash handles incident deserialization.
 class IncidentDeserializerService
-  def self.from_json(json, user)
+  def self.from_hash(hash, user)
     begin
-      parsed = JSON.parse(json)
-      ori = Rails.configuration.x.login.use_demo? ? user.ori : parsed['ori']  # Ignore 'ori' field in DEMO auth mode.
-      screener = Screener.from_hash(parsed.fetch('screener'))
-      general_info = GeneralInfo.from_hash(parsed.fetch('general_info'))
-      involved_civilians = parsed.fetch('involved_civilians').map { |c| InvolvedCivilian.from_hash(c) }
-      involved_officers = parsed.fetch('involved_officers').map { |c| InvolvedOfficer.from_hash(c) }
+      ori = Rails.configuration.x.login.use_demo? ? user.ori : hash['ori']  # Ignore 'ori' field in DEMO auth mode.
+      screener = Screener.from_hash(hash.fetch('screener'))
+      general_info = GeneralInfo.from_hash(hash.fetch('general_info'))
+      involved_civilians = hash.fetch('involved_civilians').map { |c| InvolvedCivilian.from_hash(c) }
+      involved_officers = hash.fetch('involved_officers').map { |c| InvolvedOfficer.from_hash(c) }
     rescue => e
       raise generate_nicer_parsing_exception_message(e)
     end
@@ -24,12 +23,10 @@ class IncidentDeserializerService
     case e.message
     when /key not found: \"(\w*)\"/
       # rubocop:disable Style/PerlBackrefs
-      BridgeExceptions::DeserializationError.new("JSON parsing error: missing section: #{$1}")
+      BridgeExceptions::DeserializationError.new("Parsing error: missing section: #{$1}")
       # rubocop:enable Style/PerlBackrefs
-    when /unexpected token/
-      BridgeExceptions::DeserializationError.new("JSON parsing error: invalid JSON")
     else
-      BridgeExceptions::DeserializationError.new("JSON parsing error: #{e.message}")
+      BridgeExceptions::DeserializationError.new("Parsing error: #{e.message}")
     end
   end
 

@@ -87,12 +87,11 @@ class IncidentsController < ApplicationController
 
   def upload
     if params[:file].present?
-      @output = BulkImportService.import_from_json(params[:file], @current_user)
+      @output = BulkImportService.import(params[:file], @current_user)
     end
 
-    @schema = JSON.pretty_generate(Incident.schema)
-                  .gsub(/"(<.*>)"/, "\\1")   # remove quotes from <type>s
-                  .tr("'", '"')
+    @json_schema = Incident.json_schema
+    @xml_schema = Incident.xml_schema
 
     # Set the incident counts in the sidebar right before rendering to reflect imported incidents.
     set_incidents

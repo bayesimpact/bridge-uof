@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<incidents type="array">
+  <incident>
+    <ori>CA0190000</ori>
+    <screener>
+      <partial>f</partial>
+      <multiple-agencies>f</multiple-agencies>
+      <shots-fired>t</shots-fired>
+      <officer-used-force nil="true"/>
+      <civilian-seriously-injured nil="true"/>
+      <civilian-used-force nil="true"/>
+      <officer-seriously-injured nil="true"/>
+    </screener>
+    <general-info>
+      <partial>f</partial>
+      <ori nil="true"/>
+      <incident-date-str>04/01/2016</incident-date-str>
+      <incident-time-str>1830</incident-time-str>
+      <address>1355 Market St</address>
+      <city>San Francisco</city>
+      <county>San Francisco County</county>
+      <state>CA</state>
+      <zip-code>94103</zip-code>
+      <multiple-locations>f</multiple-locations>
+      <on-k12-campus>f</on-k12-campus>
+      <arrest-made>t</arrest-made>
+      <crime-report-filed>f</crime-report-filed>
+      <contact-reason>Welfare Check</contact-reason>
+      <in-custody-reason nil="true"/>
+      <num-involved-civilians type="integer">1</num-involved-civilians>
+      <num-involved-officers type="integer">1</num-involved-officers>
+    </general-info>
+    <involved-civilians type="array">
+      <involved-civilian>
+        <partial>f</partial>
+        <gender>Female</gender>
+        <race type="array">
+          <race>White</race>
+        </race>
+        <asian-race nil="true"/>
+        <injured>f</injured>
+        <injury-level nil="true"/>
+        <injury-type nil="true"/>
+        <medical-aid nil="true"/>
+        <injury-from-preexisting-condition nil="true"/>
+        <received-force-location nil="true"/>
+        <order-of-force-specified>f</order-of-force-specified>
+        <order-of-force-str nil="true"/>
+        <mental-status type="array">
+          <mental-status>Signs of alcohol impairment</mental-status>
+        </mental-status>
+        <assaulted-officer>f</assaulted-officer>
+        <highest-charge nil="true"/>
+        <perceived-armed>f</perceived-armed>
+        <perceived-armed-weapon nil="true"/>
+        <firearm-type nil="true"/>
+        <resisted>f</resisted>
+        <resistance-type nil="true"/>
+        <received-force>f</received-force>
+        <received-force-type nil="true"/>
+        <custody-status>Deceased</custody-status>
+        <age>10-17</age>
+        <confirmed-armed>f</confirmed-armed>
+        <confirmed-armed-weapon nil="true"/>
+      </involved-civilian>
+    </involved-civilians>
+    <involved-officers type="array">
+      <involved-officer>
+        <partial>f</partial>
+        <gender>Female</gender>
+        <race type="array">
+          <race>White</race>
+        </race>
+        <asian-race nil="true"/>
+        <injured>f</injured>
+        <injury-level nil="true"/>
+        <injury-type nil="true"/>
+        <medical-aid nil="true"/>
+        <injury-from-preexisting-condition nil="true"/>
+        <received-force-location nil="true"/>
+        <order-of-force-specified nil="true"/>
+        <order-of-force-str nil="true"/>
+        <age>18-20</age>
+        <officer-used-force>f</officer-used-force>
+        <officer-used-force-reason nil="true"/>
+        <received-force>f</received-force>
+        <received-force-type nil="true"/>
+        <on-duty>t</on-duty>
+        <dress>Patrol Uniform</dress>
+        <sworn-type>Sworn officer</sworn-type>
+      </involved-officer>
+    </involved-officers>
+  </incident>
+  <incident>
+    <ori>CA0190000</ori>
+    <screener>
+      <partial>f</partial>
+      <multiple-agencies>f</multiple-agencies>
+      <shots-fired>t</shots-fired>
+      <officer-used-force nil="true"/>
+      <civilian-seriously-injured nil="true"/>
+      <civilian-used-force nil="true"/>
+      <officer-seriously-injured nil="true"/>
+    </screener>
+    <general-info>
+      <partial>f</partial>
+      <ori nil="true"/>
+      <incident-date-str>02/01/2016</incident-date-str>
+      <incident-time-str>1830</incident-time-str>
+      <address>1355 Market St</address>
+      <city>San Francisco</city>
+      <county>San Francisco County</county>
+      <state>CA</state>
+      <zip-code>94103</zip-code>
+      <multiple-locations>f</multiple-locations>
+      <on-k12-campus>f</on-k12-campus>
+      <arrest-made>t</arrest-made>
+      <crime-report-filed>f</crime-report-filed>
+      <contact-reason>Welfare Check</contact-reason>
+      <in-custody-reason nil="true"/>
+      <num-involved-civilians type="integer">1</num-involved-civilians>
+      <num-involved-officers type="integer">1</num-involved-officers>
+    </general-info>
+    <involved-civilians type="array">
+      <involved-civilian>
+        <partial>f</partial>
+        <gender>Female</gender>
+        <race type="array">
+          <race>White</race>
+        </race>
+        <asian-race nil="true"/>
+        <injured>f</injured>
+        <injury-level nil="true"/>
+        <injury-type nil="true"/>
+        <medical-aid nil="true"/>
+        <injury-from-preexisting-condition nil="true"/>
+        <received-force-location nil="true"/>
+        <order-of-force-specified>f</order-of-force-specified>
+        <order-of-force-str nil="true"/>
+        <mental-status type="array">
+          <mental-status>None</mental-status>
+        </mental-status>
+        <assaulted-officer>f</assaulted-officer>
+        <highest-charge nil="true"/>
+        <perceived-armed>f</perceived-armed>
+        <perceived-armed-weapon nil="true"/>
+        <firearm-type nil="true"/>
+        <resisted>f</resisted>
+        <resistance-type nil="true"/>
+        <received-force>f</received-force>
+        <received-force-type nil="true"/>
+        <custody-status>Deceased</custody-status>
+        <age>10-17</age>
+        <confirmed-armed>f</confirmed-armed>
+        <confirmed-armed-weapon nil="true"/>
+      </involved-civilian>
+    </involved-civilians>
+    <involved-officers type="array">
+      <involved-officer>
+        <partial>f</partial>
+        <gender>Female</gender>
+        <race type="array">
+          <race>White</race>
+        </race>
+        <asian-race nil="true"/>
+        <injured>f</injured>
+        <injury-level nil="true"/>
+        <injury-type nil="true"/>
+        <medical-aid nil="true"/>
+        <injury-from-preexisting-condition nil="true"/>
+        <received-force-location nil="true"/>
+        <order-of-force-specified nil="true"/>
+        <order-of-force-str nil="true"/>
+        <age>18-20</age>
+        <officer-used-force>f</officer-used-force>
+        <officer-used-force-reason nil="true"/>
+        <received-force>f</received-force>
+        <received-force-type nil="true"/>
+        <on-duty>t</on-duty>
+        <dress>Patrol Uniform</dress>
+        <sworn-type>Sworn officer</sworn-type>
+      </involved-officer>
+    </involved-officers>
+  </incident>
+</incidents>

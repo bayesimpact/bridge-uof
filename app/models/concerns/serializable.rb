@@ -28,20 +28,27 @@ module Serializable
       create(hash)
     end
 
-    def schema
-      # Hash representation of input JSON format
+    # Hash representation of input JSON format.
+    def json_schema
       attributes.slice(*important_fields)
-                .map { |field, metadata| [field, "<#{displayed_type(field, metadata)}>"] }
+                .map { |field, metadata| [field, "<#{displayed_type(field, metadata[:type])}>"] }
                 .to_h
+    end
+
+    # String representation of input XML format.
+    def xml_schema
+      attributes.slice(*important_fields)
+                .map { |field, metadata| format_xml_field_for_schema(field, metadata) }
+                .join
     end
 
     private
 
-      def displayed_type(field, metadata)
+      def displayed_type(field, type)
         # Get a string of options for this field, if Incident::OPTIONS_PER_FIELD[field] is defined.
         options = Incident::OPTIONS_PER_FIELD[field].try { |opts| opts.map { |o| "'#{o}'" }.join(', ') }
 
-        case metadata[:type]
+        case type
         when :string
           if options.present?
             field.to_s.include?('order') ? "(optional) any of [#{options}], separated by ' -> '" : "one of [#{options}]"
@@ -53,7 +60,26 @@ module Serializable
         when :array
           "array of [#{options}]"
         else
-          metadata[:type]
+          type
+        end
+      end
+
+      def format_xml_field_for_schema(field, metadata)
+        tag_name = field.to_s.tr('_', '-')
+        if metadata[:type] == :array
+          %(
+            <#{tag_name} type="array">
+              <#{tag_name}>
+                {{ #{displayed_type(field, :string)} }}
+              </#{tag_name}>
+            </#{tag_name}>
+          )
+        else
+          %(
+            <#{tag_name}>
+              {{ #{displayed_type(field, metadata[:type])} }}
+            </#{tag_name}>
+          )
         end
       end
   end
