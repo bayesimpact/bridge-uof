@@ -37,8 +37,16 @@ class InvolvedPerson
       validates :injury_level, inclusion: { in: INJURY_LEVELS }
       validates :injury_type, presence: true, subset: { in: INJURY_TYPES }
       validates :medical_aid, inclusion: { in: MEDICAL_AID }
-      validates :injury_from_preexisting_condition, inclusion: { in: [true, false], message: Constants::ERROR_BLANK_FIELD }
+
+      with_options unless: :medical_aid_refused? do
+        validates :injury_from_preexisting_condition, inclusion: { in: [true, false],
+                                                                   message: Constants::ERROR_BLANK_FIELD }
+      end
     end
+  end
+
+  def medical_aid_refused?
+    medical_aid == "No medical assistance or refused assistance"
   end
 
   def display_race

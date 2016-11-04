@@ -11,7 +11,7 @@ FactoryGirl.define do
     received_force_type { InvolvedCivilian::RECEIVED_FORCE_TYPES.sample_one_or_two_elements }
     received_force_location ['Head']
     injured false
-    custody_status 'In custody'
+    custody_status 'In custody (W&I section 5150)'
     mental_status ['None']
     highest_charge 'Some charge'
     age '21-25'
