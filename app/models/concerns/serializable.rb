@@ -56,7 +56,7 @@ module Serializable
             'string'
           end
         when :boolean
-          "'y' or 'n'"
+          "'t' or 'f'"
         when :array
           "array of [#{options}]"
         else
