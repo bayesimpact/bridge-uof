@@ -25,7 +25,7 @@ dependencies:
     - echo "MAIL_FROM=test_from@example.com" >> local.env
     - echo "FEEDBACK_MAIL_TO=test_feedback_to@example.com" >> local.env
     - echo "BRANDING=ursus" >> local.env
-    - echo "INCIDENT_ID_PREFIX=URSUS" >> local.env
+    - echo "INCIDENT_ID_PREFIX=TESTURSUS" >> local.env
 
     # Set up AWS for deployment
     - mkdir ~/.aws
@@ -52,4 +52,4 @@ deployment:
     commands:
       - $(aws ecr get-login)
       - GIT_SHA1=$CIRCLE_SHA1 docker-compose build web
-      - docker push ${DOCKER_REGISTRY_PATH}ursus:latest
+      - docker push ${DOCKER_REGISTRY_PATH}bridge:latest
