@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe '[Incident serialization and bulk upload]', type: :request do
-  let(:incident) { create(:incident) { |i| i.destroy } }
+  let(:incident) { create(:incident, &:destroy) }
   let(:valid_json) { incident.to_hash.to_json }
   let(:user) { User.first }
 
@@ -24,8 +24,8 @@ describe '[Incident serialization and bulk upload]', type: :request do
     #   2. general_info.incident_date_str is in the far future
     #   3. involved_civilians[0].gender = 'Alien'
     invalid_json = valid_json.sub('"shots_fired":"t"', '"shots_fired":null')
-                              .sub(%r{"incident_date_str":"[\d\/]*"}, '"incident_date_str":"06/06/9999"')
-                              .sub('"gender":"Male"', '"gender":"Alien"')
+                             .sub(%r{"incident_date_str":"[\d\/]*"}, '"incident_date_str":"06/06/9999"')
+                             .sub('"gender":"Male"', '"gender":"Alien"')
 
     expect { Incident.from_hash(JSON.parse(invalid_json), user) }.to raise_error do |error|
       expect(error.message).to include('Validation failed')
@@ -54,7 +54,7 @@ describe '[Incident serialization and bulk upload]', type: :request do
   describe '[Bulk upload]', driver: :poltergeist do
     let(:valid_xml) do
       { incident: JSON.parse(valid_json) }.to_xml(root: 'incidents')
-                                           .sub('<incidents>', '<incidents type="array">')
+                                          .sub('<incidents>', '<incidents type="array">')
     end
 
     it 'can create an incident via JSON upload' do
