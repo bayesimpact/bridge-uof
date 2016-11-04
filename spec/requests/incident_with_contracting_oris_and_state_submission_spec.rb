@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe '[Incident with contracting ORI relationships]' do
+describe '[Incident with contracting ORI relationships]', type: :request do
   let(:roles) { Rails.configuration.x.roles }
   let(:parent_ori_user) { build(:dummy_user, email: "1@example.com", ori: 'PARENT_ORI', role: roles.user, user_id: 'parentuser') }
   let(:sub_ori_user) { build(:dummy_user, email: "2@example.com", ori: 'SUB_ORI', role: roles.user, user_id: 'subuser') }

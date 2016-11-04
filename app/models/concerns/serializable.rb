@@ -46,7 +46,9 @@ module Serializable
 
       def displayed_type(field, type)
         # Get a string of options for this field, if Incident::OPTIONS_PER_FIELD[field] is defined.
-        options = Incident::OPTIONS_PER_FIELD[field].try { |opts| opts.map { |o| "'#{o}'" }.join(', ') }
+        options = Incident::OPTIONS_PER_FIELD[field].try do |opts|
+          opts.map { |o| "'#{o}'" }.join(', ').sub("&", "&amp;")
+        end
 
         case type
         when :string

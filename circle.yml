@@ -9,6 +9,7 @@ machine:
 dependencies:
   pre:
     - gem install rubocop -v 0.43
+    - gem install rubocop-rspec
 
   override:
     # Linting happens in the dependencies step in order to fail fast.

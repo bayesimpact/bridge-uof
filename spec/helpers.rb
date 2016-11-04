@@ -58,13 +58,13 @@ module Helpers
       'SM_USERGROUPS' => Siteminder.encode_role(user.role)
     }
     cookie_str = cookie_params.map { |k, v| "#{k}=#{v}" }.join(';')
-    @encrypted_cookie = Siteminder.encrypt_cookie(
+    encrypted_cookie = Siteminder.encrypt_cookie(
       cookie_str,
       Rails.configuration.x.login.siteminder_decrypt_key,
       Rails.configuration.x.login.siteminder_decrypt_init_v,
       url_escape: true
     )
-    set_cookie("SMOFC", @encrypted_cookie)
+    set_cookie("SMOFC", encrypted_cookie)
     handle_splash unless options[:dont_handle_splash]
   end
 
