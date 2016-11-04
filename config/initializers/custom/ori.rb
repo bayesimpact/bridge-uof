@@ -1,9 +1,15 @@
 # App should fail to start if ORI data isn't loaded.
 
-unless Rails.env.test?
-  if !defined?(Constants::CONTRACTING_ORIS)
+Rails.configuration.after_initialize do
+  begin
+    Constants::CONTRACTING_ORIS
+  rescue LoadError
     raise "Constants::CONTRACTING_ORIS not specified! Have you run `docker-compose run data`?"
-  elsif !defined?(Constants::DEPARTMENT_BY_ORI)
+  end
+
+  begin
+    Constants::DEPARTMENT_BY_ORI
+  rescue LoadError
     raise "Constants::DEPARTMENT_BY_ORI not specified! Have you run `docker-compose run data`?"
   end
 end
