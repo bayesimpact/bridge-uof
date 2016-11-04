@@ -7,10 +7,10 @@ describe '[DOJ Dashboard]', type: :request do
   end
 
   describe '[with some mock data]' do
-    let(:elvis) do
-      build(:dummy_user, first_name: "Elvis", last_name: "Presley",
-                         email: "elvis@example.com", role: Rails.configuration.x.roles.doj,
-                         user_id: 'elvis', ori: 'ALPHA_ORI')
+    let!(:elvis) do
+      create(:dummy_user, first_name: "Elvis", last_name: "Presley",
+                          email: "elvis@example.com", role: Rails.configuration.x.roles.doj,
+                          user_id: 'elvis', ori: 'ALPHA_ORI')
     end
 
     describe '[logged in as a DOJ user]' do

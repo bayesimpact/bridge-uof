@@ -4,8 +4,8 @@ describe AgencyStatus, type: :model do
   let(:ori) { "ORI_1" }
   let(:other_ori) { "ORI_2" }
 
-  let!(:status) { AgencyStatus.create!(ori: ori) }
-  let!(:other_status) { AgencyStatus.create!(ori: other_ori) }
+  let!(:status) { AgencyStatus.create(ori: ori) }
+  let!(:other_status) { AgencyStatus.create(ori: other_ori) }
 
   it 'can look up an AgencyStatus by ori with #find_by_ori' do
     expect(AgencyStatus.find_by_ori(ori)).to eq(status)

@@ -15,7 +15,7 @@ describe BridgeMailer, type: :mailer do
 
   describe 'feedback_email' do
     let(:user) { build :dummy_user }
-    let(:feedback) { Feedback.create(source: "Source test", content: "Content test") }
+    let(:feedback) { Feedback.build(source: "Source test", content: "Content test") }
     let(:mail) { BridgeMailer.feedback_email(feedback, user).deliver_now }
 
     it 'has the correct subject' do
