@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe '[Logging in with Devise]', type: :request do
-  let(:dummy_user) { build :dummy_user }
+  let(:dummy_user) { create :dummy_user }
 
   it 'redirects root page to signin' do
     visit root_path

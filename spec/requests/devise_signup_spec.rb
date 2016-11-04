@@ -32,7 +32,7 @@ describe '[Devise-related tests]', type: :request do
   end
 
   describe '[with an existing user]' do
-    let(:dummy_user) { build :dummy_user }
+    let(:dummy_user) { create :dummy_user }
 
     it 'allows sign up of an existing user with a new userid' do
       visit new_user_registration_path
