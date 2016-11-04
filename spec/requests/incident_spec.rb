@@ -58,7 +58,7 @@ describe '[Incident]', type: :request do
 
       expect(current_path).to match(%r{\/involved_civilians(\/new)?})
       choose_for_question 'No', text: 'assaulted officer'
-      choose_for_question 'In custody', text: 'arrested and / or in custody'
+      choose_for_question 'In custody (other)', text: 'arrested and / or in custody'
       fill_in 'highest charge', with: 'Fake Charge 1234'
       choose_for_question 'Yes', text: 'perceived armed'
       check_for_question 'Other dangerous weapon', text: 'Type of weapon'
@@ -74,7 +74,7 @@ describe '[Incident]', type: :request do
       choose_for_question 'Yes', text: 'injured'
       choose_for_question 'Serious bodily injury', text: 'Civilian injury level'
       check 'Abrasion/Laceration'
-      choose_for_question 'Admitted to hospital - critical injuries', text: 'aid received'
+      choose_for_question 'Admitted to hospital - critical injuries', text: 'medical aid received - choose highest applicable'
       choose_for_question 'Yes', text: 'pre-existing condition'
       choose 'Female'
       select '10-17', from: 'age'

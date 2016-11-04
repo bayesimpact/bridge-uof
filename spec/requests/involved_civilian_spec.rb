@@ -42,7 +42,7 @@ describe '[Involved Civilian Page]', type: :request do
     end
 
     it 'if civilian does not flee, does not clear those sub-questions' do
-      answer_all_civilian submit: true, custody_status: 'In custody'
+      answer_all_civilian submit: true, custody_status: 'In custody (W&I section 5150)'
       expect(InvolvedCivilian.first.injured).to be false
     end
 

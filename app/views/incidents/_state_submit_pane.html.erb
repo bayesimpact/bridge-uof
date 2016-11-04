@@ -41,7 +41,7 @@
       </p>
     <% end %>
     <% if GlobalState.submission_open? %>
-      <p>When ALL of your state's incidents for <%= "#{Time.last_year}" %> are fully ready, use this button to send them to the state of <% if Rails.configuration.x.branding.ursus? %>the state of California<% else %>your state<% end %>.</p>
+      <p>When ALL of your jurisdiction’s incidents for <%= "#{Time.last_year}" %> are fully ready, use this button to send them to the state of <% if Rails.configuration.x.branding.ursus? %>the state of California<% else %>your state<% end %>.</p>
       <p><strong>After submission, you will no longer be able to edit any of these incidents.</strong></p>
       <%= form_tag do %>
         <input type="hidden" name="submission_year" value="<%= Time.last_year %>">

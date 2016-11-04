@@ -107,7 +107,7 @@
   </div>
   <div class="incident-form-row">
     <div class="form-col">
-      <%= f.label :num_involved_officers, "Number of sworn officers involved", class: 'required' %>
+      <%= f.label :num_involved_officers, "Number of sworn officers involved from #{@current_user.department}", class: 'required' %>
       <p class="question-explanation">
         Among sworn officers present on the scene, the number who used force on a civilian and/or were assaulted by a civilian.
       </p>

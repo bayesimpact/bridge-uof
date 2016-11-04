@@ -63,7 +63,7 @@ $(function(){
     }
     // Highest charge is also not needed if the suspect is deceased.
     if ($('#involved_civilian_custody_status_cited_and_released').is(':checked') ||
-        $('#involved_civilian_custody_status_in_custody').is(':checked')) {
+        $('#involved_civilian_custody_status_in_custody_other').is(':checked')) {
       enableQuestions('#charge_questions');
     } else {
       disableQuestions('#charge_questions');
@@ -75,4 +75,13 @@ $(function(){
     $('#multiple-agencies-info-text').toggle($('#screener_multiple_agencies_true').is(':checked'));
     $('#shots-fired-info-text').toggle($('#screener_shots_fired_true').is(':checked'));
   }).change();
+
+
+  $('#medical-aid-received input[type="radio"]').on('click', function () {
+    if ($('input[value="No medical assistance or refused assistance"]').is(':checked')) {
+      disableQuestions('.additional-question#pre-existing-condition');
+    } else {
+      enableQuestions('.additional-question#pre-existing-condition');
+    }
+  });
 });
