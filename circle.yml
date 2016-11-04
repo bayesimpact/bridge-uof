@@ -25,7 +25,7 @@ dependencies:
     - echo "MAIL_FROM=test_from@example.com" >> local.env
     - echo "FEEDBACK_MAIL_TO=test_feedback_to@example.com" >> local.env
     - echo "BRANDING=ursus" >> local.env
-    - echo "INCIDENT_ID_PREFIX=TESTURSUS" >> local.env
+    - echo "INCIDENT_ID_PREFIX=TEST" >> local.env
 
     # Set up AWS for deployment
     - mkdir ~/.aws
