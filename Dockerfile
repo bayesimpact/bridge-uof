@@ -1,5 +1,5 @@
 # Build this Container by running from this dir:
-#   docker build -t bayesimpact/ursus .
+#   docker build -t bayesimpact/bridge .
 FROM ruby:2.2.3
 
 MAINTAINER everett.wetchler@bayesimpact.org
