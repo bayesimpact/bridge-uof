@@ -25,6 +25,8 @@ class Incident
   validates :user, :ori, presence: true
   validates :incident_id_str, uniqueness: true, allow_nil: true
 
+  delegate :on_k12_campus, to: :general_info, allow_nil: true
+
   # For convenience, we programmatically create a set of getters draft?, in_review?, etc.
   # and a set of setters draft!, in_review!, etc. to check or set the status of an incident.
   STATUS_TYPES.each do |value|

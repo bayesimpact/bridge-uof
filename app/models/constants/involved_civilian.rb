@@ -40,8 +40,10 @@ module Constants
     CUSTODY_STATUSES_BOOKED = ['Cited and released', 'In custody (other)'].freeze
 
     DISPLAY_FIELDS = ([
-      :assaulted_officer, :custody_status, :highest_charge, :crime_qualifier, :perceived_armed,
-      :perceived_armed_weapon, :confirmed_armed, :confirmed_armed_weapon, :firearm_type, :resisted, :resistance_type
+      :assaulted_officer, :custody_status, :highest_charge, :crime_qualifier,
+      :perceived_armed, :perceived_armed_weapon, :confirmed_armed,
+      :confirmed_armed_weapon, :firearm_type, :resisted, :resistance_type,
+      :k12_type
     ] + Constants::InvolvedPerson::DISPLAY_FIELDS).freeze
 
     FBI_FIELDS = ([
@@ -62,5 +64,7 @@ module Constants
     FIELDS_NOT_COLLECTED_IF_FLED = [
       :highest_charge, :crime_qualifier, :confirmed_armed, :age, :gender, :race, :injured
     ].freeze
+
+    K12_TYPE = ['A student', 'A school employee', 'Neither'].freeze
   end
 end
