@@ -53,8 +53,17 @@ describe '[Incident serialization and bulk upload]', type: :request do
     }.to_json
     expect { Incident.from_hash(JSON.parse(json_with_missing_fields), @user) }.to raise_error("Parsing error: missing section: general_info")
 
-    json_with_extra_garbage = @valid_json.sub('"shots_fired":"t"', '"shots_fired":"t","secondary_agency":"t"')
-    expect { Incident.from_hash(JSON.parse(json_with_extra_garbage), @user) }.to raise_error("Parsing error: unexpected field: secondary_agency in Screener")
+    json_with_extra_garbage = @valid_json.sub('"dress":"Patrol Uniform"', '"dress":"Patrol Uniform","hat":"Patrol Hat"')
+
+    expect { Incident.from_hash(JSON.parse(json_with_extra_garbage), @user) }.to raise_error("Parsing error: unexpected field: hat in InvolvedOfficer")
+
+    # Make sure that nothing got saved into the DB from the broken data.
+
+    expect(Incident.count).to eq(0)
+    expect(Screener.count).to eq(0)
+    expect(GeneralInfo.count).to eq(0)
+    expect(InvolvedCivilian.count).to eq(0)
+    expect(InvolvedOfficer.count).to eq(0)
   end
 
   describe '[Bulk upload]', driver: :poltergeist do
