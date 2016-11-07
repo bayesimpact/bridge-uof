@@ -46,7 +46,7 @@ services:
       - LOGIN_MECHANISM=SITEMINDER
       - RAILS_ENV=test
     env_file: local.env
-    command: --exclude-pattern spec/**/*devise**_spec.rb
+    command: "--exclude-pattern spec/**/*{devise,db_}**_spec.rb"
     volumes:
       - ./app:/bridge/app:ro
       - ./spec:/bridge/spec:ro

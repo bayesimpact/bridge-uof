@@ -7,7 +7,8 @@ describe '[Involved Civilian Page]', type: :request do
 
   describe '[incident with one civilian]' do
     before :each do
-      create_partial_incident :civilians
+      create(:incident, stop_step: :civilians)
+      visit incident_path(Incident.first)
       expect(current_path).to end_with('involved_civilians/new')
     end
 
@@ -170,7 +171,8 @@ describe '[Involved Civilian Page]', type: :request do
 
   describe '[incident with 3 civilians]' do
     before :each do
-      create_partial_incident(:civilians, 3, 1)
+      create(:incident, num_civilians: 3, stop_step: :civilians)
+      visit incident_path(Incident.first)
       expect(current_path).to end_with('involved_civilians/new')
     end
 
@@ -209,27 +211,21 @@ describe '[Involved Civilian Page]', type: :request do
     end
   end
 
-  it "orders 10 civilians correctly, by creation time" do
-    create_partial_incident(:civilians, 10, 1)
+  it "orders 5 civilians correctly, by creation time" do
+    create(:incident, num_civilians: 5, stop_step: :civilians)
+    visit incident_path(Incident.first)
     expect(current_path).to end_with('involved_civilians/new')
-    10.times do
+
+    5.times do
       answer_all_civilian submit: true
     end
     expect(current_path).to end_with('involved_officers/new')
-    click_link 'Civilians'
-    links = all('a.person-link')
-    expect(links.length).to eq(10)
 
-    # The odds of 10 items to be correctly sorted by chance is ~3million:1
+    click_link 'Civilians'
+    expect(all('a.person-link').length).to eq(5)
+
     incident = Incident.first
-    civs_sorted = InvolvedPerson.sorted_persons(incident.involved_civilians)
-    # Uncomment for debugging
-    # (0..9).each do |i|
-    #   puts "Unsorted #{i} #{incident.involved_civilians[i].id} #{incident.involved_civilians[i].created_at}"
-    #   puts "Sorted   #{i} #{civs_sorted[i].id} #{civs_sorted[i].created_at}"
-    # end
-    (1..9).each do |i|
-      expect(civs_sorted[i].created_at).to be > civs_sorted[i - 1].created_at
-    end
+    civilians_sorted = InvolvedPerson.sorted_persons(incident.involved_civilians)
+    expect(civilians_sorted.map(&:created_at)).to be_sorted
   end
 end

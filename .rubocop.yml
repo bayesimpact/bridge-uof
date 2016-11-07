@@ -1,8 +1,19 @@
+require: rubocop-rspec
+
 Metrics:
   Enabled: false  # Metrics should never be explicitly used for CI, but can be useful for finding areas to refactor.
 
 Rails:
   Enabled: true  # This is a Rails application, so let's run the Rails cops.
+
+RSpec/ExampleLength:
+  Enabled: false  # Metrics should never be explicitly used for CI.
+
+RSpec/HookArgument:
+  EnforcedStyle: each  # `before(:each) do` is clearer than `before do`.
+
+RSpec/MultipleExpectations:
+  Enabled: false  # Metrics should never be explicitly used for CI.
 
 Style/ExtraSpacing:
   Enabled: false  # We like to put extra spaces before one-liner comments.

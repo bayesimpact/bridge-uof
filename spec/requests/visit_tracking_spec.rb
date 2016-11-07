@@ -1,9 +1,10 @@
 require 'rails_helper'
 
 describe '[Visit and event tracking]', type: :request do
+  let(:user) { User.first }
+
   before :each do
     login
-    @user = User.first
 
     # We don't care about the events that were triggered by login.
     Event.all.each(&:destroy)
@@ -15,12 +16,12 @@ describe '[Visit and event tracking]', type: :request do
     visit dashboard_path
 
     expect(Visit.count).to eq(1)
-    expect(Visit.first.user).to eq(@user)
+    expect(Visit.first.user).to eq(user)
 
     expect(Event.count).to eq(1)
     expect(Event.first.name).to eq('incidents#index')
     expect(Event.first.visit.id).to eq(Visit.first.id)
-    expect(Event.first.user).to eq(@user)
+    expect(Event.first.user).to eq(user)
 
     # Visiting another page should create new events, but the visit should stay the same.
 

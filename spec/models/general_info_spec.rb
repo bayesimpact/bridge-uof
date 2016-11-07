@@ -1,42 +1,40 @@
 require 'rails_helper'
 
-describe '[General Info]', type: :model do
+describe GeneralInfo, type: :model do
   describe '[Validation]' do
-    before :each do
-      @info = create :general_info
-    end
+    let(:gi) { build :general_info }
 
     it 'validates a model with all correct fields' do
-      expect(@info.valid?).to be true
+      expect(gi.valid?).to be true
     end
 
     it 'requries a (valid) in_custody_reason if contact_reason is "in custody"' do
-      @info.contact_reason = GeneralInfo::CONTACT_REASON_IN_CUSTODY
-      expect(@info.valid?).to be false
-      @info.in_custody_reason = 'foobarbaz'
-      expect(@info.valid?).to be false
-      @info.in_custody_reason = GeneralInfo::IN_CUSTODY_REASONS[0]
-      expect(@info.valid?).to be true
+      gi.contact_reason = GeneralInfo::CONTACT_REASON_IN_CUSTODY
+      expect(gi.valid?).to be false
+      gi.in_custody_reason = 'foobarbaz'
+      expect(gi.valid?).to be false
+      gi.in_custody_reason = GeneralInfo::IN_CUSTODY_REASONS[0]
+      expect(gi.valid?).to be true
     end
 
     it 'requires at least 1 and at most 20 officers and civilians involved' do
-      @info.num_involved_civilians = 1
-      @info.num_involved_officers = 1
-      expect(@info.valid?).to be true
+      gi.num_involved_civilians = 1
+      gi.num_involved_officers = 1
+      expect(gi.valid?).to be true
 
-      @info.num_involved_civilians = 0
-      expect(@info.valid?).to be false
-      @info.num_involved_civilians = 21
-      expect(@info.valid?).to be false
-      @info.num_involved_civilians = 20
-      expect(@info.valid?).to be true
+      gi.num_involved_civilians = 0
+      expect(gi.valid?).to be false
+      gi.num_involved_civilians = 21
+      expect(gi.valid?).to be false
+      gi.num_involved_civilians = 20
+      expect(gi.valid?).to be true
 
-      @info.num_involved_officers = 0
-      expect(@info.valid?).to be false
-      @info.num_involved_officers = 21
-      expect(@info.valid?).to be false
-      @info.num_involved_officers = 20
-      expect(@info.valid?).to be true
+      gi.num_involved_officers = 0
+      expect(gi.valid?).to be false
+      gi.num_involved_officers = 21
+      expect(gi.valid?).to be false
+      gi.num_involved_officers = 20
+      expect(gi.valid?).to be true
     end
 
     describe "[address]" do
@@ -45,34 +43,34 @@ describe '[General Info]', type: :model do
 
       it 'rejects invalid states' do
         INVALID_STATES.each do |invalid_state|
-          @info.state = invalid_state
-          expect(@info.valid?).to be false
+          gi.state = invalid_state
+          expect(gi.valid?).to be false
         end
       end
 
       it 'accepts valid states, whether upper or lower case' do
-        @info.state = 'ca'
-        expect(@info.valid?).to be true
-        @info.state = 'CA'
-        expect(@info.valid?).to be true
-        @info.state = 'cA'
-        expect(@info.valid?).to be true
-        @info.state = 'FL'  # For now, all states are valid
-        expect(@info.valid?).to be true
+        gi.state = 'ca'
+        expect(gi.valid?).to be true
+        gi.state = 'CA'
+        expect(gi.valid?).to be true
+        gi.state = 'cA'
+        expect(gi.valid?).to be true
+        gi.state = 'FL'  # For now, all states are valid
+        expect(gi.valid?).to be true
       end
 
       it 'rejects invalid zip codes' do
         INVALID_ZIP_CODES.each do |invalid_zip_code|
-          @info.zip_code = invalid_zip_code
-          expect(@info.valid?).to be false
+          gi.zip_code = invalid_zip_code
+          expect(gi.valid?).to be false
         end
       end
 
       it 'accepts valid zip codes' do
-        @info.zip_code = '00000'
-        expect(@info.valid?).to be true
-        @info.zip_code = '94103'
-        expect(@info.valid?).to be true
+        gi.zip_code = '00000'
+        expect(gi.valid?).to be true
+        gi.zip_code = '94103'
+        expect(gi.valid?).to be true
       end
     end
 
@@ -102,23 +100,23 @@ describe '[General Info]', type: :model do
 
       it 'accepts valid dates and times and computes the full datetime string' do
         VALID_DATES.each do |date_str, expected_date|
-          @info.incident_date_str = date_str
-          expect(@info.valid?).to be true
-          expect(@info.compute_datetime).to eq(expected_date)
+          gi.incident_date_str = date_str
+          expect(gi.valid?).to be true
+          expect(gi.compute_datetime).to eq(expected_date)
         end
       end
 
       it 'rejects invalid, future, or mis-formatted dates' do
         INVALID_DATES.each do |invalid_date|
-          @info.incident_date_str = invalid_date
-          expect(@info.valid?).to be false
+          gi.incident_date_str = invalid_date
+          expect(gi.valid?).to be false
         end
       end
 
       it 'rejects invalid or mis-formatted times' do
         INVALID_TIMES.each do |invalid_time|
-          @info.incident_time_str = invalid_time
-          expect(@info.valid?).to be false
+          gi.incident_time_str = invalid_time
+          expect(gi.valid?).to be false
         end
       end
     end

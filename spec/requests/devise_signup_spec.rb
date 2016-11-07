@@ -32,28 +32,26 @@ describe '[Devise-related tests]', type: :request do
   end
 
   describe '[with an existing user]' do
-    before :each do
-      @dummy_user = create :dummy_user
-    end
+    let!(:dummy_user) { create :dummy_user }
 
     it 'allows sign up of an existing user with a new userid' do
       visit new_user_registration_path
-      fill_in 'First Name', with: @dummy_user.first_name
-      fill_in 'Last Name', with: @dummy_user.last_name
-      fill_in 'Email', with: @dummy_user.email
-      fill_in 'ORI', with: @dummy_user.ori
-      fill_in 'Department', with: @dummy_user.department
-      fill_in 'Role', with: @dummy_user.role
-      fill_in 'User ID (from ECARS)', with: (@dummy_user.user_id + "2")
-      fill_in 'user_password', with: @dummy_user.password
-      fill_in 'Confirm password', with: @dummy_user.password
+      fill_in 'First Name', with: dummy_user.first_name
+      fill_in 'Last Name', with: dummy_user.last_name
+      fill_in 'Email', with: dummy_user.email
+      fill_in 'ORI', with: dummy_user.ori
+      fill_in 'Department', with: dummy_user.department
+      fill_in 'Role', with: dummy_user.role
+      fill_in 'User ID (from ECARS)', with: (dummy_user.user_id + "2")
+      fill_in 'user_password', with: dummy_user.password
+      fill_in 'Confirm password', with: dummy_user.password
       find('input[type=submit]').click
       expect(current_path).to eq(welcome_path)
     end
 
     it 'forbids sign up of an existing user with the same userid' do
       visit_registration_and_fill_form
-      fill_in 'User ID (from ECARS)', with: @dummy_user.user_id
+      fill_in 'User ID (from ECARS)', with: dummy_user.user_id
       find('input[type=submit]').click
       expect(current_path).not_to eq(welcome_path)
       expect(page).to have_content('User is already taken')

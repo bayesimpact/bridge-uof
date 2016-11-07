@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe '[Involved Civilian]', type: :model do
+describe InvolvedCivilian, type: :model do
   describe 'valid?' do
     let(:civilian) { build(:involved_civilian) }
 
