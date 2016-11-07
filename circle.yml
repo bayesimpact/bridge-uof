@@ -51,6 +51,6 @@ deployment:
   master:
     branch: master
     commands:
-      - $(aws ecr get-login)
+      - $(aws ecr get-login --region us-west-1)
       - GIT_SHA1=$CIRCLE_SHA1 docker-compose build web
-      - docker push ${DOCKER_REGISTRY_PATH}bridge:latest
+      - docker push ${DOCKER_REGISTRY_PATH}bridge-uof:latest
