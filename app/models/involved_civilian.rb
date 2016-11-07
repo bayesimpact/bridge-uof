@@ -51,7 +51,7 @@ class InvolvedCivilian < InvolvedPerson
   end
 
   def k12_setting?
-    incident.try(:general_info).try(:on_k12_campus)
+    incident.on_k12_campus
   end
 
   def booked?
