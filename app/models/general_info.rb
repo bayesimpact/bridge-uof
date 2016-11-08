@@ -29,7 +29,6 @@ class GeneralInfo
 
   validates :incident_date_str, incident_date: true
   validates :incident_time_str, incident_time: true
-  validates :address, presence: true
   validates :city, presence: true
   validates :county, presence: true
   validates :state, inclusion: { in: STATES, message: "is invalid" }
@@ -44,6 +43,10 @@ class GeneralInfo
             numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: 20,
                             message: "should be a positive number (1-20)" }
   validates :ori, ori: true
+  validates :address, presence: true,
+                      uniqueness: { scope: [:incident_date_str,
+                                            :incident_time_str, :ori],
+                                    message: 'has an Incident reported with the same date and time' }
 
   delegate :incident_id, to: :incident
 
