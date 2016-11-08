@@ -44,8 +44,8 @@ class IncidentDeserializerService
       incident.involved_civilians = involved_civilians
       incident.involved_officers = involved_officers
 
-      # Set additional things:
-      # incident ID, audit entries, backwards association (needed for GeneralInfo)
+      # Set some additional things:
+      # incident ID, audit entry, backwards association (needed for GeneralInfo)
       incident.incident_id.generate!
       incident.audit_entries << AuditEntry.new(user: user, custom_text: 'imported this incident')
       incident.general_info.incident = incident
