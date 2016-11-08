@@ -33,7 +33,7 @@ class InvolvedCivilian < InvolvedPerson
   validates :highest_charge, presence: true, if: :booked?
   validates :perceived_armed_weapon, presence: true, subset: { in: PERCEIVED_WEAPONS }, if: :perceived_armed
   validates :resistance_type, inclusion: { in: RESISTANCE_TYPES, allow_nil: true }, if: :resisted
-  validates :k12_type, presence: true, inclusion: { in: K12_TYPE }, if: :k12_setting?
+  validates :k12_type, presence: true, inclusion: { in: K12_TYPE }, if: :k12_campus_incident?
 
   with_options if: :received_force do
     validates :received_force_type, presence: true, subset: { in: RECEIVED_FORCE_TYPES }
@@ -50,8 +50,8 @@ class InvolvedCivilian < InvolvedPerson
     validates :firearm_type, presence: true, subset: { in: FIREARM_TYPES }, if: :firearm?
   end
 
-  def k12_setting?
-    incident.on_k12_campus
+  def k12_campus_incident?
+    incident.try(:on_k12_campus)
   end
 
   def booked?

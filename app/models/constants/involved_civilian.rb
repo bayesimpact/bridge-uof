@@ -57,7 +57,8 @@ module Constants
       perceived_armed: "Perceived armed?",
       confirmed_armed: "Confirmed armed?",
       resisted: "Resisted?",
-      received_force: "Force used by an officer?"
+      received_force: "Force used by an officer?",
+      k12_type: "Civilian's role on K-12 campus"
     }.merge(Constants::InvolvedPerson::CUSTOM_LABELS_FOR_REVIEW).freeze
 
     # Only root questions. Sub-questions will be handled automatically.

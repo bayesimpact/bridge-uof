@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :involved_officer, class: InvolvedOfficer do
+  factory :involved_officer do
     id { SecureRandom.uuid }
     officer_used_force false
     officer_used_force_reason ['To effect arrest or take into custody']
