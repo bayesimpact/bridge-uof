@@ -38,7 +38,7 @@ class IncidentDeserializerService
   def self.create_incident!(user, ori, screener, general_info, involved_civilians, involved_officers)
     incident = Incident.create(user: user, ori: ori)
     begin
-      # Populate the incidents.
+      # Populate the incident.
       incident.screener = screener
       incident.general_info = general_info
       incident.involved_civilians = involved_civilians
