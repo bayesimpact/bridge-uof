@@ -3,6 +3,7 @@ require 'rails_helper'
 describe '[Incident serialization and bulk upload]', type: :request do
   let(:incident) { create(:incident, &:destroy) }
   let(:valid_json) { incident.to_hash.to_json }
+  let(:deserialized_incident) { Incident.from_hash(JSON.parse(valid_json), user) }
   let(:user) { User.first }
 
   before :each do
@@ -10,12 +11,21 @@ describe '[Incident serialization and bulk upload]', type: :request do
   end
 
   it 'serializes and deserializes incidents properly' do
-    deserialized_incident = Incident.from_hash(JSON.parse(valid_json), user)
-
     expect(deserialized_incident).to be(incident)
     expect(deserialized_incident.audit_entries.count).to eq(1)
     expect(deserialized_incident.audit_entries[0].user.id).to eq(user.id)
     expect(deserialized_incident.audit_entries[0].custom_text).to eq('imported this incident')
+  end
+
+  it 'maintains a 2-way association between Incident and GeneralInfo for factory-created and deserialized incidents' do
+    expect(incident.general_info.incident.target).to be_present
+    expect(deserialized_incident.general_info.incident.target).to be_present
+
+    # If one of the incidents is incomplete, uncomment to diagnose:
+    # p incident.general_info.incident.next_step
+    # p deserialized_incident.general_info.incident.next_step
+
+    expect(incident.general_info.incident.target).to be(deserialized_incident.general_info.incident.target)
   end
 
   it 'throws descriptive errors on validation failure' do

@@ -33,6 +33,14 @@ FactoryGirl.define do
           incident.in_review! if e.submit
         end
       end
+
+      incident.general_info.incident = incident
+      # All of the below lines are needed, or else the "2-way association" test fails. WTF
+      incident.general_info.incident.target
+      incident.general_info.incident.screener.target
+      incident.general_info.incident.general_info.target
+      incident.general_info.incident.involved_civilians.target
+      incident.general_info.incident.involved_officers.target
     end
   end
 end
