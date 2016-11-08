@@ -16,6 +16,7 @@ describe '[Incident]', type: :request do
 
     it 'smoke test -- create a complete incident, send for review' do
       create_complete_incident
+      p Incident.first.general_info.incident.target
     end
 
     it 'does not create incidents until the screener page is filled out' do

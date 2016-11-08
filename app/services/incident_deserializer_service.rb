@@ -38,15 +38,23 @@ class IncidentDeserializerService
   def self.create_incident!(user, ori, screener, general_info, involved_civilians, involved_officers)
     incident = Incident.create(user: user, ori: ori)
     begin
+      # Populate the incidents.
       incident.screener = screener
       incident.general_info = general_info
       incident.involved_civilians = involved_civilians
       incident.involved_officers = involved_officers
-      incident.audit_entries << AuditEntry.new(user: user, custom_text: 'imported this incident')
+
+      # Set additional things:
+      # incident ID, audit entries, backwards association (needed for GeneralInfo)
       incident.incident_id.generate!
+      incident.audit_entries << AuditEntry.new(user: user, custom_text: 'imported this incident')
+      incident.general_info.incident = incident
+
+      # Approve and save.
       incident.update_attribute :status, :approved
       incident.save!
     rescue => e
+      # If anything went wrong, destroy the incident before propagating the error.
       incident.destroy
       raise e
     end
