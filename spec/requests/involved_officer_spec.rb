@@ -8,7 +8,8 @@ describe '[Involved Officer Page]', type: :request do
 
   describe '[incident with one officer]' do
     before :each do
-      create_partial_incident :officers
+      create(:incident, stop_step: :officers)
+      visit incident_path(Incident.first)
       expect(current_path).to end_with('involved_officers/new')
     end
 
@@ -39,7 +40,8 @@ describe '[Involved Officer Page]', type: :request do
 
   describe '[prepopulated fields]' do
     it 'prepopulates certain fields when there is only one officer' do
-      create_partial_incident :civilians
+      create(:incident, stop_step: :civilians)
+      visit incident_path(Incident.first)
       answer_all_civilian(assaulted_officer?: "No",
                           received_force?: "No", submit: true)
       expect(current_path).to end_with('/involved_officers/new')
@@ -69,7 +71,8 @@ describe '[Involved Officer Page]', type: :request do
     end
 
     it 'does NOT prepopulate any fields when there is more than one officer' do
-      create_partial_incident :civilians, 1, 2
+      create(:incident, stop_step: :civilians, num_officers: 2)
+      visit incident_path(Incident.first)
       answer_all_civilian(assaulted_officer?: "Yes",
                           received_force?: "Yes", submit: true)
       expect(current_path).to end_with('/involved_officers/new')
@@ -82,7 +85,8 @@ describe '[Involved Officer Page]', type: :request do
 
   describe '[incident with 3 officers]' do
     before :each do
-      create_partial_incident(:officers, 1, 3)
+      create(:incident, stop_step: :officers, num_officers: 3)
+      visit incident_path(Incident.first)
       expect(current_path).to end_with('involved_officers/new')
     end
 

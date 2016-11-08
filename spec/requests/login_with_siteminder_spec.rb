@@ -3,7 +3,7 @@ require 'rails_helper'
 
 describe '[Logging in with Siteminder]', type: :request do
   describe '[handles cases where there is no correct cookie]' do
-    before :each do
+    before :all do
       Rails.configuration.x.login.siteminder_url_logout = '/logout'
       Rails.configuration.x.mail.feedback_to_address = 'feedback@example.com'
     end

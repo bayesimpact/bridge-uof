@@ -2,27 +2,26 @@ require 'cgi'
 require 'rails_helper'
 
 describe "[Siteminder cryptography module]", type: :request do
-  before :each do
-    @key = Rails.configuration.x.login.siteminder_decrypt_key
-    @init_v = Rails.configuration.x.login.siteminder_decrypt_init_v
-    @test_cookie = "foo=bar;baz=qux"
-    @test_cookie_encrypted = "dVvfJ8m0W+EBJ29NnoHbEQ=="
-    @test_cookie_encrypted_escaped = CGI.escape(@test_cookie_encrypted)
-  end
+  let(:key) { Rails.configuration.x.login.siteminder_decrypt_key }
+  let(:init_v) { Rails.configuration.x.login.siteminder_decrypt_init_v }
+
+  let(:test_cookie) { "foo=bar;baz=qux" }
+  let(:test_cookie_encrypted) { "dVvfJ8m0W+EBJ29NnoHbEQ==" }
+  let(:test_cookie_encrypted_escaped) { CGI.escape(test_cookie_encrypted) }
 
   it 'encrypts correctly' do
-    expect(Siteminder.encrypt_cookie(@test_cookie, @key, @init_v)).to eq(@test_cookie_encrypted)
-    expect(Siteminder.encrypt_cookie(@test_cookie, @key, @init_v, true)).to eq(@test_cookie_encrypted_escaped)
+    expect(Siteminder.encrypt_cookie(test_cookie, key, init_v)).to eq(test_cookie_encrypted)
+    expect(Siteminder.encrypt_cookie(test_cookie, key, init_v, true)).to eq(test_cookie_encrypted_escaped)
   end
 
   it 'decrypts correctly' do
     expect(
-      Siteminder.decrypt_cookie(@test_cookie_encrypted, @key, @init_v)
-    ).to eq(@test_cookie)
+      Siteminder.decrypt_cookie(test_cookie_encrypted, key, init_v)
+    ).to eq(test_cookie)
 
     expect(
-      Siteminder.decrypt_cookie(@test_cookie_encrypted_escaped, @key, @init_v, true)
-    ).to eq(@test_cookie)
+      Siteminder.decrypt_cookie(test_cookie_encrypted_escaped, key, init_v, true)
+    ).to eq(test_cookie)
   end
 
   it 'does a two-way encrypt-decrypt correctly' do
@@ -30,12 +29,12 @@ describe "[Siteminder cryptography module]", type: :request do
     random_cookie = (0...16).map { (65 + rand(26)).chr }.join
 
     expect(
-      Siteminder.encrypt_decrypt_cookie(random_cookie, @key, @init_v)
+      Siteminder.encrypt_decrypt_cookie(random_cookie, key, init_v)
     ).to eq(random_cookie)
   end
 
   it 'parse_cookie_string_to_hash on basic test cookie' do
-    h = Siteminder.parse_cookie_str_to_hash(@test_cookie)
+    h = Siteminder.parse_cookie_str_to_hash(test_cookie)
     expect(h).to be_a_kind_of(Hash)
     expect(h.length).to eq(2)
     expect(h["foo"]).to eq("bar")

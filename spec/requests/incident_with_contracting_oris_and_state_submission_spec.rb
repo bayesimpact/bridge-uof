@@ -1,16 +1,14 @@
 require 'rails_helper'
 
-describe '[Incident with contracting ORI relationships]' do
-  before :each do
-    roles = Rails.configuration.x.roles
-    @parent_ori_user = create(:dummy_user, email: "1@example.com", ori: 'PARENT_ORI', role: roles.user, user_id: 'parentuser')
-    @sub_ori_user = create(:dummy_user, email: "2@example.com", ori: 'SUB_ORI', role: roles.user, user_id: 'subuser')
-    @parent_ori_admin = create(:dummy_user, email: "3@example.com", ori: 'PARENT_ORI', role: roles.admin, user_id: 'parentadmin')
-  end
+describe '[Incident with contracting ORI relationships]', type: :request do
+  let(:roles) { Rails.configuration.x.roles }
+  let(:parent_ori_user) { build(:dummy_user, email: "1@example.com", ori: 'PARENT_ORI', role: roles.user, user_id: 'parentuser') }
+  let(:sub_ori_user) { build(:dummy_user, email: "2@example.com", ori: 'SUB_ORI', role: roles.user, user_id: 'subuser') }
+  let(:parent_ori_admin) { build(:dummy_user, email: "3@example.com", ori: 'PARENT_ORI', role: roles.admin, user_id: 'parentadmin') }
 
   describe '[users of a contracting ORI]' do
     before :each do
-      login(user: @parent_ori_user)
+      login(user: parent_ori_user)
       create_partial_incident :general
 
       expect(page).to have_content('Which agency are you filling out this report on behalf of?')
@@ -40,7 +38,7 @@ describe '[Incident with contracting ORI relationships]' do
 
   describe '[users of a non-contracting ORI]' do
     before :each do
-      login(user: @sub_ori_user)
+      login(user: sub_ori_user)
     end
 
     it 'can\'t create incidents for other ORIs' do
@@ -58,15 +56,15 @@ describe '[Incident with contracting ORI relationships]' do
 
   describe '[admins of a contracting ORI]' do
     it 'can see all incidents created by their own or contracted ORIs' do
-      login(user: @sub_ori_user)
-      create_complete_incident
+      login(user: sub_ori_user)
+      create(:incident, user_id: sub_ori_user.user_id)
       logout
 
-      login(user: @parent_ori_user)
-      create_complete_incident
+      login(user: parent_ori_user)
+      create(:incident, user_id: parent_ori_user.user_id)
       logout
 
-      login(user: @parent_ori_admin)
+      login(user: parent_ori_admin)
       visit_status :in_review
 
       expect(page).to have_css('#incidents-table tbody tr', count: 2)
@@ -74,21 +72,19 @@ describe '[Incident with contracting ORI relationships]' do
   end
 
   describe '[state submission (done as a contracting ORI for completeness)]' do
-    before :all do
-      @current_submission_year = Time.current.year - 1
-      @previous_submission_year = @current_submission_year - 1
-    end
+    let(:current_submission_year) { Time.current.year - 1 }
+    let(:previous_submission_year) { current_submission_year - 1 }
 
     before :each do
-      AgencyStatus.create!(ori: @parent_ori_admin.ori).mark_year_submitted!(@previous_submission_year)
-      AgencyStatus.create!(ori: @sub_ori_user.ori).mark_year_submitted!(@previous_submission_year)
+      [parent_ori_admin.ori, sub_ori_user.ori].each do |ori|
+        AgencyStatus.create!(ori: ori).mark_year_submitted!(previous_submission_year)
+      end
 
-      login(user: @parent_ori_user)
-      expect(current_path).to eq(dashboard_path)
-      create_complete_incident
+      login(user: parent_ori_user)
+      create(:incident, user_id: parent_ori_user.user_id)
       logout
 
-      login(user: @parent_ori_admin)
+      login(user: parent_ori_admin)
       visit_status :in_review
       find('a', text: 'View').click
       expect(current_path).to end_with('/review')
@@ -111,8 +107,8 @@ describe '[Incident with contracting ORI relationships]' do
       expect(page).to have_content("You may now submit incidents")
       click_button 'SUBMISSION'
 
-      expect(AgencyStatus.where(ori: @parent_ori_admin.ori).first.last_submission_year).to eq(@current_submission_year)
-      expect(AgencyStatus.where(ori: @sub_ori_user.ori).first.last_submission_year).to eq(@current_submission_year)
+      expect(AgencyStatus.where(ori: parent_ori_admin.ori).first.last_submission_year).to eq(current_submission_year)
+      expect(AgencyStatus.where(ori: sub_ori_user.ori).first.last_submission_year).to eq(current_submission_year)
       expect(status_nav_count(:approved)).to eq(0)
       expect(visit_status_count_incidents(:past_submissions)).to eq(1)
 
@@ -122,7 +118,7 @@ describe '[Incident with contracting ORI relationships]' do
       find('a', text: 'View').click
       expect(page).to have_no_content('Delete')
       # Make sure that even if that button existed, the admin user still wouldn't be authorized to delete it.
-      expect(Incident.first).not_to be_authorized_to_edit(@parent_ori_admin)
+      expect(Incident.first).not_to be_authorized_to_edit(parent_ori_admin)
 
       # Disables subsequent state submission
       visit_status :state_submission
@@ -135,7 +131,7 @@ describe '[Incident with contracting ORI relationships]' do
 
       # Submission fails with draft incident
 
-      create_partial_incident :review
+      create(:incident, user_id: parent_ori_admin.user_id, submit: false)
 
       visit_status :state_submission
       expect(status_nav_count(:draft)).to eq(1)
@@ -163,13 +159,13 @@ describe '[Incident with contracting ORI relationships]' do
     end
 
     it 'shows a "Past Submissions" entry for 0-incident-submission years' do
-      status = AgencyStatus.find_by_ori(@parent_ori_admin.ori)
+      status = AgencyStatus.find_by_ori(parent_ori_admin.ori)
       status.mark_year_submitted!(1337)  # Add another past submission for good measure
       expect(status.nil?).to be false
-      expect(status.complete_submission_years).to eq([1337, @previous_submission_year])
+      expect(status.complete_submission_years).to eq([1337, previous_submission_year])
       visit_status :past_submissions
       expect(page).to have_content("1337 (0 incidents)")
-      expect(page).to have_content("#{@previous_submission_year} (0 incidents)")
+      expect(page).to have_content("#{previous_submission_year} (0 incidents)")
       expect(page).to have_no_css('#incidents-table')
     end
 

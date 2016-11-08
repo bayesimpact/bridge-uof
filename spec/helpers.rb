@@ -58,13 +58,13 @@ module Helpers
       'SM_USERGROUPS' => Siteminder.encode_role(user.role)
     }
     cookie_str = cookie_params.map { |k, v| "#{k}=#{v}" }.join(';')
-    @encrypted_cookie = Siteminder.encrypt_cookie(
+    encrypted_cookie = Siteminder.encrypt_cookie(
       cookie_str,
       Rails.configuration.x.login.siteminder_decrypt_key,
       Rails.configuration.x.login.siteminder_decrypt_init_v,
       url_escape: true
     )
-    set_cookie("SMOFC", @encrypted_cookie)
+    set_cookie("SMOFC", encrypted_cookie)
     handle_splash unless options[:dont_handle_splash]
   end
 
@@ -181,6 +181,9 @@ module Helpers
 
   # Start a new incident, and fill out all the pages up to (but not
   # including) stop_step, which should be one of the elements of Incident::STEPS.
+  # NOTE: This is much slower than creating an incident from a factory.
+  #       If you don't care about the requests being performed during incident creation,
+  #       consider create(:incident, stop_step = :step, num_civilians: 1, num_officers: 1) instead.
   def create_partial_incident(stop_step, num_civilians = 1, num_officers = 1, general_info = {})
     expect(Incident::STEPS).to include stop_step
 
@@ -206,14 +209,16 @@ module Helpers
   end
 
   # Create a new incident, fill out all pages, and send for supervisor review.
+  # NOTE: This is much slower than creating an incident from a factory.
+  #       If you don't care about the requests being performed during incident creation,
+  #       consider create(:incident, num_civilians: 1, num_officers: 1) instead.
   def create_complete_incident(num_civilians = 1, num_officers = 1, general_info = {})
     create_partial_incident(:review, num_civilians, num_officers, general_info)
     expect(current_path).to end_with('/review')
     find_button('Send for review').click
   end
 
-  def create_and_review_incident
-    create_complete_incident
+  def review_incident
     visit_status :in_review
     click_link 'View'
     click_button 'Mark as reviewed'

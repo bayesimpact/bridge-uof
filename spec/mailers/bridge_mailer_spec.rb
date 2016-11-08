@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe '[Mailer test]', type: :mailer do
+describe BridgeMailer, type: :mailer do
   def extract_address_only(mail_target)
     # Email addresses may contain descriptive names, e.g. '"John Doe" <john.doe@example.com>'
     # This method extracts the john.doe@example.com part
@@ -14,33 +14,31 @@ describe '[Mailer test]', type: :mailer do
   end
 
   describe 'feedback_email' do
-    before :all do
-      @user = create :dummy_user
-      @feedback = Feedback.create(source: "Source test", content: "Content test")
-      @mail = BridgeMailer.feedback_email(@feedback, @user).deliver_now
-    end
+    let(:user) { build :dummy_user }
+    let(:feedback) { Feedback.build(source: "Source test", content: "Content test") }
+    let(:mail) { BridgeMailer.feedback_email(feedback, user).deliver_now }
 
     it 'has the correct subject' do
-      expect(@mail.subject).to eq("URSUS feedback from #{@user.full_name}")
+      expect(mail.subject).to eq("URSUS feedback from #{user.full_name}")
     end
 
     it 'has the correct TO' do
       correct_addr = extract_address_only Rails.configuration.x.mail.feedback_to_address
-      expect(@mail.to).to eq([correct_addr])
+      expect(mail.to).to eq([correct_addr])
     end
 
     it 'CCs the user who sent the feedback' do
-      expect(@mail.cc).to eq([@user.email])
+      expect(mail.cc).to eq([user.email])
     end
 
     it 'has the correct sender email' do
       correct_addr = extract_address_only Rails.configuration.x.mail.from_address
-      expect(@mail.from).to eq([correct_addr])
+      expect(mail.from).to eq([correct_addr])
     end
 
     it 'contains the feedback source and content' do
-      expect(@mail.body.encoded).to match(@feedback.source)
-      expect(@mail.body.encoded).to match(@feedback.content)
+      expect(mail.body.encoded).to match(feedback.source)
+      expect(mail.body.encoded).to match(feedback.content)
     end
   end
 end

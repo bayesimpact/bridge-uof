@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe '[ActionController]', type: :controller do
+describe ApplicationController, type: :controller do
   it "replace_url_host" do
     c = ApplicationController.new
     expect(c.replace_url_host('http://foo.bar.baz/qux', 'something')).to eq('something/qux')

@@ -9,6 +9,7 @@ machine:
 dependencies:
   pre:
     - gem install rubocop -v 0.43
+    - gem install rubocop-rspec
 
   override:
     # Linting happens in the dependencies step in order to fail fast.
@@ -50,6 +51,6 @@ deployment:
   master:
     branch: master
     commands:
-      - $(aws ecr get-login)
+      - $(aws ecr get-login --region us-west-1)
       - GIT_SHA1=$CIRCLE_SHA1 docker-compose build web
-      - docker push ${DOCKER_REGISTRY_PATH}bridge:latest
+      - docker push ${DOCKER_REGISTRY_PATH}bridge-uof:latest

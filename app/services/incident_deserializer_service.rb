@@ -15,6 +15,11 @@ class IncidentDeserializerService
     validate_steps(screener, general_info, involved_civilians, involved_officers)
 
     create_incident!(user, ori, screener, general_info, involved_civilians, involved_officers)
+  rescue => e
+    # If anything went wrong, clean up any persisted state if necessary,
+    # then propagate the error.
+    cleanup(screener, general_info, involved_civilians, involved_officers)
+    raise e
   end
 
   # "Private methods"
@@ -62,5 +67,15 @@ class IncidentDeserializerService
       end
       raise BridgeExceptions::DeserializationError.new("Validation failed: #{errors.join(', ')}")
     end
+  end
+
+  def self.cleanup(screener, general_info, involved_civilians, involved_officers)
+    screener.delete if screener.present?
+    general_info.delete if general_info.present?
+    involved_civilians.each(&:delete) if involved_civilians.present?
+    involved_officers.each(&:delete) if involved_officers.present?
+  rescue => e
+    # If something bad happens during cleanup, just log it and keep going.
+    Rails.logger.error("Exception during IncidentDeserializerService#cleanup: #{e.message}")
   end
 end
