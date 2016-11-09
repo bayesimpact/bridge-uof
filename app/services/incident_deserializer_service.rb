@@ -38,19 +38,6 @@ class IncidentDeserializerService
   def self.create_incident!(user, screener, general_info, involved_civilians, involved_officers)
     incident = Incident.create(user: user)
     begin
-      screener.incident = incident
-      screener.save!
-      general_info.incident = incident
-      general_info.save!
-      incident.involved_civilians.each do |civ|
-        civ.incident = incident
-        civ.save!
-      end
-      incident.involved_officers.each do |officer|
-        officer.incident = incident
-        officer.save!
-      end
-
       incident.screener = screener
       incident.general_info = general_info
       incident.involved_civilians = involved_civilians
