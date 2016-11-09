@@ -1,6 +1,5 @@
 [
   {
-    "ori": "CA0190000",
     "screener": {
       "partial": "f",
       "multiple_agencies": "f",
@@ -12,7 +11,7 @@
     },
     "general_info": {
       "partial": "f",
-      "ori": null,
+      "ori": "CA0190000",
       "incident_date_str": "04\/01\/2016",
       "incident_time_str": "1830",
       "address": "1355 Market St",
@@ -88,7 +87,6 @@
     ]
   },
   {
-    "ori": "CA0190000",
     "screener": {
       "partial": "f",
       "multiple_agencies": "f",
@@ -100,7 +98,7 @@
     },
     "general_info": {
       "partial": "f",
-      "ori": null,
+      "ori": "CA0190000",
       "incident_date_str": "02\/01\/2016",
       "incident_time_str": "1830",
       "address": "1355 Market St",

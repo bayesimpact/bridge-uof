@@ -22,7 +22,7 @@ class Incident
 
   global_secondary_index hash_key: :incident_id_str, projected_attributes: [hash_key]
 
-  validates :user, :ori, presence: true
+  validates :user, presence: true
   validates :incident_id_str, uniqueness: true, allow_nil: true
 
   # For convenience, we programmatically create a set of getters draft?, in_review?, etc.
@@ -122,7 +122,6 @@ class Incident
     raise "Incident is not complete" unless complete?
 
     {
-      ori: ori,
       screener: screener.to_hash,
       general_info: general_info.to_hash,
       involved_civilians: involved_civilians.map(&:to_hash),
@@ -132,7 +131,6 @@ class Incident
 
   def self.json_schema
     raw_json_schema = {
-      'ori' => '<string>',
       'screener' => Screener.json_schema,
       'general_info' => GeneralInfo.json_schema,
       'involved_civilians[]' => InvolvedCivilian.json_schema,
@@ -150,7 +148,6 @@ class Incident
       <?xml version="1.0" encoding="UTF-8"?>
       <incidents type="array">
         <incident>
-          <ori>{{ string }}</ori>
           <screener>
             #{Screener.xml_schema}
           </screener>
