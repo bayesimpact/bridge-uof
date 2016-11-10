@@ -112,3 +112,12 @@ services:
       - ./data:/code/data:rw
       - ./app/models/constants:/code/app/models/constants:rw
       - ./app/assets/javascripts:/code/app/assets/javascripts:rw
+  # Jupyter notebook
+  notebooks:
+    build:
+      context: notebooks/
+      dockerfile: Dockerfile.notebooks
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./notebooks:/home/jovyan/work
