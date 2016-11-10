@@ -6,6 +6,7 @@ FactoryGirl.define do
       num_officers  1
       submit        true
       stop_step     nil
+      ori           nil
     end
 
     user { User.find_by_user_id(user_id) || create(:dummy_user) }
@@ -13,7 +14,7 @@ FactoryGirl.define do
     after(:create) do |incident, e|  # e is the FactoryGirl evaluator (has access to transient attributes).
       incident.screener = create :screener
 
-      incident.general_info = create(:general_info) do |g|
+      incident.general_info = create(:general_info, ori: e.ori || incident.user.ori) do |g|
         g.update_attributes(
           num_involved_civilians: e.num_civilians,
           num_involved_officers: e.num_officers
