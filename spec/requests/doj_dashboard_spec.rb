@@ -1,25 +1,30 @@
 require 'rails_helper'
 
 describe '[DOJ Dashboard]', type: :request do
-  it 'prevents non-doj users from seeing the doj dashboard' do
+  it 'prevents non-DOJ users from seeing the DOJ dashboard' do
     login
     expect { visit doj_path }.to raise_error(ActionController::BadRequest)
   end
 
   describe '[with some mock data]' do
-    before :each do
-      stub_const('Constants::DEPARTMENT_BY_ORI', 'ALPHA_ORI' => 'ALPHA_DEPT', 'BRAVO_ORI' => 'BRAVO_DEPT')
-      @elvis = create(:dummy_user, first_name: "Elvis", last_name: "Presley",
-                                   email: "elvis@example.com", role: Rails.configuration.x.roles.doj,
-                                   user_id: 'elvis', ori: 'ALPHA_ORI')
+    let!(:doj_user) do
+      create(:dummy_user, first_name: "DojUserFirstName", last_name: "DojUserLastName",
+                          email: "doj_user@example.com", role: Rails.configuration.x.roles.doj,
+                          user_id: 'doj_user', ori: 'ALPHA_ORI')
     end
 
-    describe '[logged in as a doj user]' do
+    let!(:admin_user) do
+      create(:dummy_user, first_name: "AdminUserFirstName", last_name: "AdminUserLastName",
+                          email: "admin@example.com", role: Rails.configuration.x.roles.admin,
+                          user_id: 'admin_user', ori: 'ALPHA_ORI')
+    end
+
+    describe '[logged in as a DOJ user]' do
       before :each do
-        login user: @elvis
+        login user: doj_user
       end
 
-      it 'redirects doj users from the normal dashboard to the DOJ one' do
+      it 'redirects DOJ users from the normal dashboard to the DOJ one' do
         expect(current_path).to eq(doj_path)
         visit dashboard_path
         expect(current_path).to eq(doj_path)
@@ -63,17 +68,19 @@ describe '[DOJ Dashboard]', type: :request do
 
     describe '[with an open submission window and one agency having submitted one incident]' do
       before :each do
+        stub_const('Constants::DEPARTMENT_BY_ORI', 'ALPHA_ORI' => 'ALPHA_DEPT', 'BRAVO_ORI' => 'BRAVO_DEPT')
+
         GlobalState.open_submission_window!
 
         # Log in as a regular admin user, make an incident, submit to state
-        @user = create(:dummy_user, ori: 'ALPHA_ORI')
-        login user: @user
-        create_and_review_incident
+        login user: admin_user
+        create(:incident, user_id: admin_user.user_id)
+        review_incident
         submit_to_state
         logout
 
         # Log back in as DOJ user
-        login user: @elvis
+        login user: doj_user
       end
 
       it '/whosubmitted shows agency submission statuses and links to their incidents' do

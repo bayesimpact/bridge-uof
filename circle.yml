@@ -9,6 +9,7 @@ machine:
 dependencies:
   pre:
     - gem install rubocop -v 0.43
+    - gem install rubocop-rspec
 
   override:
     # Linting happens in the dependencies step in order to fail fast.
@@ -25,7 +26,7 @@ dependencies:
     - echo "MAIL_FROM=test_from@example.com" >> local.env
     - echo "FEEDBACK_MAIL_TO=test_feedback_to@example.com" >> local.env
     - echo "BRANDING=ursus" >> local.env
-    - echo "INCIDENT_ID_PREFIX=URSUS" >> local.env
+    - echo "INCIDENT_ID_PREFIX=TEST" >> local.env
 
     # Set up AWS for deployment
     - mkdir ~/.aws
@@ -50,6 +51,6 @@ deployment:
   master:
     branch: master
     commands:
-      - $(aws ecr get-login)
+      - $(aws ecr get-login --region us-west-1)
       - GIT_SHA1=$CIRCLE_SHA1 docker-compose build web
-      - docker push ${DOCKER_REGISTRY_PATH}ursus:latest
+      - docker push ${DOCKER_REGISTRY_PATH}bridge-uof:latest

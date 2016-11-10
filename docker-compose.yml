@@ -15,11 +15,11 @@ services:
       context: .
       args:
         - GIT_SHA1
-    image: "${DOCKER_REGISTRY_PATH}ursus"
+    image: "${DOCKER_REGISTRY_PATH}bridge-uof"
     ports:
       - "3000:80"
     volumes:
-      - ./app:/ursus/app
+      - ./app:/bridge-uof/app
     links:
       - db
       - mailcatcher
@@ -46,10 +46,10 @@ services:
       - LOGIN_MECHANISM=SITEMINDER
       - RAILS_ENV=test
     env_file: local.env
-    command: --exclude-pattern spec/**/*devise**_spec.rb
+    command: "--exclude-pattern spec/**/*{devise,db_}**_spec.rb"
     volumes:
-      - ./app:/ursus/app:ro
-      - ./spec:/ursus/spec:ro
+      - ./app:/bridge-uof/app:ro
+      - ./spec:/bridge-uof/spec:ro
     tty: true
   # Devise has a different db configuration, and it's annoying to
   # completely delete and restart the testdb, so we just make a
@@ -75,8 +75,8 @@ services:
     env_file: local.env
     command: -P spec/**/*devise**_spec.rb
     volumes:
-      - ./app:/ursus/app:ro
-      - ./spec:/ursus/spec:ro
+      - ./app:/bridge-uof/app:ro
+      - ./spec:/bridge-uof/spec:ro
     tty: true
   # Run the full test suite, using Devise as the login mechanism. Does not run
   # the siteminder-specific tests.
@@ -92,8 +92,8 @@ services:
     env_file: local.env
     command: -P spec/**/*siteminder**_spec.rb
     volumes:
-      - ./app:/ursus/app:ro
-      - ./spec:/ursus/spec:ro
+      - ./app:/bridge-uof/app:ro
+      - ./spec:/bridge-uof/spec:ro
     tty: true
   # Local SMTP server to intercept email
   mailcatcher:

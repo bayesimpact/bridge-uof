@@ -116,7 +116,7 @@ class IncidentsController < ApplicationController
       @current_user.incidents << incident
       @current_user.save
 
-      incident.update_attribute(:ori, @current_user.ori)
+      incident.general_info.update_attribute(:ori, @current_user.ori)
       incident.approved!
     end
 

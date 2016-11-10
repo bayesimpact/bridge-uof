@@ -4,10 +4,11 @@ describe '[Screener Page]', type: :request do
   before :each do
     login
     new_incident
-    expect(page).to have_content('Do I need to file this incident?')
   end
 
   it 'requires answers before continuing' do
+    expect(page).to have_content('Do I need to file this incident?')
+
     find('button[type=submit]').click
     expect(current_path).to end_with('/screener')
     expect(page).to have_content('There were problems with your form')

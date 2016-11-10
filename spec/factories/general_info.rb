@@ -16,5 +16,6 @@ FactoryGirl.define do
     contact_reason GeneralInfo::CONTACT_REASONS[0]
     num_involved_civilians 1
     num_involved_officers 1
+    ori { build(:dummy_user).ori }
   end
 end
