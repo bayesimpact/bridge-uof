@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :involved_civilian, class: InvolvedCivilian do
+  factory :involved_civilian do
     id { SecureRandom.uuid }
     assaulted_officer false
     perceived_armed false

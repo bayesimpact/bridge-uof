@@ -7,15 +7,21 @@ describe '[DOJ Dashboard]', type: :request do
   end
 
   describe '[with some mock data]' do
-    let!(:elvis) do
-      create(:dummy_user, first_name: "Elvis", last_name: "Presley",
-                          email: "elvis@example.com", role: Rails.configuration.x.roles.doj,
-                          user_id: 'elvis', ori: 'ALPHA_ORI')
+    let!(:doj_user) do
+      create(:dummy_user, first_name: "DojUserFirstName", last_name: "DojUserLastName",
+                          email: "doj_user@example.com", role: Rails.configuration.x.roles.doj,
+                          user_id: 'doj_user', ori: 'ALPHA_ORI')
+    end
+
+    let!(:admin_user) do
+      create(:dummy_user, first_name: "AdminUserFirstName", last_name: "AdminUserLastName",
+                          email: "admin@example.com", role: Rails.configuration.x.roles.admin,
+                          user_id: 'admin_user', ori: 'ALPHA_ORI')
     end
 
     describe '[logged in as a DOJ user]' do
       before :each do
-        login user: elvis
+        login user: doj_user
       end
 
       it 'redirects DOJ users from the normal dashboard to the DOJ one' do
@@ -62,24 +68,22 @@ describe '[DOJ Dashboard]', type: :request do
 
     describe '[with an open submission window and one agency having submitted one incident]' do
       before :each do
+        stub_const('Constants::DEPARTMENT_BY_ORI', 'ALPHA_ORI' => 'ALPHA_DEPT', 'BRAVO_ORI' => 'BRAVO_DEPT')
+
         GlobalState.open_submission_window!
 
         # Log in as a regular admin user, make an incident, submit to state
-        user = build(:dummy_user, ori: 'ALPHA_ORI')
-        login user: user
-        create(:incident)
+        login user: admin_user
+        create(:incident, user_id: admin_user.user_id)
         review_incident
         submit_to_state
         logout
 
         # Log back in as DOJ user
-        login user: elvis
+        login user: doj_user
       end
 
       it '/whosubmitted shows agency submission statuses and links to their incidents' do
-        # Ensure that there are only two incidents.
-        stub_const('Constants::DEPARTMENT_BY_ORI', 'ALPHA_ORI' => 'ALPHA_DEPT', 'BRAVO_ORI' => 'BRAVO_DEPT')
-
         visit doj_whosubmitted_path
         rows = all('#agency-submissions-table tbody tr')
         expect(rows.length).to eq(2)
