@@ -11,7 +11,7 @@ class AddSecondaryIndexToIncidents < DynamoDB::Migration::Unit
     existing_indexes = client.describe_table(table_name: table_name).table.global_secondary_indexes
     existing_index_names = existing_indexes ? existing_indexes.flat_map(&:index_name) : []
 
-    if existing_indexes.include? index_name
+    if existing_index_names.include? index_name
       logger.info "Index #{index_name} already exists!"
     else
       logger.info "Creating index #{index_name} ..."
