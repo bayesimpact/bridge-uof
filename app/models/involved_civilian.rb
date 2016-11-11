@@ -50,8 +50,10 @@ class InvolvedCivilian < InvolvedPerson
     validates :firearm_type, presence: true, subset: { in: FIREARM_TYPES }, if: :firearm?
   end
 
+  delegate :on_k12_campus, to: :incident, allow_nil: true
+
   def k12_campus_incident?
-    incident.try(:on_k12_campus)
+    on_k12_campus
   end
 
   def booked?

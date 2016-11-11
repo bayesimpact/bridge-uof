@@ -59,22 +59,26 @@ describe InvolvedCivilian, type: :model do
     end
 
     describe '[Civilians on a K12 campus]' do
+      let(:incident) { create(:incident) }
+      let(:involved_civilian) { incident.involved_civilians.first }
+      let(:general_info) { incident.general_info }
+
       it 'returns true if general_info.on_k12_campus is true and k12_type is not nil' do
-        allow_any_instance_of(InvolvedCivilian).to receive(:k12_campus_incident?).and_return(true)
-        civilian.k12_type = 'A school employee'
-        expect(civilian.valid?).to eq true
+        general_info.update_attribute(:on_k12_campus, true)
+        involved_civilian.k12_type = 'A school employee'
+        expect(involved_civilian.valid?).to eq true
       end
 
       it 'returns false if general_info.on_k12_campus is true and k12_type is nil' do
-        allow_any_instance_of(InvolvedCivilian).to receive(:k12_campus_incident?).and_return(true)
-        civilian.k12_type = nil
-        expect(civilian.valid?).to eq false
+        general_info.update_attribute(:on_k12_campus, true)
+        involved_civilian.k12_type = nil
+        expect(involved_civilian.valid?).to eq false
       end
 
       it 'returns true if general_info.on_k12_campus is false' do
-        allow_any_instance_of(InvolvedCivilian).to receive(:k12_campus_incident?).and_return(false)
-        civilian.k12_type = nil
-        expect(civilian.valid?).to eq true
+        general_info.update_attribute(:on_k12_campus, false)
+        involved_civilian.k12_type = nil
+        expect(involved_civilian.valid?).to eq true
       end
     end
   end
