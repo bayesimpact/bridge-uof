@@ -21,6 +21,7 @@ class InvolvedCivilian < InvolvedPerson
   field :age, :string
   field :confirmed_armed, :boolean
   field :confirmed_armed_weapon, :array
+  field :k12_type, :string
 
   validates :mental_status, presence: true, subset: { in: MENTAL_STATUSES }, civilian_mental_status: true
   validates :assaulted_officer, inclusion: { in: [true, false], message: Constants::ERROR_BLANK_FIELD }
@@ -32,6 +33,7 @@ class InvolvedCivilian < InvolvedPerson
   validates :highest_charge, presence: true, if: :booked?
   validates :perceived_armed_weapon, presence: true, subset: { in: PERCEIVED_WEAPONS }, if: :perceived_armed
   validates :resistance_type, inclusion: { in: RESISTANCE_TYPES, allow_nil: true }, if: :resisted
+  validates :k12_type, presence: true, inclusion: { in: K12_TYPE }, if: :k12_campus_incident?
 
   with_options if: :received_force do
     validates :received_force_type, presence: true, subset: { in: RECEIVED_FORCE_TYPES }
@@ -46,6 +48,12 @@ class InvolvedCivilian < InvolvedPerson
     validates :confirmed_armed, inclusion: { in: [true, false], message: Constants::ERROR_BLANK_FIELD }
     validates :confirmed_armed_weapon, presence: true, subset: { in: CONFIRMED_WEAPONS }, if: :confirmed_armed
     validates :firearm_type, presence: true, subset: { in: FIREARM_TYPES }, if: :firearm?
+  end
+
+  delegate :on_k12_campus, to: :incident, allow_nil: true
+
+  def k12_campus_incident?
+    on_k12_campus
   end
 
   def booked?

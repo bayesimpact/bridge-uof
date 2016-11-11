@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :incident, class: Incident do
+  factory :incident do
     transient do
       user_id       { build(:dummy_user).user_id }
       num_civilians 1

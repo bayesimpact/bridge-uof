@@ -13,6 +13,13 @@
 <%= form_for [@incident, @person],
     url: @person.new_record? ? nil : incident_involved_civilian_path(@incident, @current_person_index) do |f| %>
 
+  <% if @incident.on_k12_campus %>
+    <div class="incident-form-row form-group">
+      <%= f.label :k12_type, "Since this incident happened on a K-12 campus, was this civilian:", class: 'required' %>
+      <%= radio_button_grid(f, :k12_type, InvolvedCivilian::K12_TYPE, 270) %>
+    </div>
+  <% end %>
+
   <div class="incident-form-row form-group">
     <%= yes_no_question f, :assaulted_officer, "Civilian assaulted officer? (Or multiple officers)", class: 'required' %>
   </div>
