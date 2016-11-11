@@ -7,9 +7,9 @@ class AddSecondaryIndexToIncidents < DynamoDB::Migration::Unit
 
     table_name = "#{Dynamoid.config.namespace}_incidents"
     index_name = Incident.indexes['incident_id_str'].name
-    existing_indexes = client.describe_table(table_name: table_name).table
-                             .global_secondary_indexes
-                             .flat_map(&:index_name)
+
+    existing_indexes = client.describe_table(table_name: table_name).table.global_secondary_indexes
+    existing_index_names = existing_indexes ? existing_indexes.flat_map(&:index_name) : []
 
     if existing_indexes.include? index_name
       logger.info "Index #{index_name} already exists!"
