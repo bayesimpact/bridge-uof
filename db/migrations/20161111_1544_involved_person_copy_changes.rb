@@ -26,7 +26,7 @@ class InvolvedPersonCopyChanges < DynamoDB::Migration::Unit
         reason == 'To effect arrest' ? 'To effect arrest or take into custody' : reason
       end
 
-      civilian.save(validation: false)
+      officer.save(validation: false)
     end
 
     logger.info 'Done!'
