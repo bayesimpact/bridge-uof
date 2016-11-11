@@ -16,7 +16,7 @@ class InvolvedPersonCopyChanges < DynamoDB::Migration::Unit
         civilian.custody_status = 'In custody (other)'
       end
 
-      civilian.save!
+      civilian.save(validation: false)
     end
 
     officers = InvolvedOfficer.all
@@ -26,7 +26,7 @@ class InvolvedPersonCopyChanges < DynamoDB::Migration::Unit
         reason == 'To effect arrest' ? 'To effect arrest or take into custody' : reason
       end
 
-      officer.save!
+      civilian.save(validation: false)
     end
 
     logger.info 'Done!'
