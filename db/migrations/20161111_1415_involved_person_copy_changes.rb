@@ -1,3 +1,4 @@
+# Renames several fields for InvolvedCivilians and InvolvedOfficers.
 class InvolvedPersonCopyChanges < DynamoDB::Migration::Unit
   def update
     logger = Logger.new(STDOUT)
