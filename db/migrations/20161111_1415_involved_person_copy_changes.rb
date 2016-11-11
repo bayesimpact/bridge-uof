@@ -22,8 +22,8 @@ class InvolvedPersonCopyChanges < DynamoDB::Migration::Unit
     officers = InvolvedOfficer.all
     logger.info "Updating #{officers.length} InvolvedOfficer records ..."
     officers.each do |officer|
-      if officer.officer_used_force_reason == 'To effect arrest'
-        officer.officer_used_force_reason = 'To effect arrest or take into custody'
+      officer.officer_used_force_reason = officer.officer_used_force_reason.map do |reason|
+        reason == 'To effect arrest' ? 'To effect arrest or take into custody' : reason
       end
 
       officer.save!
