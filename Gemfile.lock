@@ -9,7 +9,7 @@ GIT
 
 GIT
   remote: https://github.com/bayesimpact/dynamodb-migration.git
-  revision: ec9680e8039ca40e0a971e0e88751ad50edf206d
+  revision: f5e8f8f92ead26a5954f0a2df37521013dc05e89
   specs:
     dynamodb-migration (0.5.0)
       aws-sdk (~> 2)
@@ -75,12 +75,12 @@ GEM
     arel (6.0.3)
     autoprefixer-rails (6.3.7)
       execjs
-    aws-sdk (2.6.14)
-      aws-sdk-resources (= 2.6.14)
-    aws-sdk-core (2.6.14)
+    aws-sdk (2.6.19)
+      aws-sdk-resources (= 2.6.19)
+    aws-sdk-core (2.6.19)
       jmespath (~> 1.0)
-    aws-sdk-resources (2.6.14)
-      aws-sdk-core (= 2.6.14)
+    aws-sdk-resources (2.6.19)
+      aws-sdk-core (= 2.6.19)
     bcrypt (3.1.11)
     bootstrap-sass (3.3.6)
       autoprefixer-rails (>= 5.2.1)
