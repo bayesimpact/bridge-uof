@@ -38,8 +38,7 @@ class AddSecondaryIndexToUsers < DynamoDB::Migration::Unit
                 }
               ],
               projection: {
-                projection_type: "ALL",
-                non_key_attributes: []
+                projection_type: "ALL"
               },
               provisioned_throughput: {
                 read_capacity_units: Dynamoid::Config.read_capacity,

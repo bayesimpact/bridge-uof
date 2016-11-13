@@ -16,18 +16,23 @@ class RemoveContractingOriField < DynamoDB::Migration::Unit
       )
     end
 
-    general_info_ids = GeneralInfo.all.map(&:id)
-    logger.info "Updating #{general_info_ids.length} GeneralInfo records ..."
-    general_info_ids.each do |id|
+    gis = GeneralInfo.all
+    logger.info "Updating #{gis.length} GeneralInfo records ..."
+    gis.each do |gi|
+      # First, rename contracting_for_ori field to ori.
       begin
         client.update_item(
           table_name: "#{Dynamoid.config.namespace}_general_infos",
-          key: { 'id' => id },
+          key: { 'id' => gi.id },
           update_expression: "SET ori = contracting_for_ori REMOVE contracting_for_ori",
           condition_expression: "attribute_exists (contracting_for_ori)"
         )
       rescue Aws::DynamoDB::Errors::ConditionalCheckFailedException
-        logger.debug "  Skipping #{id} because it has no contracting_for_ori"
+        # Then, for any incidents who don't have an explicit ori defined,
+        # take the user's ORI.
+        logger.debug "  #{gi.id} has no contracting_for_ori - setting its ori to user's ori: #{gi.incident.user.ori}"
+        gi.ori = gi.incident.user.ori
+        gi.save!
       end
     end
 
