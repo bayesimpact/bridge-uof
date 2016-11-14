@@ -2,10 +2,18 @@ require 'rails_helper'
 
 describe GeneralInfo, type: :model do
   describe '[Validation]' do
-    let(:gi) { build :general_info }
+    let(:gi) { build(:general_info) }
 
     it 'validates a model with all correct fields' do
       expect(gi.valid?).to be true
+    end
+
+    it 'raise uniqueness validation error' do
+      create(:general_info, ori: gi.ori,
+                            incident_date_str: gi.incident_date_str,
+                            incident_time_str: gi.incident_time_str,
+                            address: gi.address)
+      expect { gi.save! }.to raise_error(/has an Incident reported with the same date and time/)
     end
 
     it 'requries a (valid) in_custody_reason if contact_reason is "in custody"' do
