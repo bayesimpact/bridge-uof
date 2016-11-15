@@ -9,29 +9,25 @@ FactoryGirl.define do
       ori           nil
     end
 
+    status { 'in_review' if submit }
+
     user { User.find_by_user_id(user_id) || create(:dummy_user) }
+    screener
+    general_info { create(:general_info, num_involved_civilians: num_civilians,
+                                        num_involved_officers: num_officers,
+                                        ori: (ori || user.ori) ) }
 
-    after(:create) do |incident, e|  # e is the FactoryGirl evaluator (has access to transient attributes).
-      incident.screener = create :screener
-
-      incident.general_info = create(:general_info, ori: e.ori || incident.user.ori) do |g|
-        g.update_attributes(
-          num_involved_civilians: e.num_civilians,
-          num_involved_officers: e.num_officers
-        )
+    # e is the FactoryGirl evaluator (has access to transient attributes).
+    after(:create) do |incident, e|
+      unless e.stop_step == :officers
+        e.num_officers.times do
+          incident.involved_officers << create(:involved_officer)
+        end
       end
 
       unless e.stop_step == :civilians
         e.num_civilians.times do
           incident.involved_civilians << create(:involved_civilian)
-        end
-
-        unless e.stop_step == :officers
-          e.num_officers.times do
-            incident.involved_officers << create(:involved_officer)
-          end
-
-          incident.in_review! if e.submit
         end
       end
     end

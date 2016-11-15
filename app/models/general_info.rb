@@ -29,7 +29,6 @@ class GeneralInfo
 
   validates :incident_date_str, incident_date: true
   validates :incident_time_str, incident_time: true
-  validates :address, presence: true
   validates :city, presence: true
   validates :county, presence: true
   validates :state, inclusion: { in: STATES, message: "is invalid" }
@@ -44,8 +43,19 @@ class GeneralInfo
             numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: 20,
                             message: "should be a positive number (1-20)" }
   validates :ori, ori: true
+  validates :address, presence: true
+  validate :incident_unique?
 
   delegate :incident_id, to: :incident
+
+  def incident_unique?
+    gi = GeneralInfo.where(ori: ori, city: city, address: address,
+                            incident_time_str: incident_time_str,
+                            incident_date_str: incident_date_str).first
+    if gi.present? && id != gi.id
+      errors.add(:address, "has an existing incident reported for the same date and time - are you sure you didn't fill out this incident report already?")
+    end
+  end
 
   def display_agency
     if Rails.configuration.x.login.use_demo?

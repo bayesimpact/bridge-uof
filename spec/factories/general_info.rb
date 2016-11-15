@@ -1,10 +1,10 @@
 FactoryGirl.define do
-  factory :general_info, class: GeneralInfo do
+  factory :general_info do
     id { SecureRandom.uuid }
     # Generate a random date in the past year.
     incident_date_str { rand(Date.civil(Time.current.year - 1, 1, 1)..Date.civil(Time.current.year - 1, 12, 31)).strftime('%m/%d/%Y') }
     incident_time_str '1400'
-    address '123 Main Street'
+    sequence(:address) { |n| "123#{n} Main Street" }
     city 'San Francisco'
     state 'CA'
     zip_code '94123'
