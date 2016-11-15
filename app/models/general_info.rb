@@ -50,8 +50,8 @@ class GeneralInfo
 
   def incident_unique?
     gi = GeneralInfo.find_by(ori: ori, city: city, address: address,
-                           incident_time_str: incident_time_str,
-                           incident_date_str: incident_date_str)
+                             incident_time_str: incident_time_str,
+                             incident_date_str: incident_date_str)
     if gi.present? && id != gi.id
       errors.add(:address, "has an existing incident reported for the same date and time - are you sure you didn't fill out this incident report already?")
     end
