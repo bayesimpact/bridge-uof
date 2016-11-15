@@ -67,7 +67,7 @@ describe '[General Info Page]', type: :request do
     expect(page).to have_field("Time", with: "1830")
   end
 
-  it "moves to the next page if Save and Continue is clicked", driver: :poltergeist do
+  it "moves to the next page iff Save and Continue is clicked", driver: :poltergeist do
     # Even when all the questions are filled out, the Screener should still be
     # considered 'invalid' when partial=true.
     answer_all_general_info
