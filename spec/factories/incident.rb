@@ -13,9 +13,7 @@ FactoryGirl.define do
 
     user { User.find_by_user_id(user_id) || create(:dummy_user) }
     screener
-    general_info { create(:general_info, num_involved_civilians: num_civilians,
-                                        num_involved_officers: num_officers,
-                                        ori: (ori || user.ori) ) }
+    general_info { create(:general_info, num_involved_civilians: num_civilians, num_involved_officers: num_officers, ori: (ori || user.ori)) }
 
     # e is the FactoryGirl evaluator (has access to transient attributes).
     after(:create) do |incident, e|

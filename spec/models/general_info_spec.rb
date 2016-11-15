@@ -39,9 +39,10 @@ describe GeneralInfo, type: :model do
 
     it 'validates uniqueness of general info based on ori, city, address, date, and time' do
       gi.save!
-      duplicate = build(:general_info, ori: gi.ori, city: gi.city, address: gi.address,
-                                        incident_date_str: gi.incident_date_str,
-                                        incident_time_str: gi.incident_time_str)
+      duplicate = build(:general_info, ori: gi.ori, city: gi.city,
+                                       address: gi.address,
+                                       incident_date_str: gi.incident_date_str,
+                                       incident_time_str: gi.incident_time_str)
       expect { duplicate.save! }.to raise_error /has an existing incident reported for the same date and time - are you sure you didn't fill out this incident report already?/
     end
 
