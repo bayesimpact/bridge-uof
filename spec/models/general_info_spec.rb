@@ -2,7 +2,8 @@ require 'rails_helper'
 
 describe GeneralInfo, type: :model do
   describe '[Validation]' do
-    let(:gi) { build :general_info }
+    let(:incident) { create(:incident) }
+    let(:gi) { incident.general_info }
 
     it 'validates a model with all correct fields' do
       expect(gi.valid?).to be true
@@ -38,12 +39,20 @@ describe GeneralInfo, type: :model do
     end
 
     it 'validates uniqueness of general info based on ori, city, address, date, and time' do
-      gi.save!
       duplicate = build(:general_info, ori: gi.ori, city: gi.city,
                                        address: gi.address,
                                        incident_date_str: gi.incident_date_str,
                                        incident_time_str: gi.incident_time_str)
-      expect { duplicate.save! }.to raise_error(/has an existing incident reported for the same date and time - are you sure you didn't fill out this incident report already?/)
+      expect { duplicate.save! }.to raise_error(/there is already another incident with this same date, time, address, city, and ORI - are you sure you didn't fill out this incident report already?/)
+    end
+
+    it 'validates uniqueness of general info based on ori, city, address, date, and time' do
+      incident.delete
+      duplicate = build(:general_info, ori: gi.ori, city: gi.city,
+                                       address: gi.address,
+                                       incident_date_str: gi.incident_date_str,
+                                       incident_time_str: gi.incident_time_str)
+      expect { duplicate.save! }.not_to raise_error
     end
 
     describe "[address]" do

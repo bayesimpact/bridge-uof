@@ -49,11 +49,14 @@ class GeneralInfo
   delegate :incident_id, to: :incident
 
   def incident_unique?
-    gi = GeneralInfo.find_by(ori: ori, city: city, address: address,
-                             incident_time_str: incident_time_str,
-                             incident_date_str: incident_date_str)
-    if gi.present? && id != gi.id
-      errors.add(:address, "has an existing incident reported for the same date and time - are you sure you didn't fill out this incident report already?")
+    return false if ori.blank? || city.blank? || address.blank? || incident_time_str.blank? || incident_date_str.blank?
+    general_infos = GeneralInfo.where(ori: ori, city: city, address: address,
+                                      incident_time_str: incident_time_str,
+                                      incident_date_str: incident_date_str)
+    gi = general_infos.first
+
+    if gi.present? && gi.incident.present? && id != gi.id
+      errors.add(:address, "there is already another incident with this same date, time, address, city, and ORI - are you sure you didn't fill out this incident report already?")
     end
   end
 
