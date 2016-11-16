@@ -38,7 +38,16 @@ describe GeneralInfo, type: :model do
       expect(gi.valid?).to be true
     end
 
-    it 'validates uniqueness of general info based on ori, city, address, date, and time' do
+    it 'does not raise uniqueness validation if incident status is deleted' do
+      incident.update_attribute(:status, 'deleted')
+      duplicate = build(:general_info, ori: gi.ori, city: gi.city,
+                                       address: gi.address,
+                                       incident_date_str: gi.incident_date_str,
+                                       incident_time_str: gi.incident_time_str)
+      expect { duplicate.save! }.not_to raise_error
+    end
+
+    it 'raises uniqueness validation of general info based on ori, city, address, date, and time if incident without deleted incident' do
       duplicate = build(:general_info, ori: gi.ori, city: gi.city,
                                        address: gi.address,
                                        incident_date_str: gi.incident_date_str,
@@ -46,13 +55,13 @@ describe GeneralInfo, type: :model do
       expect { duplicate.save! }.to raise_error(/there is already another incident with this same date, time, address, city, and ORI - are you sure you didn't fill out this incident report already?/)
     end
 
-    it 'validates uniqueness of general info based on ori, city, address, date, and time' do
+    it 'raise uniqueness validation if incident deleted' do
       incident.delete
       duplicate = build(:general_info, ori: gi.ori, city: gi.city,
                                        address: gi.address,
                                        incident_date_str: gi.incident_date_str,
                                        incident_time_str: gi.incident_time_str)
-      expect { duplicate.save! }.not_to raise_error
+      expect { duplicate.save! }.to raise_error(/there is already another incident with this same date, time, address, city, and ORI - are you sure you didn't fill out this incident report already?/)
     end
 
     describe "[address]" do

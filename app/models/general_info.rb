@@ -55,8 +55,12 @@ class GeneralInfo
                                       incident_date_str: incident_date_str)
     gi = general_infos.first
 
-    if gi.present? && gi.incident.present? && id != gi.id
-      errors.add(:address, "there is already another incident with this same date, time, address, city, and ORI - are you sure you didn't fill out this incident report already?")
+    if gi.present? && (id != gi.id)
+      if gi.incident.present? && !gi.incident.deleted?
+        errors.add(:address, "there is already another incident with this same date, time, address, city, and ORI - are you sure you didn't fill out this incident report already?")
+      elsif gi.incident.blank?
+        errors.add(:address, "there is already another incident with this same date, time, address, city, and ORI - are you sure you didn't fill out this incident report already?")
+      end
     end
   end
 
