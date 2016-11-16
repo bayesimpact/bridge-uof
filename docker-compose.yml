@@ -24,6 +24,10 @@ services:
       - db
       - mailcatcher
     env_file: local.env
+    environment:
+      VIRTUAL_HOST: demo-bridge-uof.bayesimpact.org
+      LETSENCRYPT_HOST: demo-bridge-uof.bayesimpact.org
+      LETSENCRYPT_EMAIL: pascal@bayesimpact.org
     restart: always
     tty: true
   # Database for running tests (to keep it separate from the web app's db)
