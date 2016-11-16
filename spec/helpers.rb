@@ -107,7 +107,7 @@ module Helpers
     # Default to creating an incident for last year, so it'll be included
     # with any state submission done today.
     gi = FactoryGirl.build(:general_info)
-    
+
     fill_in 'Date', with: options[:date] || gi.incident_date_str
     fill_in 'Time', with: options[:time] || gi.incident_time_str
     fill_in 'Incident Address', with: options[:address] || gi.address
