@@ -47,6 +47,15 @@ describe GeneralInfo, type: :model do
       expect { duplicate.save! }.not_to raise_error
     end
 
+    it 'does not raise uniqueness validation if duplicate GeneralInfo is a partial save' do
+      gi.partial_save({})
+      duplicate = build(:general_info, ori: gi.ori, city: gi.city,
+                                       address: gi.address,
+                                       incident_date_str: gi.incident_date_str,
+                                       incident_time_str: gi.incident_time_str)
+      expect { duplicate.save! }.not_to raise_error
+    end
+
     it 'raises uniqueness validation of general info based on ori, city, address, date, and time if incident without deleted incident' do
       duplicate = build(:general_info, ori: gi.ori, city: gi.city,
                                        address: gi.address,
