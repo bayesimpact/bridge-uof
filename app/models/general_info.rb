@@ -56,7 +56,7 @@ class GeneralInfo
 
     gi = general_infos.reject { |g| g.id == id }.first
 
-    if gi.present? && (id != gi.id)
+    if gi.present?
       if gi.incident.present? && !gi.incident.deleted?
         raise_uniqueness_error
       elsif gi.incident.blank?
