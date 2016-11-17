@@ -54,7 +54,7 @@ class GeneralInfo
                                       incident_time_str: incident_time_str,
                                       incident_date_str: incident_date_str)
 
-    gi = general_infos.reject { |gi| gi.id == id }.first
+    gi = general_infos.reject { |g| g.id == id }.first
 
     if gi.present? && (id != gi.id)
       if gi.incident.present? && !gi.incident.deleted?
