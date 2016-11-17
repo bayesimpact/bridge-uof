@@ -54,19 +54,9 @@ class GeneralInfo
                                       incident_time_str: incident_time_str,
                                       incident_date_str: incident_date_str)
 
-    gi = general_infos.reject { |g| g.id == id }.first
-
-    if gi.present?
-      if gi.incident.present? && !gi.incident.deleted?
-        raise_uniqueness_error
-      elsif gi.incident.blank?
-        raise_uniqueness_error
-      end
+    if general_infos.any? { |gi| gi.id != id && !gi.incident.try(:target).try(:deleted?) }
+      errors.add(:address, "there is already another incident with this same date, time, address, city, and ORI - are you sure you didn't fill out this incident report already?")
     end
-  end
-
-  def raise_uniqueness_error
-    errors.add(:address, "there is already another incident with this same date, time, address, city, and ORI - are you sure you didn't fill out this incident report already?")
   end
 
   def display_agency
