@@ -112,13 +112,9 @@ class IncidentsController < ApplicationController
 
     num_generated = [Incident::MAX_FAKE_INCIDENTS_TOTAL - num_existing, Incident::MAX_FAKE_INCIDENTS_PER_BATCH].min
 
-    FactoryGirl.create_list :incident, num_generated do |incident|
-      @current_user.incidents << incident
-      @current_user.save
-
-      incident.general_info.update_attribute(:ori, @current_user.ori)
-      incident.approved!
-    end
+    FactoryGirl.create_list(:incident, num_generated, user: @current_user,
+                                                      status: 'approved',
+                                                      ori: @current_user.ori)
 
     note_about_incident_count = begin
       if num_generated == Incident::MAX_FAKE_INCIDENTS_PER_BATCH

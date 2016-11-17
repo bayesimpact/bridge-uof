@@ -106,20 +106,20 @@ module Helpers
     expect(page).to have_content('General Incident Information')
     # Default to creating an incident for last year, so it'll be included
     # with any state submission done today.
-    today = Time.zone.today
-    default_date = Date.new(today.year - 1, today.month, today.day)
-    fill_in 'Date', with: options[:date] || default_date.strftime('%m/%d/%Y')
-    fill_in 'Time', with: options[:time] || '1830'
-    fill_in 'Incident Address', with: options[:address] || '1355 Market St'
-    fill_in 'City', with: options[:city] || 'San Francisco'
-    fill_in 'State', with: options[:state] || 'CA'
-    fill_in 'Zip', with: options[:zip_code] || '94103'
-    fill_in 'County', with: options[:county] || 'San Francisco County'
+    gi = FactoryGirl.build(:general_info)
+
+    fill_in 'Date', with: options[:date] || gi.incident_date_str
+    fill_in 'Time', with: options[:time] || gi.incident_time_str
+    fill_in 'Incident Address', with: options[:address] || gi.address
+    fill_in 'City', with: options[:city] || gi.city
+    fill_in 'State', with: options[:state] || gi.state
+    fill_in 'Zip', with: options[:zip_code] || gi.zip_code
+    fill_in 'County', with: options[:county] || gi.county
     choose_for_question(options[:was_an_arrest_made?] || 'Yes', text: 'arrest made')
     choose_for_question(options[:result_in_crime_report?] || 'No', text: 'crime report')
     choose 'Welfare Check'
-    fill_in 'civilians involved', with: options[:num_civilians] || 1
-    fill_in 'officers involved', with: options[:num_officers] || 1
+    fill_in 'civilians involved', with: options[:num_civilians] || gi.num_involved_civilians
+    fill_in 'officers involved', with: options[:num_officers] || gi.num_involved_officers
 
     click_button 'Save and Continue' if options[:submit]
   end
