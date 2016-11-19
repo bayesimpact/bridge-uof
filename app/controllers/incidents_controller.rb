@@ -77,11 +77,7 @@ class IncidentsController < ApplicationController
   end
 
   def destroy
-    if Rails.configuration.x.login.use_demo?
-      @incident.destroy
-    else
-      save_and_audit(@incident, status: 'deleted')
-    end
+    save_and_audit(@incident, status: 'deleted')
     redirect_to dashboard_url(status: @status)
   end
 

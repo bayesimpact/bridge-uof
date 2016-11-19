@@ -54,7 +54,7 @@ class GeneralInfo
                                       incident_time_str: incident_time_str,
                                       incident_date_str: incident_date_str)
 
-    if general_infos.any? { |gi| gi.id != id && !gi.incident.try(:target).try(:deleted?) }
+    if general_infos.any? { |gi| gi.id != id && !gi.partial && !gi.incident.try(:target).try(:deleted?) }
       errors.add(:address, "there is already another incident with this same date, time, address, city, and ORI - are you sure you didn't fill out this incident report already?")
     end
   end
