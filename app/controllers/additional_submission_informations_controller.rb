@@ -1,6 +1,5 @@
 # voluntary submission information controller for creation only
 class AdditionalSubmissionInformationsController < ApplicationController
-
   def new
     @info = AdditionalSubmissionInformation.new(ori: find_ori)
   end
