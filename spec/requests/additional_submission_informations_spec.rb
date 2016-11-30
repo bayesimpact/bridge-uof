@@ -7,12 +7,12 @@ describe '[AdditionalSubmissionInformation with contracting ORI relationships]',
   let(:valid_year) { Time.last_year.to_s }
 
   describe '[users of a non-contracting ORI]' do
-    before do
+    before(:each) do
       login(user: sub_ori_user)
     end
 
     describe 'create additional submission information' do
-      before do
+      before(:each) do
         visit '/additional_submission_informations/new'
       end
 
@@ -30,7 +30,7 @@ describe '[AdditionalSubmissionInformation with contracting ORI relationships]',
   end
 
   describe '[users of a contracting ORI]' do
-    before do
+    before(:each) do
       login(user: parent_ori_user)
       create_partial_incident :general
 

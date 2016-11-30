@@ -1,3 +1,4 @@
+# voluntary submission information upon state submission
 class AdditionalSubmissionInformation
   include Dynamoid::Document
 
@@ -25,8 +26,7 @@ class AdditionalSubmissionInformation
             presence: true
 
   validates :ori, uniqueness: { scope: [:submission_year],
-                                            message: 'with voluntary information has already been submitted.' }
-
+                                message: 'with voluntary information has already been submitted.' }
 
   # instance methods
   def assign_submission_year
