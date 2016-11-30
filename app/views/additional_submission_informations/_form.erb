@@ -1,0 +1,43 @@
+<div id="pageContent">
+<div id="incidentStep" class="review">
+
+<div class="errors">
+  <% if @info.errors.any? %>
+    <% @info.errors.full_messages.each do |msg| %>
+      <strong class="alert alert-danger">
+        <%= msg %>
+      </strong>
+    <% end %>
+  <% end %>
+</div>
+
+<h1><%= @ori %></h1>
+<hr>
+<% if current_year_voluntary_info?(@ori) %>
+  <p>Voluntary information for <strong><%= @ori %></strong> has been submitted.</p>
+<% else %>
+  <%= form_for @info do |f| %>
+    <%= hidden_field_tag :ori, params.fetch(:ori, @current_user.ori) %>
+    <div>
+      <%= f.label :k_9_officer_severirly_injured_count,
+            "Total number of K-9 officers in #{valid_year} that were seriously injured or killed." %>
+      <%= f.number_field :k_9_officer_severirly_injured_count %>
+    </div>
+
+    <div>
+      <%= f.label :non_sworn_uniformed_injured_or_killed_count,
+          "Total number of non-sworn uniformed employees or volunteers in #{valid_year} that were seriously injured or killed." %>
+      <%= f.number_field :non_sworn_uniformed_injured_or_killed_count %>
+    </div>
+
+    <div>
+      <%= f.label :civilians_injured_or_killed_by_non_sworn_uniformed_count,
+        "Total number of non-sworn uniformed employees or volunteers in #{valid_year} that used force on a civilian, resulting in serious injury or death to the civilian." %>
+      <%= f.number_field :civilians_injured_or_killed_by_non_sworn_uniformed_count %>
+    </div>
+
+    <div id="control">
+      <%= f.submit 'Submit', class: 'btn-bayes' %>
+    </div>
+  <% end %>
+<% end %>

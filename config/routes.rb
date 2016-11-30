@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :additional_submission_informations, only: [:new, :create]
   resource :screener, only: [:new, :create], path_names: { new: "" }
 
   resources :incidents, except: [:index, :create, :edit] do

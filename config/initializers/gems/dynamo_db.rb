@@ -8,7 +8,8 @@ end
 
 MODELS = [
   User, Incident, Screener, GeneralInfo, InvolvedCivilian, InvolvedOfficer,
-  Feedback, AuditEntry, ChangedField, AgencyStatus, GlobalState, Visit, Event
+  Feedback, AuditEntry, ChangedField, AgencyStatus, GlobalState, Visit, Event,
+  AdditionalSubmissionInformation
 ].freeze
 
 Rails.configuration.after_initialize do

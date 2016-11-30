@@ -1,0 +1,16 @@
+<%= render partial: "controls" %>
+<%= render partial: "errors", locals: { record: @info } %>
+
+<ul id='voluntary-submission-sidebar'>
+  <% @current_user.allowed_oris.each do |ori| %>
+    <% if current_year_voluntary_info?(ori) %>
+      <li><strong><%= ori %></strong> (submitted)</li>
+    <% else %>
+      <li>
+        <%= link_to ori, [:new, :additional_submission_information, ori: ori] %>
+      </li>
+    <% end %>
+  <% end %>
+</ul>
+
+<%= render 'form' %>
