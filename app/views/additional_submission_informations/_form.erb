@@ -19,9 +19,9 @@
   <%= form_for @info do |f| %>
     <%= hidden_field_tag :ori, params.fetch(:ori, @current_user.ori) %>
     <div>
-      <%= f.label :k_9_officer_severirly_injured_count,
+      <%= f.label :k9_officer_severely_injured_count,
             "Total number of K-9 officers in #{valid_year} that were seriously injured or killed." %>
-      <%= f.number_field :k_9_officer_severirly_injured_count %>
+      <%= f.number_field :k9_officer_severely_injured_count %>
     </div>
 
     <div>

@@ -110,11 +110,11 @@ describe '[Incident with contracting ORI relationships]', type: :request do
       expect(page).to have_current_path(new_additional_submission_information_path)
       expect(AgencyStatus.where(ori: parent_ori_admin.ori).first.last_submission_year).to eq(current_submission_year)
       expect(AgencyStatus.where(ori: sub_ori_user.ori).first.last_submission_year).to eq(current_submission_year)
-      # expect(status_nav_count(:approved)).to eq(0)
       expect(visit_status_count_incidents(:past_submissions)).to eq(1)
 
       # Submitted incidents are not deletable
       visit_status :past_submissions
+      expect(status_nav_count(:approved)).to eq(0)
       expect(page).to have_css('#incidents-table')
       find('a', text: 'View').click
       expect(page).to have_no_content('Delete')

@@ -44,7 +44,7 @@ describe '[AdditionalSubmissionInformation with contracting ORI relationships]',
 
     it 'lists links to ORI' do
       visit new_additional_submission_information_path
-      parent_ori_user.allowed_oris.each do |ori|
+      ['PARENT_ORI', 'SUB_ORI'].each do |ori|
         click_link(ori)
 
         expect(page).to have_current_path(new_additional_submission_information_path(ori: ori))

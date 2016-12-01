@@ -27,16 +27,6 @@ class AgencyStatus
     find(ori)  # Since ORI is the primary key
   end
 
-  def additional_info_submitted?(ori)
-    return false if ori.blank?
-    additional_information_for_submission_year.present? ? true : false
-  end
-
-  def additional_information_for_submission_year
-    additional_submission_informations.find_by(ori: ori,
-                                               submission_year: Time.last_year.to_s)
-  end
-
   def last_submission_year
     if complete_submission_years.empty?
       -1

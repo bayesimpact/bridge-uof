@@ -1,10 +1,11 @@
-# voluntary submission information controller for creation only
+# Voluntary submission information controller for creation only.
 class AdditionalSubmissionInformationsController < ApplicationController
   def new
     @info = AdditionalSubmissionInformation.new(ori: find_ori)
   end
 
   def create
+    info_params = get_formatted_params(params, AdditionalSubmissionInformation)
     @info = AdditionalSubmissionInformation.new(info_params)
     @info.ori = find_ori
 
@@ -17,20 +18,12 @@ class AdditionalSubmissionInformationsController < ApplicationController
 
   private
 
-    def info_params
-      params.require(:additional_submission_information)
-            .permit(:submission_year,
-                    :k_9_officer_severirly_injured_count,
-                    :non_sworn_uniformed_injured_or_killed_count,
-                    :civilians_injured_or_killed_by_non_sworn_uniformed_count)
-    end
-
     def find_ori
-      @ori = if @current_user.allowed_oris.include?(params[:ori])
-               params[:ori]
-             else
-               @current_user.ori
-             end
+      if @current_user.allowed_oris.include?(params[:ori])
+        params[:ori]
+      else
+        @current_user.ori
+      end
     end
 
     def redirect_user

@@ -4,17 +4,17 @@ RSpec.describe AdditionalSubmissionInformation, type: :model do
   describe 'validations' do
     let(:asi) { build(:asi) }
 
-    describe 'k_9_officer_severirly_injured_count' do
+    describe 'k9_officer_severely_injured_count' do
       it 'raises errors if < 0' do
-        asi.k_9_officer_severirly_injured_count = -1
+        asi.k9_officer_severely_injured_count = -1
         asi.validate
-        expect(asi.errors[:k_9_officer_severirly_injured_count]).to include 'must be greater than 0'
+        expect(asi.errors[:k9_officer_severely_injured_count]).to include 'must be greater than 0'
       end
 
       it 'raises errors if blank' do
-        asi.k_9_officer_severirly_injured_count = ''
+        asi.k9_officer_severely_injured_count = ''
         asi.validate
-        expect(asi.errors[:k_9_officer_severirly_injured_count]).to include "can't be blank"
+        expect(asi.errors[:k9_officer_severely_injured_count]).to include "can't be blank"
       end
     end
 

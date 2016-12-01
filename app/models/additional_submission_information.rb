@@ -1,11 +1,12 @@
-# voluntary submission information upon state submission
+# Voluntary submission information upon state submission.
 class AdditionalSubmissionInformation
   include Dynamoid::Document
+  include Serializable
 
   # fields
   field :ori, :string
   field :submission_year, :string
-  field :k_9_officer_severirly_injured_count, :integer
+  field :k9_officer_severely_injured_count, :integer
   field :non_sworn_uniformed_injured_or_killed_count, :integer
   field :civilians_injured_or_killed_by_non_sworn_uniformed_count, :integer
 
@@ -13,13 +14,13 @@ class AdditionalSubmissionInformation
   after_initialize :assign_submission_year
 
   # validations
-  validates :k_9_officer_severirly_injured_count,
+  validates :k9_officer_severely_injured_count,
             :non_sworn_uniformed_injured_or_killed_count,
             :civilians_injured_or_killed_by_non_sworn_uniformed_count,
             numericality: { only_integer: true,
                             greater_than: 0 }
 
-  validates :ori, :k_9_officer_severirly_injured_count,
+  validates :ori, :k9_officer_severely_injured_count,
             :non_sworn_uniformed_injured_or_killed_count,
             :civilians_injured_or_killed_by_non_sworn_uniformed_count,
             :submission_year,
