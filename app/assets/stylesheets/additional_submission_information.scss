@@ -1,0 +1,46 @@
+body.additional_submission_informations {
+  font-family: "Source Sans Pro", sans-serif;
+
+  .errors {
+    margin-bottom: 3rem;
+  }
+
+  form#new_additional_submission_information {
+    div {
+      margin: 3rem auto;
+      label {
+        width: 100%;
+      }
+      input {
+        outline: none;
+        font-size: 2rem;
+        padding: 1.5rem auto;
+      }
+      input[type="number"] {
+        border: none;
+        border-bottom: 2px solid #ccc;
+        &:focus {
+          border-bottom: 2px solid purple;
+        }
+      }
+    }
+    #control {
+      input {
+        float: right;
+        margin-top: 2rem;
+      }
+    }
+  }
+  #voluntary-submission-sidebar {
+    float: left;
+    margin-top: 5rem;
+    border-right: 1px solid #dce4ef;
+    padding-right: 1.5rem;
+    min-height: 40rem;
+    font-size: 1.8rem;
+    list-style-type: none;
+    li {
+      line-height: 1.7em;
+    }
+  }
+}

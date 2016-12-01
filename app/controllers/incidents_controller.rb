@@ -47,7 +47,7 @@ class IncidentsController < ApplicationController
       end
     end
 
-    redirect_to dashboard_url(status: 'past_submissions')
+    redirect_to new_additional_submission_information_path
   end
 
   def update
