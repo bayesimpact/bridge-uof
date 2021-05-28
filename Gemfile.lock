@@ -97,7 +97,7 @@ GEM
       xpath (~> 2.0)
     capybara-slow_finder_errors (0.1.4)
       capybara (~> 2.5)
-    chartkick (2.0.2)
+    chartkick (3.4.0)
     cliver (0.3.2)
     coffee-rails (4.1.1)
       coffee-script (>= 2.2.0)
